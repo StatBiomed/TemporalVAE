@@ -1,0 +1,39 @@
+# 2023-08-16 22:52:09
+# adversarial step 0,12121212, cycle， and 10 low batchEffect decoder weight.
+model_params:
+  name: 'SuperviseVanillaVAE_regressionClfDecoder_adversarial'
+  in_channels: 0
+  latent_dim: 50
+
+
+data_params:
+  data_path: "Data/"
+  train_batch_size: 64
+  val_batch_size: 64
+  patch_size: 64
+  num_workers: 4
+
+
+exp_params:
+  submodel: 'batchEffect_decoder'
+  LR: 0.005
+  LR_2: 0.005 #Used for adversarial training
+  weight_decay: 0.0
+  scheduler_gamma: 0.95
+  scheduler_gamma_2: 0.95 #Used for adversarial training
+  kld_weight: 0.00025
+  clf_weight: 1 # 2023-09-13 13:45:52 Used for time loss weight
+  batch_weight: 1 #Used for adversarial training
+  manual_seed: 1265
+  epoch_milestone: [80, 81, 82, 83, 84, 85, 86, 87, 88, 89,  110, 111, 112, 113, 114, 115, 116, 117, 118, 119,140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179] # epoch index list, which epoch 1.active batchEffect_decoder; 2.freeze encoder, decoder, and clf-decoder
+  epoch_adversarial: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99,100, 101, 102, 103, 104, 105, 106, 107, 108, 109,120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169,  180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199] # epoch index list, which epoch 1. freeze batchEffect_decoder, decoder; 2.active encoder, decoder, and clf-decoder; 3. add -loss batchEffect_decoder, make prediction as bad as possible.
+  train_bn: False
+
+trainer_params:
+  gpus: [ 1 ]
+  max_epochs: 100
+
+logging_params:
+  save_dir: "logs/"
+  name: "SuperviseVanillaVAE_regressionClfDecoder_adversarial"
+  
