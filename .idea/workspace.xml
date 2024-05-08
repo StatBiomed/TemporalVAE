@@ -10,7 +10,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="" />
+    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -841,12 +841,52 @@
       <workItem from="1714975142283" duration="1029000" />
       <workItem from="1715008759508" duration="6345000" />
       <workItem from="1715093355362" duration="2532000" />
-      <workItem from="1715130145050" duration="2811000" />
+      <workItem from="1715130145050" duration="7069000" />
     </task>
+    <task id="LOCAL-00001" summary="test">
+      <option name="closed" value="true" />
+      <created>1715133665571</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1715133665571</updated>
+    </task>
+    <task id="LOCAL-00002" summary="test">
+      <option name="closed" value="true" />
+      <created>1715135336462</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1715135336462</updated>
+    </task>
+    <task id="LOCAL-00003" summary="test">
+      <option name="closed" value="true" />
+      <created>1715141336916</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1715141336916</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1117,18 +1157,8 @@
           <option name="timeStamp" value="3377" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/kFold_check_corr.py</url>
-          <line>29</line>
-          <option name="timeStamp" value="3378" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/kFold_check_corr.py</url>
-          <line>148</line>
-          <option name="timeStamp" value="3379" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_LR_toyDataset.py</url>
-          <line>38</line>
+          <line>39</line>
           <option name="timeStamp" value="3380" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1356,6 +1386,11 @@
           <line>55</line>
           <option name="timeStamp" value="3496" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_LR_toyDataset.py</url>
+          <line>94</line>
+          <option name="timeStamp" value="3497" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint enabled="true" type="javascript-exception" />
@@ -1507,6 +1542,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_mouse_time_data_LSTM.coverage" NAME="main-mouse_time_data_LSTM Coverage Results" MODIFIED="1678337025060" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$read_json_plotViolin_oneTimeMulitDonor.coverage" NAME="read_json_plotViolin_oneTimeMulitDonor Coverage Results" MODIFIED="1711952798519" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/draw_images" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_humanEmbryo_PLOS.coverage" NAME="preprocess_humanEmbryo_PLOS Coverage Results" MODIFIED="1712315093780" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/preprocess_data" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$exp2_LR_toyDataset.coverage" NAME="exp2_LR_toyDataset Coverage Results" MODIFIED="1715140969843" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_resnet18_2class_ms_only_image.coverage" NAME="main-resnet18-2class-ms-only-image Coverage Results" MODIFIED="1683627721471" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$plot_violin_fromDF__1_.coverage" NAME="plot_violin_fromDF (1) Coverage Results" MODIFIED="1711960463293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/project_mouse_Yijun/for_figure4_humanEmbryo240322" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$GPLVM_fromDandan_trainOnAllData_dropoutDonor_drawByDonor.coverage" NAME="GPLVM_fromDandan_trainOnAllData_dropoutDonor_drawByDonor Coverage Results" MODIFIED="1687926455653" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
