@@ -13,7 +13,7 @@ import os
 
 print(os.getcwd())
 # sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/PyTorch-VAE-master")
+sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
 sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan")
 
 import anndata as ad

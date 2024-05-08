@@ -10,69 +10,47 @@ use dataset mentioned in psupertime manuscript
 
 """
 import sys
+import os
 
-# sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/PyTorch-VAE-master")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan")
 from utils.GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory
 import logging
 from utils.logging_system import LogHelper
 from utils.utils_DandanProject import *
 import anndata
 import pandas as pd
-import os
+
 import numpy as np
-from experiment import VAEXperiment
-from dataset import SupervisedVAEDataset
-from dataset import SupervisedVAEDataset_onlyPredict
+from model_master.experiment import VAEXperiment
+from model_master.dataset import SupervisedVAEDataset, SupervisedVAEDataset_onlyPredict
+from model_master import vae_models
+
+import torch
 from pytorch_lightning import Trainer
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning import seed_everything
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pathlib import Path
 
-os.chdir('/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/Fig2_TemproalVAE_against_benchmark_methods')
-import multiprocessing
+from kFold_check_corr_addLR import preprocess_parameters, corr
 
 
 def main():
+    dataset_list = ["acinarHVG", "embryoBeta", "humanGermline"]
+    for dataset in dataset_list:
+        method_calculate(dataset)
+
+
+def method_calculate(dataset):
+    adata, data_x_df, data_y_df = preprocess_parameters(dataset)
     method = "vae"
-    # ------------ for Mouse embryonic beta cells dataset:
-    # result_file_name = "embryoBeta"
-    # data_x_df = pd.read_csv(f'data_fromPsupertime/{result_file_name}_X.csv', index_col=0).T
-    # hvg_gene_list = pd.read_csv(f'{os.getcwd()}/data_fromPsupertime/{result_file_name}_gene_list.csv', index_col=0)
-    # data_x_df = data_x_df[hvg_gene_list["gene_name"]]
-    # data_y_df = pd.read_csv(f'data_fromPsupertime/{result_file_name}_Y.csv', index_col=0)
-    # data_y_df = data_y_df["time"]
-    # preprocessing_params = {"select_genes": "all", "log": True}
-    # time_standard_type = "embryoneg5to5"
 
-    # for Human Germline dataset:
-    result_file_name = "humanGermline"
-    data_x_df = pd.read_csv('data_fromPsupertime/humanGermline_X.csv', index_col=0).T
-    hvg_gene_list = pd.read_csv(f'{os.getcwd()}/data_fromPsupertime/{result_file_name}_gene_list.csv', index_col=0)
-    data_x_df = data_x_df[hvg_gene_list["gene_name"]]
-    data_y_df = pd.read_csv('data_fromPsupertime/humanGermline_Y.csv', index_col=0)
-    data_y_df = data_y_df["time"]
-    preprocessing_params = {"select_genes": "all", "log": True}
     time_standard_type = "embryoneg5to5"
-
-    # for Acinar dataset, in acinar data set total 8 donors with 8 ages:
-    # result_file_name = "acinarHVG"
-    # data_x_df = pd.read_csv('data_fromPsupertime/acinar_hvg_sce_X.csv', index_col=0).T
-    # data_y_df = pd.read_csv('data_fromPsupertime/acinar_hvg_sce_Y.csv')
-    # data_y_df = np.array(data_y_df['x'])
-    # preprocessing_params = {"select_genes": "all", "log": False}
-    # time_standard_type = "embryoneg5to5"
-
-    # START HERE
-    adata_org = anndata.AnnData(data_x_df)
-    adata_org.obs["time"] = data_y_df
-    print(f"Input Data: n_genes={adata_org.n_vars}, n_cells={adata_org.n_obs}")
+    if not os.path.exists(f'{os.getcwd()}/{method}_results'):
+        os.makedirs(f'{os.getcwd()}/{method}_results')
 
     # ------- set config and logger ------
 
-    train_epoch_num = 60 # 2024-04-16 18:19:48
+    train_epoch_num = 60  # 2024-04-16 18:19:48
     # train_epoch_num = 150
     import yaml
     with open("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/vae_model_configs/"
@@ -87,69 +65,20 @@ def main():
     _logger = logging.getLogger(__name__)
     print("Finished setting up the logger at: {}.".format(logger_file))
     print(f"Epoch number: {train_epoch_num}")
-    # ------------------preprocess adata here ----------------
-    from pypsupertime import Psupertime
-    tp = Psupertime(n_jobs=5, n_folds=5,
-                    preprocessing_params=preprocessing_params
-                    )  # if for Acinar cell "select_genes": "all"
 
-    adata = tp.preprocessing.fit_transform(adata_org.copy())
-    del tp
-    # ---------------------- PLOT adata umap----------------------
-    # colors = colors_tuple()
-    # plt.figure(figsize=(8, 6))
-    #
-    # import umap.umap_ as umap
-    #
-    # reducer = umap.UMAP(random_state=42)
-    # embedding = reducer.fit_transform(adata.X)
-    #
-    # plt.gca().set_aspect('equal', 'datalim')
-    #
-    # i = 0
-    # for label in np.unique(data_y_df):
-    #     # print(label)
-    #     indices = np.where(data_y_df == label)
-    #     plt.scatter(embedding[indices, 0], embedding[indices, 1], label=f"{label} stage: {len(indices[0])} cells", s=7, alpha=0.9,
-    #                 c=colors[i])
-    #     i += 1
-    #
-    # plt.gca().set_aspect('equal', 'datalim')
-    #
-    # # plt.legend(bbox_to_anchor=(1.01, 0), loc="lower left", borderaxespad=0)
-    # # 添加图例并设置样式
-    # legend = plt.legend(bbox_to_anchor=(1.01, 0), loc="lower left", borderaxespad=0)
-    # for handle in legend.legendHandles:
-    #     handle.set_sizes([20])
-    # # legend.legendHandles[0]._sizes = [10]  # 设置散点的大小
-    # plt.setp(legend.get_title(), fontsize='small')  # 设置图例标题的字体大小
-    #
-    # plt.subplots_adjust(left=0.1, right=0.75)
-    # plt.title('UMAP: ')
-    #
-    # plt.show()
-    # plt.close()
-    # --------------------------------------------
-    #
     donor_list = list(np.unique(data_y_df))
     kFold_test_result_df = pd.DataFrame(columns=['time', 'pseudotime', 'trans_label'])
 
     save_path = _logger.root.handlers[0].baseFilename.replace(".log", "")
     for fold in range(len(donor_list)):
-
         _result_df = process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config, save_path, train_epoch_num)
-        # with multiprocessing.Pool(processes=len(donor_list)) as pool:
-        #     processed_results = pool.starmap(process_fold_toyDataset, [
-        #         (fold, donor_list, adata, time_standard_type, config, save_path, train_epoch_num) for fold in range(len(donor_list))])
-        # use one donor as test set, other as train set
-        # for fold, result_df in enumerate(processed_results):
-        #     kFold_test_result_df = pd.concat([kFold_test_result_df, result_df], axis=0)
+
         kFold_test_result_df = pd.concat([kFold_test_result_df, _result_df], axis=0)
     print("k-fold test final result:")
     print(kFold_test_result_df)
     corr(kFold_test_result_df["time"], kFold_test_result_df["pseudotime"])
-    kFold_test_result_df.to_csv(f'{os.getcwd()}/{method}_results/{result_file_name}_{method}_result.csv', index=True)
-    print(f"test result save at {os.getcwd()}/{method}_results/{result_file_name}_{method}_result.csv")
+    kFold_test_result_df.to_csv(f'{os.getcwd()}/{method}_results/{dataset}_{method}_result.csv', index=True)
+    print(f"test result save at {os.getcwd()}/{method}_results/{dataset}_{method}_result.csv")
 
     # f = tp.plot_grid_search(title="Grid Search")
     # f.savefig(f"{os.getcwd()}/psupertime_results/gridSearch.png")
@@ -159,8 +88,8 @@ def main():
     # f.savefig(f"{os.getcwd()}/psupertime_results/geneCoff.png")
     from exp2_psupertime_toyDataset import plot_psupertime_density
     save_path = f"{os.getcwd()}/{method}_results/"
-    plot_psupertime_density(kFold_test_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=f"{result_file_name}_")
-    print(f"figure save at {save_path}/{result_file_name}_labelsOverPsupertime.png")
+    plot_psupertime_density(kFold_test_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=f"{dataset}_")
+    print(f"figure save at {save_path}/{dataset}_labelsOverPsupertime.png")
 
 
 def corr(x1, x2):

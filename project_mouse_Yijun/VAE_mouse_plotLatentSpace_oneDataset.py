@@ -14,7 +14,7 @@ import os
 import sys
 
 # sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/PyTorch-VAE-master")
+sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
 sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan")
 from utils.GPU_manager_pytorch import auto_select_gpu_and_cpu
 

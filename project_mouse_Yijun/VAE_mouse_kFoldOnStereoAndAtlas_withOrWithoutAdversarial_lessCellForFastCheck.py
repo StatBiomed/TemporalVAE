@@ -21,7 +21,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:128"
 import sys
 
 # sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/PyTorch-VAE-master")
+sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
 from utils.GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory
 
 import torch

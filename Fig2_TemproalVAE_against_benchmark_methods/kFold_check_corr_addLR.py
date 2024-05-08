@@ -18,7 +18,6 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-os.chdir('/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/Fig2_TemproalVAE_against_benchmark_methods')
 
 
 def main():
@@ -28,11 +27,11 @@ def main():
     # dataset_list = ["acinarHVG", "humanGermline", "embryoBeta"]
 
     for dataset in dataset_list:
-        pca_df = get_method_result_df("pca", dataset)
-        randomForest_df = get_method_result_df("randomForest", dataset)
-        psupertime_df = get_method_result_df("psupertime", dataset)
-        vae_df = get_method_result_df("vae", dataset)
-        lr_df = get_method_result_df("LR", dataset)
+        pca_df = get_method_result("pca", dataset)
+        randomForest_df = get_method_result("randomForest", dataset)
+        psupertime_df = get_method_result("psupertime", dataset)
+        vae_df = get_method_result("vae", dataset)
+        lr_df = get_method_result("LR", dataset)
         # 初始化标签列表
         all_labels = ['No removal']+list(np.sort(np.unique(pca_df["time"])))
         plot_kFold_corr(pca_df.copy(), randomForest_df.copy(), lr_df.copy(), psupertime_df.copy(), vae_df.copy(), dataset, all_labels, dataset_dic)
@@ -62,12 +61,49 @@ def calculate_corr(df, label_to_remove, corr_method, neg_bool=1):
     return abs(spearman_corr) * neg_bool
 
 
-def get_method_result_df(method, dataset):
+def get_method_result(method, dataset): #
+
     file = f"{os.getcwd()}/{method}_results/{dataset}_{method}_result.csv"
     data = pd.read_csv(file, index_col=0)
     return data
+def preprocess_parameters(dataset): #"acinarHVG", "embryoBeta", "humanGermline"
+    print(f"for dataset {dataset}.")
+    # ------------ for Mouse embryonic beta cells dataset:
+    if dataset=="embryoBeta":
+        data_x_df = pd.read_csv(f'data_fromPsupertime/{dataset}_X.csv', index_col=0).T
+        hvg_gene_list = pd.read_csv(f'{os.getcwd()}/data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
+        data_x_df = data_x_df[hvg_gene_list["gene_name"]]
+        data_y_df = pd.read_csv(f'data_fromPsupertime/{dataset}_Y.csv', index_col=0)
+        data_y_df = data_y_df["time"]
+        preprocessing_params = {"select_genes": "all", "log": True}
+    # ------------ for Human Germline dataset:
+    elif dataset == "humanGermline":
+        data_x_df = pd.read_csv('data_fromPsupertime/humanGermline_X.csv', index_col=0).T
+        hvg_gene_list = pd.read_csv(f'{os.getcwd()}/data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
+        data_x_df = data_x_df[hvg_gene_list["gene_name"]]
+        data_y_df = pd.read_csv('data_fromPsupertime/humanGermline_Y.csv', index_col=0)
+        data_y_df = data_y_df["time"]
+        preprocessing_params = {"select_genes": "all", "log": True}
+    # ------------ for Acinar dataset, in acinar data set total 8 donors with 8 ages:
+    elif dataset == "acinarHVG":
+        data_x_df = pd.read_csv('data_fromPsupertime/acinar_hvg_sce_X.csv', index_col=0).T
+        data_y_df = pd.read_csv('data_fromPsupertime/acinar_hvg_sce_Y.csv')
+        data_y_df = np.array(data_y_df['x'])
+        preprocessing_params = {"select_genes": "all", "log": False}
+    import anndata
+    from pypsupertime import Psupertime
+    # START HERE
+    adata_org = anndata.AnnData(data_x_df)
+    adata_org.obs["time"] = data_y_df
+    print(f"Input Data: n_genes={adata_org.n_vars}, n_cells={adata_org.n_obs}")
+    # ------------------preprocess adata here
+    tp = Psupertime(n_jobs=5, n_folds=5,
+                    preprocessing_params=preprocessing_params
+                    )  # if for Acinar cell "select_genes": "all"
 
-
+    adata = tp.preprocessing.fit_transform(adata_org.copy())
+    del tp
+    return adata,data_x_df,data_y_df
 def add_norCol_df(dfa: pd.DataFrame):
     df = dfa.copy()
     df["normalized"] = (df["pseudotime"] - df["pseudotime"].min()) / (
@@ -189,10 +225,21 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df, datas
     plt.tight_layout(rect=[0, 0, 1, 0.95])
     plt.savefig(f"{os.getcwd()}/{dataset}_methods_results.pdf")
     plt.savefig(f"{os.getcwd()}/{dataset}_methods_results.png", dpi=200)
+    print(f"figure save at {os.getcwd()}")
     # 显示图形
     plt.show()
     plt.close()
+def corr(x1, x2, special_str=""):
+    from scipy.stats import spearmanr, kendalltau
+    sp_correlation, sp_p_value = spearmanr(x1, x2)
+    ke_correlation, ke_p_value = kendalltau(x1, x2)
 
+    sp = f"{special_str} spearman correlation score: {sp_correlation}, p-value: {sp_p_value}."
+    print(sp)
+    ke = f"{special_str} kendalltau correlation score: {ke_correlation},p-value: {ke_p_value}."
+    print(ke)
+
+    return sp, ke
 
 if __name__ == '__main__':
     main()

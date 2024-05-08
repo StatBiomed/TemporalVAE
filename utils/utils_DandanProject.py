@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 import sys
 import os
 
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/PyTorch-VAE-master/")
+sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master/")
 # sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils/")
 
 # from torch.nn import Parameter
@@ -22,7 +22,7 @@ sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/PyTorc
 # import pyro.contrib.gp as gp
 # import pyro.distributions as dist
 from .GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory, check_gpu_memory
-from models import *
+from model_master import *
 import time
 import random
 import json
