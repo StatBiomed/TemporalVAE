@@ -27,7 +27,8 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from collections import Counter
 
-os.chdir('/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/Fig2_TemproalVAE_against_benchmark_methods')
+
+# os.chdir('/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/Fig2_TemproalVAE_against_benchmark_methods')
 
 
 def main():
@@ -99,12 +100,10 @@ def main():
     # f.savefig(f"{os.getcwd()}/psupertime_results/modelPred.png")
     # f = tp.plot_identified_gene_coefficients(adata, n_top=20)
     # f.savefig(f"{os.getcwd()}/psupertime_results/geneCoff.png")
-    save_path=f"{os.getcwd()}/{method}_results/"
-    plot_psupertime_density(kFold_test_result_df, save_path=save_path,label_key="time", psupertime_key="pseudotime",method=result_file_name)
+    save_path = f"{os.getcwd()}/{method}_results/"
+    plot_psupertime_density(kFold_test_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=result_file_name)
     # f.savefig(f"{os.getcwd()}/{method}_results/{result_file_name}_labelsOverPsupertime.png")
     print(f"figure save at {os.getcwd()}/{method}_results/{result_file_name}_labelsOverPsupertime.png")
-
-
 
 
 def corr(x1, x2, special_str=""):
