@@ -4,7 +4,13 @@
 @File    ：preprocess_data_mouse_embryo_stereo.py
 @IDE     ：PyCharm 
 @Author  ：awa121
-@Date    ：2023/8/24 13:07 
+@Date    ：2023/8/24 13:07
+
+*** References: Chen, Ao, et al. "Spatiotemporal transcriptomic atlas of mouse organogenesis using DNA nanoball-patterned arrays." Cell 185.10 (2022): 1777-1792.
+    1. directly download from: https://ftp.cngb.org/pub/SciRAID/stomics/STDS0000058/stomics/Mouse_embryo_all_stage.h5ad
+    2. use genes from {mouse atlas hvg gene list} to filter the mouse_embryo_stereo sc data .h5ad
+    3. filter cells with less than 50 gene expressed.
+    4. finally save at "data/mouse_embryo_stereo/preprocess_Mouse_embryo_all_stage_minGene50/": "data_count_hvg.csv", "cell_with_time.csv", "gene_info.csv"
 """
 
 import scanpy as sc
@@ -16,13 +22,11 @@ import anndata
 
 
 def main():
-    file_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/mouse_embryo_stereo/"
-    # sc_file_name_list = ["/E9.5_E1S1.MOSTA.h5ad"]
+    file_path = "data/mouse_embryo_stereo/"
     sc_file_name_list = ["/Mouse_embryo_all_stage.h5ad"]
     # mouse_embryonic_development/data_count_hvg.csv use gene name as 'ENSMUSG00000051951'
-    gene_used_in_mouse_embryonic_development_file = \
-        "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/mouse_embryonic_development/" \
-        "preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/gene_info.csv"
+    gene_used_in_mouse_embryonic_development_file = "data/mouse_embryonic_development/" \
+                                                    "preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/gene_info.csv"
     print("use hvg gene list from {} to filter the mouse_embryo_stereo sc data .h5ad".format(
         gene_used_in_mouse_embryonic_development_file))
     gene_used_in_mouse_embryonic_development_data = pd.read_csv(gene_used_in_mouse_embryonic_development_file,
@@ -36,7 +40,7 @@ def main():
                                                                       min_gene_num=50,
                                                                       required_gene_info=gene_used_in_mouse_embryonic_development_data)
         # save result as csv file
-        _path = '{}/{}_minGene50/'.format(file_path,"preprocess_" + sc_file_name_list[_file_index].replace("/", "").replace(".h5ad","").replace(" ","_"))
+        _path = '{}/{}_minGene50/'.format(file_path, "preprocess_" + sc_file_name_list[_file_index].replace("/", "").replace(".h5ad", "").replace(" ", "_"))
         if not os.path.exists(_path):
             os.makedirs(_path)
         from collections import Counter

@@ -11,16 +11,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="figure3 code">
-      <change afterPath="$PROJECT_DIR$/.idea/jupyter-settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fig3_mouse_data/LR_PCA_RF_kFoldOn_mouseAtlas.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jupyter-settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jupyter-settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils_DandanProject.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_DandanProject.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_data_mouse_embryo_stereo.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocess_data/preprocess_data_mouse_embryo_stereo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/PCA_atlas.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/randomForest_atlas.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,6 +170,9 @@
       <module name="TemporalVAE" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig3_mouse_data" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -478,9 +484,9 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig3_mouse_data/linearRegression_atlas.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -870,7 +876,8 @@
       <workItem from="1715008759508" duration="6345000" />
       <workItem from="1715093355362" duration="2532000" />
       <workItem from="1715130145050" duration="39229000" />
-      <workItem from="1715257531314" duration="2517000" />
+      <workItem from="1715257531314" duration="4522000" />
+      <workItem from="1715265216961" duration="3265000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -952,7 +959,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715240154338</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="figure3 code">
+      <option name="closed" value="true" />
+      <created>1715263542221</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1715263542221</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -991,39 +1006,9 @@
           <option name="timeStamp" value="3204" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/randomForest_atlas.py</url>
-          <line>62</line>
-          <option name="timeStamp" value="3212" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/randomForest_atlas.py</url>
-          <line>67</line>
-          <option name="timeStamp" value="3213" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/randomForest_atlas.py</url>
-          <line>65</line>
-          <option name="timeStamp" value="3214" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/randomForest_atlas.py</url>
-          <line>49</line>
-          <option name="timeStamp" value="3215" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py</url>
-          <line>58</line>
-          <option name="timeStamp" value="3219" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/preprocess_data/preprocess_humanEmbryo_xiang2019data.py</url>
           <line>100</line>
           <option name="timeStamp" value="3226" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py</url>
-          <line>82</line>
-          <option name="timeStamp" value="3234" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure4_manySetting240223/VAE_mouse_noTimeLabel_directPredictOnStereo.py</url>
@@ -1039,11 +1024,6 @@
           <url>file://$PROJECT_DIR$/preprocess_data/preprocess_humanEmbryo_xiang2019data.py</url>
           <line>92</line>
           <option name="timeStamp" value="3252" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py</url>
-          <line>39</line>
-          <option name="timeStamp" value="3253" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/VAE_human_directPredict.py</url>
@@ -1141,12 +1121,12 @@
           <option name="timeStamp" value="3303" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py</url>
           <line>102</line>
           <option name="timeStamp" value="3306" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py</url>
           <line>261</line>
           <option name="timeStamp" value="3308" />
         </line-breakpoint>
@@ -1156,7 +1136,7 @@
           <option name="timeStamp" value="3309" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py</url>
           <line>172</line>
           <option name="timeStamp" value="3311" />
         </line-breakpoint>
@@ -1306,42 +1286,42 @@
           <option name="timeStamp" value="3423" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py</url>
           <line>177</line>
           <option name="timeStamp" value="3430" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py</url>
           <line>276</line>
           <option name="timeStamp" value="3435" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py</url>
           <line>271</line>
           <option name="timeStamp" value="3443" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py</url>
           <line>377</line>
           <option name="timeStamp" value="3446" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py</url>
           <line>260</line>
           <option name="timeStamp" value="3448" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py</url>
           <line>322</line>
           <option name="timeStamp" value="3450" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py</url>
           <line>249</line>
           <option name="timeStamp" value="3461" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py</url>
           <line>331</line>
           <option name="timeStamp" value="3462" />
         </line-breakpoint>
@@ -1361,7 +1341,7 @@
           <option name="timeStamp" value="3468" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py</url>
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py</url>
           <line>214</line>
           <option name="timeStamp" value="3473" />
         </line-breakpoint>
@@ -1555,6 +1535,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_resnet18_2class_ms_only_image_bulk100.coverage" NAME="main-resnet18-2class-ms-only-image+bulk100 Coverage Results" MODIFIED="1683614981732" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_resnet18_2class_only_image_add_timeinfo.coverage" NAME="main-resnet18-2class-only-image_add_timeinfo Coverage Results" MODIFIED="1683442699141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main.coverage" NAME="main-resnet18-2class-only-motif Coverage Results" MODIFIED="1683376826746" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$linearRegression_atlas.coverage" NAME="linearRegression_atlas Coverage Results" MODIFIED="1715265887491" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_mouse_plotLatentSpace_trainOnAtlasAndStereo_withOrWithoutAdversarial.coverage" NAME="VAE_mouse_plotLatentSpace_trainOnAtlasAndStereo_withOrWithoutAdversarial Coverage Results" MODIFIED="1696942178279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$0512_main_resnet18_3class_preprocess_human_erythriod_data_motif_image.coverage" NAME="0512-main-resnet18-3class-human_erythriod_data-motif+image Coverage Results" MODIFIED="1683862390202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_generate_mini_bulk.coverage" NAME="preprocess_generate_mini_bulk Coverage Results" MODIFIED="1683811021065" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/preprocess_generate_data" />
