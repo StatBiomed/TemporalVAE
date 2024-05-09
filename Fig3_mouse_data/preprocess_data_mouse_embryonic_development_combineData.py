@@ -6,40 +6,45 @@
 @Author  ：awa121
 @Date    ：2023/8/25 10:12
 
-combine mouse_embryonic_development data 1,2,3 as one folder,
-and calculate hvgs
+*** References is Qiu, C., Martin, B.K., Welsh, I.C. et al. A single-cell time-lapse of mouse prenatal development from gastrula to birth. Nature 626, 1084–1093 (2024).
+*** Data source is https://shendure-web.gs.washington.edu/content/members/cxqiu/public/backup/jax/download/adata/
+    1. directly download:
+        adata_JAX_dataset_1.h5ad	2023-04-02 13:15	11G
+        adata_JAX_dataset_2.h5ad	2023-04-02 13:15	8.9G
+        adata_JAX_dataset_3.h5ad	2023-04-02 13:15	9.9G
+        adata_JAX_dataset_4.h5ad	2023-04-02 13:15	11G
+        df_cell.csv	2023-07-27 09:59	1.5G
+        df_gene.csv
+    2. combine four .h5ad files, remove cells with "P0" day annotation.
+    3. random select 1/10 cells to calculate hvgs.
+    4. filter cells with less than 100 gene expressed and genes with less than 50 cells expressed.
+    5. finally save at "data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/"
+        "data_count_hvg.csv", "cell_with_time.csv", "gene_info.csv"
 """
 import os
-import sys
-
-# sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
 import scanpy as sc
 import numpy as np
 import pandas as pd
 import pyreadr
 import anndata
 import logging
-from utils.logging_system import LogHelper, get_datetime_str, create_dir
+from utils.logging_system import LogHelper
 
 from collections import Counter
 import gc
 
-global_file_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/"
-hvg_num = 1000
-min_gene_num = 50
-min_cell_num = 50
-# --------------------- set logger --------------------------
-save_path = "{}/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene{}_minCell{}_hvg{}/".format(
-    global_file_path, min_gene_num, min_cell_num, hvg_num)
-if not os.path.exists(save_path):
-    os.makedirs(save_path)
-logger_file = '{}/dataset_combine.log'.format(save_path)
-LogHelper.setup(log_path=logger_file, level='INFO')
-_logger = logging.getLogger(__name__)
-
 
 def main():
+    hvg_num = 1000
+    min_gene_num = 100
+    min_cell_num = 50
+    # --------------------- set logger --------------------------
+    save_path = f"data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene{min_gene_num}_minCell{min_cell_num}_hvg{hvg_num}/"
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+    logger_file = '{}/dataset_combine.log'.format(save_path)
+    LogHelper.setup(log_path=logger_file, level='INFO')
+    _logger = logging.getLogger(__name__)
     # --------------------- set sub dataset location and read total cell and gene info file --------------------------
     sc_file_name_list = ["mouse_embryonic_development//adata_JAX_dataset_1.h5ad",
                          "mouse_embryonic_development//adata_JAX_dataset_2.h5ad",
@@ -51,10 +56,10 @@ def main():
                          "mouse_embryonic_development//adata_JAX_dataset_3.h5ad": 2,
                          "mouse_embryonic_development//adata_JAX_dataset_4.h5ad": 3
                          }
-    df_cell_rds = pyreadr.read_r("{}/mouse_embryonic_development//df_cell.rds".format(global_file_path))[None]
+    df_cell_rds = pyreadr.read_r("data/mouse_embryonic_development//df_cell.rds")[None]
     # cell_data.index[0]: 'run_4_P2-01A.ATTCAAGCATGTTACGCAAG-0-0' last digit is the batch id, check the sc_file_batch_dic
-    cell_data = pd.read_csv("{}/mouse_embryonic_development//df_cell.csv".format(global_file_path), index_col=0)
-    gene_data = pd.read_csv("{}/mouse_embryonic_development//df_gene.csv".format(global_file_path), index_col=0)
+    cell_data = pd.read_csv("data/mouse_embryonic_development//df_cell.csv", index_col=0)
+    gene_data = pd.read_csv("data/mouse_embryonic_development//df_gene.csv", index_col=0)
     _logger.info("the shape of total cell data: {}".format(cell_data.shape))
     _logger.info("the shape of total gene data: {}".format(gene_data.shape))
     _logger.info("types of total gene: {}".format(np.unique(gene_data["gene_type"])))
@@ -72,7 +77,8 @@ def main():
     _logger.info("add 'celltype_updata' annotation to the cell info data")
 
     # --------------------- start merged sub dataset to one file --------------------------
-    sc_data_df, cell_info, gene_info = preprocessData_hvg_scData_list_combine(global_file_path, sc_file_name_list,
+    sc_data_df, cell_info, gene_info = preprocessData_hvg_scData_list_combine(_logger,
+                                                                              "data/", sc_file_name_list,
                                                                               cell_data.copy(), gene_data_filted.copy(),
                                                                               sc_file_batch_dic=sc_file_batch_dic,
                                                                               hvg_num=hvg_num,
@@ -90,7 +96,7 @@ def main():
     _logger.info("Finish all")
 
 
-def read_large_h5ad_file(file_path, sc_file_name_list, _file_index, cell_data, gene_data, sc_file_batch_dic):
+def read_large_h5ad_file(_logger, file_path, sc_file_name_list, _file_index, cell_data, gene_data, sc_file_batch_dic):
     adata = sc.read_h5ad(filename=file_path + sc_file_name_list[_file_index])
     _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
     _logger.info("Cell number: {}".format(adata.n_obs))
@@ -119,7 +125,8 @@ def read_large_h5ad_file(file_path, sc_file_name_list, _file_index, cell_data, g
     return adata
 
 
-def preprocessData_hvg_scData_list_combine(file_path, sc_file_name_list, cell_data, gene_data, sc_file_batch_dic={},
+def preprocessData_hvg_scData_list_combine(_logger,
+                                           file_path, sc_file_name_list, cell_data, gene_data, sc_file_batch_dic={},
                                            hvg_num=1000,
                                            min_gene_num=100,
                                            min_cell_num=50):
@@ -127,7 +134,7 @@ def preprocessData_hvg_scData_list_combine(file_path, sc_file_name_list, cell_da
     for _file_index in range(len(sc_file_name_list)):
         _logger.info(
             "--- start read {}/{}, {} h5ad file".format(_file_index + 1, len(sc_file_name_list), sc_file_name_list[_file_index]))
-        adata = read_large_h5ad_file(file_path, sc_file_name_list, _file_index, cell_data, gene_data, sc_file_batch_dic)
+        adata = read_large_h5ad_file(_logger, file_path, sc_file_name_list, _file_index, cell_data, gene_data, sc_file_batch_dic)
         if isinstance(merged_adata, pd.DataFrame):
             merged_adata = adata.copy()
         else:
@@ -182,12 +189,6 @@ def preprocessData_hvg_scData_list_combine(file_path, sc_file_name_list, cell_da
                                     index=merged_adata_hvg.obs.index)
     del merged_adata_hvg
 
-    # denseM = sc_expression_df.values
-    # from sklearn.preprocessing import scale
-    # denseM = scale(denseM.astype(float), axis=0, with_mean=True, with_std=True)
-    # _logger.info()("Finish normalize per gene as Gaussian-dist (0, 1).")
-
-    # sc_expression_df = pd.DataFrame(data=denseM, columns=sc_expression_df.columns, index=sc_expression_df.index)
     cell_info = cell_data.loc[sc_expression_df.index]
     cell_info["cell"] = cell_info["cell_id"]
     cell_info["time"] = cell_info['day'].str.replace(r'[A-Za-z]', '', regex=True)
@@ -201,9 +202,6 @@ def preprocessData_hvg_scData_list_combine(file_path, sc_file_name_list, cell_da
     gene_info = gene_data.loc[sc_expression_df.columns]
 
     return sc_expression_df, cell_info, gene_info
-
-
-
 
 
 if __name__ == '__main__':
