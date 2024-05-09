@@ -351,7 +351,7 @@ def test_on_newDataset(sc_expression_train, data_golbal_path, result_save_path, 
     :param time_standard_type:
     :return:
     """
-    from dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
     _logger.info("Test on new dataset.")
 
     gene_list = sc_expression_train.columns
@@ -419,7 +419,7 @@ def test_on_newDonor(test_donor_name, sc_expression_test, runner, experiment, pr
     :param time_standard_type:
     :return:
     """
-    from dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
 
     x_sc_test = torch.tensor(sc_expression_test.values, dtype=torch.get_default_dtype()).t()
     _logger.info("Set x_sc_test data with shape (gene, cells): {}".format(x_sc_test.shape))
@@ -1257,7 +1257,7 @@ def identify_timeCorGene(sc_expression_df, y_time_nor_tensor, donor_index_tensor
 def pertub_one_gene(gene, sc_expression_df, y_time_nor_tensor, donor_index_tensor,
                     runner, experiment, trained_total_dic, trained_clf, gene_dic,
                     gene_raw_total_count, special_path_str, plot_geneTimeDetTime_bool=True):
-    from dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
     from scipy import stats
     # gene = gene_list[index]
     if gene not in sc_expression_df.columns:
@@ -1364,7 +1364,7 @@ def test_on_newDataset(sc_expression_train, data_golbal_path, result_save_path, 
     :param time_standard_type: 
     :return: 
     """
-    from dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
     _logger.info("Test on new dataset.")
 
     gene_list = sc_expression_train.columns
@@ -1432,7 +1432,7 @@ def test_on_newDonor(test_donor_name, sc_expression_test, runner, experiment, pr
     :param time_standard_type:
     :return:
     """
-    from dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
 
     x_sc_test = torch.tensor(sc_expression_test.values, dtype=torch.get_default_dtype()).t()
     _logger.info("Set x_sc_test data with shape (gene, cells): {}".format(x_sc_test.shape))
@@ -1470,7 +1470,7 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
                   time_saved_asFloat=False, batch_size=None,
                   max_attempts=10000000,
                   checkpoint_file=None, min_max_val=None,
-                  recall_used_device=False,recall_predicted_mu=False):
+                  recall_used_device=False, recall_predicted_mu=False):
     """
     2024-03-17 20:05:28 in this file, have a new version for this function, kindly check.
     use donor_list[fold] as test data, and use other donors as train data,
@@ -1494,9 +1494,9 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
     :param plot_latentSpaceUmap:
     :return:
     """
-    from experiment import VAEXperiment
-    from dataset import SupervisedVAEDataset
-    from dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
+    from model_master.experiment import VAEXperiment
+    from model_master.dataset import SupervisedVAEDataset
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
     from pytorch_lightning.loggers import TensorBoardLogger
     from pytorch_lightning import seed_everything
@@ -1750,9 +1750,9 @@ def one_fold_test_adversarialTrain(fold, donor_list, sc_expression_df, donor_dic
     :param plot_latentSpaceUmap:
     :return:
     """
-    from experiment_adversarial import VAEXperiment_adversarial
-    from dataset import SupervisedVAEDataset
-    from dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
+    from model_master.experiment_adversarial import VAEXperiment_adversarial
+    from model_master.dataset import SupervisedVAEDataset
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
     from pytorch_lightning.loggers import TensorBoardLogger
     from pytorch_lightning import seed_everything
@@ -2028,9 +2028,9 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     :param plot_latentSpaceUmap:
     :return:
     """
-    from experiment_adversarial import VAEXperiment_adversarial
-    from experiment import VAEXperiment
-    from dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
+    from model_master.experiment_adversarial import VAEXperiment_adversarial
+    from model_master.experiment import VAEXperiment
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
     from pytorch_lightning.loggers import TensorBoardLogger
     from pytorch_lightning import seed_everything
@@ -2230,9 +2230,9 @@ def read_model_parameters_fromCkpt(sc_expression_df, config_file, checkpoint_fil
     import yaml
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from experiment import VAEXperiment
-    from experiment_adversarial import VAEXperiment_adversarial
-    from dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.experiment import VAEXperiment
+    from model_master.experiment_adversarial import VAEXperiment_adversarial
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
     # make data with gene express min
 
     with open(config_file, 'r') as file:
@@ -2293,38 +2293,7 @@ def read_model_parameters_fromCkpt(sc_expression_df, config_file, checkpoint_fil
     FinetuneVAEModel = vae_models[config['model_params']['name']](**config['model_params'])
     FinetuneVAEModel.load_state_dict(new_state_dict)
     FinetuneVAEModel.eval()
-    if fine_tune_mode == "withoutCellType":
-        withCellType, withMoreFeature = False, False
-        fine_tune_result_adata, runner_fineTune, experiment_fineTune = fine_tuning_model(train_result[0], sc_expression_df, y_label, FinetuneVAEModel, config,
-                                                                                         x_sc, save_result_path,
-                                                                                         cell_time_info=cell_time_info, clf_weight=clf_weight,
-                                                                                         plt_attr=plt_attr)
-
-        print(f"finish fine tuning")
-    elif fine_tune_mode == "withCellType":
-        withCellType, withMoreFeature = True, False
-        fine_tune_result_adata, runner_fineTune, experiment_fineTune = fine_tuning_model_addCellTypeLabel(train_result[0], sc_expression_df, y_label,
-                                                                                                          FinetuneVAEModel, config, x_sc, save_result_path,
-                                                                                                          cell_time_info=cell_time_info, clf_weight=clf_weight,
-                                                                                                          plt_attr=plt_attr)
-        print(f"finish fine tuning")
-    elif (fine_tune_mode == "withMoreFeature") and (sc_expression_df_add is not None):
-        withCellType, withMoreFeature = False, True
-        fine_tune_result_adata, runner_fineTune, experiment_fineTune = fine_tuning_model_add_more_feature(train_result[0], sc_expression_df,
-                                                                                                          sc_expression_df_add, y_label, FinetuneVAEModel, config,
-                                                                                                          x_sc, save_result_path,
-                                                                                                          cell_time_info=cell_time_info, clf_weight=clf_weight,
-                                                                                                          plt_attr=plt_attr)
-        print(f"finish fine tuning")
-    elif (fine_tune_mode == "focusDecoder"):
-        withCellType, withMoreFeature = False, False
-
-        fine_tune_result_adata, runner_fineTune, experiment_fineTune = fine_tuning_model_u_s_focusDecoder(train_result[0], sc_expression_df,
-                                                                                                          y_label, FinetuneVAEModel, config,
-                                                                                                          save_result_path,
-                                                                                                          cell_time_info=cell_time_info, clf_weight=clf_weight,
-                                                                                                          plt_attr=plt_attr)
-    elif (fine_tune_mode == "focusEncoder") and (sc_expression_df_add is None):
+    if (fine_tune_mode == "focusEncoder") and (sc_expression_df_add is None):
         print(f"more feature df is none, only use atlas gene.")
         withCellType, withMoreFeature = False, False
 
@@ -2378,7 +2347,7 @@ def read_model_parameters_fromCkpt(sc_expression_df, config_file, checkpoint_fil
 
 def predict_by_fineTuneModel(sc_expression_df_test, y_label, runner_fineTune, experiment_fineTune, cell_time_info_test, plt_attr,
                              save_result_path, special_file_name_str="", withCellType=False, withMoreFeature=False, withHvg_df=None):
-    from dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
     # input sc data change
     # x_sc_test = torch.tensor(sc_expression_df_test.values, dtype=torch.get_default_dtype()).t()
     # data_x_test = [[x_sc_test[:, i], 0, 0] for i in range(x_sc_test.shape[1])]
@@ -2431,8 +2400,8 @@ def fine_tuning_model(clf_train_result, sc_expression_df, y_label, MyVAEModel, c
     """
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from dataset import SupervisedVAEDataset_onlyPredict
-    from experiment_fineTune import VAEXperiment_fineTune
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.experiment_fineTune import VAEXperiment_fineTune
     from pytorch_lightning.loggers import TensorBoardLogger
     # 2023-11-30 10:45:36 fine tune
 
@@ -2456,7 +2425,7 @@ def fine_tuning_model(clf_train_result, sc_expression_df, y_label, MyVAEModel, c
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from dataset import SupervisedVAEDataset_onlyTrain
+    from model_master.dataset import SupervisedVAEDataset_onlyTrain
     data_predict = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=len(data_x))
 
     # 创建一个 LearningRateMonitor 回调实例
@@ -2515,8 +2484,8 @@ def fine_tuning_model_addCellTypeLabel(clf_train_result, sc_expression_df, y_lab
     """
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from dataset import SupervisedVAEDataset_onlyPredict
-    from experiment_fineTune import VAEXperiment_fineTune
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.experiment_fineTune import VAEXperiment_fineTune
     from pytorch_lightning.loggers import TensorBoardLogger
     # 2023-12-01 11:30:26 add cell type to model
 
@@ -2570,7 +2539,7 @@ def fine_tuning_model_addCellTypeLabel(clf_train_result, sc_expression_df, y_lab
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from dataset import SupervisedVAEDataset_onlyTrain
+    from model_master.dataset import SupervisedVAEDataset_onlyTrain
     data_predict = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=len(data_x))
 
     # 创建一个 LearningRateMonitor 回调实例
@@ -2629,8 +2598,8 @@ def fine_tuning_model_add_more_feature(clf_train_result, sc_expression_df, sc_ex
     """
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from dataset import SupervisedVAEDataset_onlyPredict
-    from experiment_fineTune import VAEXperiment_fineTune
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.experiment_fineTune import VAEXperiment_fineTune
     from pytorch_lightning.loggers import TensorBoardLogger
     # 2023-12-01 11:30:26 add new features to model
     predict_donors_df = pd.DataFrame(index=sc_expression_df.index)
@@ -2685,7 +2654,7 @@ def fine_tuning_model_add_more_feature(clf_train_result, sc_expression_df, sc_ex
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from dataset import SupervisedVAEDataset_onlyTrain
+    from model_master.dataset import SupervisedVAEDataset_onlyTrain
     data_predict = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=len(data_x))
 
     # 创建一个 LearningRateMonitor 回调实例
@@ -2727,124 +2696,6 @@ def fine_tuning_model_add_more_feature(clf_train_result, sc_expression_df, sc_ex
     return result_adata, runner, experiment_fineTune
 
 
-def fine_tuning_model_u_s_focusDecoder(clf_train_result, sc_expression_df, y_label, MyVAEModel, config, save_result_path,
-                                       cell_time_info=None,
-                                       clf_weight=1, plt_attr=None):
-    """
-    with celltype as input
-    :param clf_train_result:
-    :param sc_expression_df:
-    :param y_label:
-    :param MyVAEModel:
-    :param config:
-    :param x_sc:
-    :param save_result_path:
-    :param cell_time_info:
-    :return:
-    """
-    from pytorch_lightning import Trainer
-    from pytorch_lightning import seed_everything
-    from dataset import SupervisedVAEDataset_onlyPredict
-    from experiment_fineTune_u_s_focusDecoder import VAEXperiment_fineTune_u_s_focusDecoder
-    from pytorch_lightning.loggers import TensorBoardLogger
-    # 2023-12-01 11:30:26 add new features to model
-    predict_donors_df = pd.DataFrame(index=sc_expression_df.index)
-    predict_donors_df["pseudotime"] = clf_train_result
-    predict_donors_df["time"] = y_label
-    predict_donors_df['predicted_time'] = predict_donors_df['pseudotime'].apply(denormalize, args=(8.5, 18.75, -5, 5))
-    predict_donors_df['normalized_time'] = predict_donors_df['time'].apply(normalize, args=(8.5, 18.75, -5, 5))
-    # encoder change
-    # encoder_inFeature_num = MyVAEModel.encoder._modules["0"]._modules["0"].in_features
-    # encoder_outFeature_num = MyVAEModel.encoder._modules["0"]._modules["0"].out_features
-    # encoder_weight_0 = MyVAEModel.encoder._modules["0"]._modules["0"].weight  # encoder_weight_0 shape as (out_features, in_features)
-    # encoder_bias_0 = MyVAEModel.encoder._modules["0"]._modules["0"].bias  # encoder_weight_0 shape as (out_features, in_features)
-    # new_layer = nn.Linear(sc_expression_df.shape[1], sc_expression_df.shape[1], bias=True)  # add a new layer before encoder
-    # from collections import OrderedDict
-    # new_encoder_layers = OrderedDict([('spliced_layer', new_layer)])
-    # for name, layer in MyVAEModel.encoder._modules["0"].named_children():
-    #     new_encoder_layers[name] = layer
-    # new_encoder_input_sequential = nn.Sequential(new_encoder_layers)
-    # new_encoder_input_sequential._modules["splice_layer"].weight.shape
-    # zero_col = torch.nn.Parameter(torch.zeros(sc_expression_df.shape[1], sc_expression_df.shape[1]))
-    # temp = torch.nn.Parameter(torch.cat((one_col, zero_col), dim=1))
-    # new_encoder_input_sequential._modules["spliced_layer"].weight = zero_col
-    # MyVAEModel.encoder._modules["0"] = new_encoder_input_sequential
-
-    # new_final_layers = OrderedDict([('unspliced_layer', new_layer)])
-    # for name, layer in MyVAEModel.final_layer._modules.items():
-    #     new_final_layers[name] = layer
-    # new_final_sequential = nn.Sequential(new_final_layers)
-    # new_final_sequential._modules["unspliced_layer"].weight = zero_col
-    # MyVAEModel.final_layer = new_final_sequential
-
-    # input spliced and unspliced data
-    spliced_rownames = list(cell_time_info[cell_time_info["s_or_mrna"] == "spliced"].index)
-    spliced_data_dic = {"df": sc_expression_df.loc[spliced_rownames], "cell_info": cell_time_info.loc[spliced_rownames]}
-    unspliced_rownames = ["un" + i for i in spliced_rownames]
-    unspliced_data_dic = {"df": sc_expression_df.loc[unspliced_rownames], "cell_info": sc_expression_df.loc[unspliced_rownames]}
-
-    finetune_donors_df = predict_donors_df.loc[spliced_rownames]
-
-    spliced_x_sc = torch.tensor(spliced_data_dic["df"].values.T, dtype=torch.get_default_dtype())
-    unspliced_x_sc = torch.tensor(unspliced_data_dic["df"].values.T, dtype=torch.get_default_dtype())
-    data_x = [[(spliced_x_sc[:, i], unspliced_x_sc[:, i]), finetune_donors_df["normalized_time"][i], 0] for i in range(spliced_x_sc.shape[1])]
-
-    # set weight of clf  time lower
-    print(f"clf weight is {clf_weight}")
-    config["exp_params"]["clf_weight"] = clf_weight
-    experiment_fineTune = VAEXperiment_fineTune_u_s_focusDecoder(MyVAEModel, config["exp_params"])
-
-    subFold_save_file_path = f"{save_result_path}/finetune/"
-    if not os.path.exists(subFold_save_file_path):
-        os.makedirs(subFold_save_file_path)
-    tb_logger = TensorBoardLogger(save_dir=subFold_save_file_path,
-                                  name=config['model_params']['name'], )
-    # For reproducibility
-    seed_everything(config['exp_params']['manual_seed'], True)
-    from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from dataset import SupervisedVAEDataset_onlyTrain
-    data_predict = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=len(data_x))
-
-    # 创建一个 LearningRateMonitor 回调实例
-    lr_monitor = LearningRateMonitor()
-    # add 2023-09-07 20:34:57 add memory check
-    check_memory(max_attempts=100000000)
-    device = auto_select_gpu_and_cpu(max_attempts=100000000)  # device: e.g. "cuda:0"
-    _logger.info("Auto select run on {}".format(device))
-    runner = Trainer(logger=tb_logger, log_every_n_steps=1,
-                     callbacks=[
-                         lr_monitor,
-                         ModelCheckpoint(save_top_k=2,
-                                         dirpath=os.path.join(tb_logger.log_dir, "checkpoints"), monitor="train_loss",
-                                         save_last=True),
-                     ],
-                     # check_val_every_n_epoch=1, val_check_interval=1,
-                     devices=[int(device.split(":")[-1])],
-                     accelerator="gpu", max_epochs=100
-                     )
-    from pathlib import Path
-    Path(f"{tb_logger.log_dir}/Samples").mkdir(exist_ok=True, parents=True)
-    Path(f"{tb_logger.log_dir}/Reconstructions").mkdir(exist_ok=True, parents=True)
-
-    print(f"======= Training {config['model_params']['name']} =======")
-    runner.fit(experiment_fineTune, data_predict)
-    # train data forward the model
-    data_predict = SupervisedVAEDataset_onlyPredict(predict_data=data_x, predict_batch_size=len(data_x))
-    fine_tune_train_result = runner.predict(experiment_fineTune, data_predict)
-    fine_tune_train_latent_mu_result = fine_tune_train_result[0][1]
-
-    finetune_donors_df["finetune_pseudotime"] = fine_tune_train_result[0][0]
-    finetune_donors_df['finetune_predicted_time'] = finetune_donors_df['finetune_pseudotime'].apply(denormalize, args=(8.5, 18.75, -5, 5))
-
-    cell_time_info_temp = cell_time_info.loc[spliced_rownames]
-    cell_time_info_temp = pd.concat([cell_time_info_temp, finetune_donors_df], axis=1)
-    # from draw_images.read_json_plotViolin_oneTimeMulitDonor import plt_umap_byScanpy
-    result_adata = anndata.AnnData(X=fine_tune_train_latent_mu_result.cpu().numpy(), obs=cell_time_info_temp)
-    result_adata = plt_umap_byScanpy(result_adata, attr_list=plt_attr, save_path=save_result_path)
-
-    return result_adata, runner, experiment_fineTune
-
-
 def fine_tuning_model_u_s_focusEncoder(clf_train_result, sc_expression_df, MyVAEModel, config, save_result_path,
                                        cell_time_info=None,
                                        clf_weight=1, plt_attr=None, detT=0.1, batch_size=100000):
@@ -2863,8 +2714,8 @@ def fine_tuning_model_u_s_focusEncoder(clf_train_result, sc_expression_df, MyVAE
     cell_time_info = cell_time_info.reindex(index=sc_expression_df.index)
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from dataset import SupervisedVAEDataset_onlyPredict
-    from experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
     from pytorch_lightning.loggers import TensorBoardLogger
 
     # 2023-12-01 11:30:26 add new features to model
@@ -2926,7 +2777,7 @@ def fine_tuning_model_u_s_focusEncoder(clf_train_result, sc_expression_df, MyVAE
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from dataset import SupervisedVAEDataset_onlyTrain
+    from model_master.dataset import SupervisedVAEDataset_onlyTrain
     from pytorch_lightning.callbacks import EarlyStopping
 
     data_train = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=batch_size)
@@ -3056,8 +2907,8 @@ def fine_tuning_model_u_s_focusEncoder_moreFeatures(clf_train_result, sc_express
     cell_time_info = cell_time_info.reindex(index=sc_expression_df.index)
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from dataset import SupervisedVAEDataset_onlyPredict
-    from experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
     from pytorch_lightning.loggers import TensorBoardLogger
     # 2023-12-01 11:30:26 add new features to model
     sc_expression_df_concat = pd.concat((sc_expression_df, sc_expression_df_add), axis=1)
@@ -3125,7 +2976,7 @@ def fine_tuning_model_u_s_focusEncoder_moreFeatures(clf_train_result, sc_express
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from dataset import SupervisedVAEDataset_onlyTrain
+    from model_master.dataset import SupervisedVAEDataset_onlyTrain
     from pytorch_lightning.callbacks import EarlyStopping
 
     data_train = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=batch_size)
@@ -3248,14 +3099,14 @@ def RNA_velocity(clf_input, clf_decoder, config, unspliced_fine_tune_test_latent
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
-    from experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
+    from model_master.experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
     from pytorch_lightning.loggers import TensorBoardLogger
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
     from pytorch_lightning.callbacks import EarlyStopping
 
     from imp import reload
-    from experiment_RNA_velocity import Experiment_RNA_velocity
+    from model_master.experiment_RNA_velocity import Experiment_RNA_velocity
 
     config['model_params']['in_channels'] = 101
 
@@ -3267,10 +3118,9 @@ def RNA_velocity(clf_input, clf_decoder, config, unspliced_fine_tune_test_latent
     RNA_velocity_data = [[spliced_fine_tune_test_latent_mu_result[i], unspliced_fine_tune_test_latent_mu_result[i], detT] for i in
                          range(spliced_fine_tune_test_latent_mu_result.shape[0])]
     RNA_velocity_train_data = SupervisedVAEDataset_onlyTrain(train_data=RNA_velocity_data, train_batch_size=batch_size)
-    #2024-04-19 12:34:35 test the change of LR init from 0.005 to 0.001
+    # 2024-04-19 12:34:35 test the change of LR init from 0.005 to 0.001
     # config["exp_params"]["LR"]=0.001
     experiment_rna_velocity = Experiment_RNA_velocity(RNA_velocity_Model, config['exp_params'])
-
 
     lr_monitor = LearningRateMonitor()
 
@@ -3384,7 +3234,7 @@ def predict_newData_preprocess_df(gene_dic, adata_new, min_gene_num, mouse_atlas
     # 数据数目统计
     sc.pp.filter_cells(adata_concated, min_genes=min_gene_num)
     print("After cell threshold: {}, remain adata shape (cell, gene): {}".format(min_gene_num, adata_concated.shape))
-    new_test_cell_list = adata_new.obs_names
+    new_test_cell_list = list(set(adata_new.obs_names) & set(adata_concated.obs_names))
     print(f"remain test adata cell num {len(new_test_cell_list)}")
     sc.pp.normalize_total(adata_concated, target_sum=1e6)
     sc.pp.log1p(adata_concated)
@@ -3399,6 +3249,7 @@ def predict_newData_preprocess_df(gene_dic, adata_new, min_gene_num, mouse_atlas
 
     # sc_expression_df = pd.DataFrame(data=denseM, columns=sc_expression_df.columns, index=sc_expression_df.index)
     adata_new_normalized = adata_concated[new_test_cell_list].copy()
+
 
     sc_expression_test_df = pd.DataFrame(data=adata_new_normalized.layers["X_normalized"],
                                          columns=adata_new_normalized.var_names, index=list(adata_new_normalized.obs_names))
@@ -3480,15 +3331,15 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
     else:
         for fold in range(len(donor_list)):
             predict_donor_dic, test_clf_result, label_dic, test_mu_result = one_fold_test(fold, donor_list,
-                                                                          sc_expression_df,
-                                                                          donor_dic, batch_dic,
-                                                                          special_path_str, cell_time,
-                                                                          time_standard_type,
-                                                                          config, train_epoch_num,
-                                                                          plot_trainingLossLine=True,
-                                                                          plot_latentSpaceUmap=False,
-                                                                          time_saved_asFloat=True, batch_size=batch_size, donor_str=donor_str,
-                                                                          checkpoint_file=checkpoint_file,recall_predicted_mu=recall_predicted_mu)
+                                                                                          sc_expression_df,
+                                                                                          donor_dic, batch_dic,
+                                                                                          special_path_str, cell_time,
+                                                                                          time_standard_type,
+                                                                                          config, train_epoch_num,
+                                                                                          plot_trainingLossLine=True,
+                                                                                          plot_latentSpaceUmap=False,
+                                                                                          time_saved_asFloat=True, batch_size=batch_size, donor_str=donor_str,
+                                                                                          checkpoint_file=checkpoint_file, recall_predicted_mu=recall_predicted_mu)
             predict_donors_dic.update(predict_donor_dic)
 
     predict_donors_df = pd.DataFrame(columns=["pseudotime"])
@@ -3503,7 +3354,7 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
 
     _logger.info("Finish plot image and fold-test.")
     if recall_predicted_mu:
-        return predict_donors_dic, label_dic,test_mu_result
+        return predict_donors_dic, label_dic, test_mu_result
     else:
         return predict_donors_dic, label_dic
 
@@ -3592,18 +3443,4 @@ def read_rds_file(file_name):
     with localconverter(ro.default_converter + pandas2ri.converter):
         df = pandas2ri.rpy2py(df_rds)
     return df
-# def read_RData_file(file_name):
-#     import rpy2.robjects as ro
-#     from rpy2.robjects import pandas2ri
-#     from rpy2.robjects.conversion import localconverter
-#
-#     # 激活rpy2的pandas转换功能
-#     pandas2ri.activate()
-#
-#     # 使用rpy2加载.RData文件
-#     ro.r['load'](file_name)
-#
-#     with localconverter(ro.default_converter + pandas2ri.converter):
-#         df = pandas2ri.rpy2py(ro.r['mmBmK_D2'])
-#
-#     return df
+

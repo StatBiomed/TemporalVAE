@@ -1,14 +1,11 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：LR_PCA_RF_directlyPredictOn_mouseStereo.py
+@File    ：TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py
 @IDE     ：PyCharm 
 @Author  ：awa121
 @Date    ：2024/3/22 10:21 
 
-cd /mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/
-source ~/.bashrc
-nohup python -u project_mouse_Yijun/for_figure3_compareWithBaseLine/LR_PCA_RF_directlyPredictOn_mouseStereo.py >> logs/240503_for_figure3_compareWithBaseLine_LR_PCA_RF_directlyPredictOn_mouseStereo.log 2>&1 &
 
 """
 
@@ -16,29 +13,32 @@ import sys
 import os
 
 print(os.getcwd())
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
+
 import anndata as ad
 import pandas as pd
 from collections import Counter
 from utils.utils_DandanProject import geneId_geneName_dic, predict_newData_preprocess_df, preprocessData_and_dropout_some_donor_or_gene
-from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score,plot_psupertime_density
+from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score, plot_psupertime_density
 import time
 import logging
 from utils.logging_system import LogHelper
 import yaml
 from utils.utils_Dandan_plot import plot_violin_240223
+
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+
+
 def main():
-    save_path = f"/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240503_Figure3_LR_PCA_RF_directlyPredictOn_mouseStereo/"
-    # save_path = f"/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240329_Figure3_LR_PCA_RF_directlyPredictOn_mouseStereo/"
-    # save_path=f"/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240322_forFig3_compareWithBaseLine/{method}_atlas/"
+    min_gene_num = 50
+    save_path = f"results/Figure3_LR_PCA_RF_directlyPredictOn_mouseStereo_minGeneNum{min_gene_num}/"
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-    data_golbal_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/"
+    data_golbal_path = "data/"
     baseline_data_path = "/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/"
     query_data_path = "/mouse_embryo_stereo/preprocess_Mouse_embryo_all_stage_minGene50/"
-    checkpoint_file = '/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/231020_plotLatentSpace_mouse_data_minGene50_hvg1000CalByEachOrgan_timeCorGene/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_epoch200_minGeneNum100/wholeData/SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial/version_0/checkpoints/last.ckpt'
-    config_file = f"/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/vae_model_configs/supervise_vae_regressionclfdecoder_mouse_stereo.yaml"
+    checkpoint_file = "checkpoint_files/mouse_atlas.ckpt"
+    config_file = "vae_model_configs/supervise_vae_regressionclfdecoder_mouse_stereo.yaml"
     # ---------------------------------------set logger and parameters, creat result save path and folder----------------------------------------------
     logger_file = f'{save_path}/run.log'
     LogHelper.setup(log_path=logger_file, level='INFO')
@@ -53,7 +53,7 @@ def main():
     _logger = logging.getLogger(__name__)
     _logger.info("Finished setting up the logger at: {}.".format(logger_file))
     _logger.info(f"baseline dataset: {data_golbal_path}/{baseline_data_path}, \n and query dataset: {data_golbal_path}/{query_data_path}")
-    # ---------------------------------------------preprocess on query data-----------------------------------------------------------------------
+    # --------------------------------preprocess on query data-----------------------------------------
     gene_dic = geneId_geneName_dic()
     try:
         query_adata_raw = ad.read_csv(f"{data_golbal_path}/{query_data_path}/data_count_hvg.csv", delimiter='\t')
@@ -74,14 +74,15 @@ def main():
         print(f"plot for celltype_update, as the number is more than 10, select top 10 to plot umap: {top_10_attr}, the cell is filtered to {len(query_adata_raw)}")
         cell_time_query_pd = cell_time_query_pd[cell_time_query_pd["celltype_update"].isin(top_10_attr)]
         cell_time_query_pd = cell_time_query_pd.loc[query_adata_raw.obs.index]
-    trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df = predict_newData_preprocess_df(gene_dic, query_adata_raw,
-                                                                                                            min_gene_num=100,
-                                                                                                            mouse_atlas_file=f"{data_golbal_path}/{baseline_data_path}/data_count_hvg.csv",
-                                                                                                            bool_change_geneID_to_geneShortName=False
-                                                                                                            )
+    trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df = predict_newData_preprocess_df(
+        gene_dic, query_adata_raw,
+        min_gene_num=min_gene_num,
+        mouse_atlas_file=f"{data_golbal_path}/{baseline_data_path}/data_count_hvg.csv",
+        bool_change_geneID_to_geneShortName=False
+    )
     query_adata = ad.AnnData(X=trainData_renormalized_df, obs=train_cell_info_df)
-    print( f"get query adata {query_adata}")
-    # ---------------------------------------------preprocess on baseline data---------------------------------------------------------------------------
+    print(f"get query adata {query_adata}")
+    # ------------------------------preprocess on baseline data----------------------------------------------------------
     atlas_sc_expression_df, cell_time_atlas = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path,
                                                                                             f"{baseline_data_path}/data_count_hvg.csv",
                                                                                             f"{baseline_data_path}/cell_with_time.csv",
@@ -92,6 +93,7 @@ def main():
     train_PCA_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path)
     train_RF_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path)
     plot_compare_corr_boxplot(save_path)
+
 
 def plot_compare_corr_boxplot(save_path):
     # ---------- pretrain a model (TemporalVAE, LR, PCA, RF) on mouse atlas data, directly predict on mouse stereo data -----------------------
@@ -121,9 +123,11 @@ def plot_compare_corr_boxplot(save_path):
                   PCA[1]['spearman'].correlation, PCA[1]['pearson'].correlation,
                   RF[1]['spearman'].correlation, RF[1]['pearson'].correlation]
     }
-    data["Value"]= [abs(_i) if _i<0 else _i for _i in data["Value"]]
-    plot_boxplot_from_dic(data,legend_loc="upper right")
-def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
+    data["Value"] = [abs(_i) if _i < 0 else _i for _i in data["Value"]]
+    plot_boxplot_from_dic(data, legend_loc="upper right")
+
+
+def directly_predict_on_vae(query_adata, save_path, checkpoint_file, config):
     method = "temporalVAE"
     import torch
     torch.set_float32_matmul_precision('high')
@@ -141,7 +145,7 @@ def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
     # MyVAEModel = vae_models[config['model_params']['name']](**config['model_params'])
     config['model_params']['in_channels'] = query_adata.X.shape[1]  # the number of features
 
-    from models import vae_models
+    from model_master import vae_models
     MyVAEModel = vae_models["SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial"](**config['model_params'])
     MyVAEModel.load_state_dict(new_state_dict)
     MyVAEModel.eval()
@@ -158,8 +162,8 @@ def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
     data_x = [[x_sc[:, i], 0, 0] for i in range(x_sc.shape[1])]
 
     # predict batch size will not influence the training
-    from dataset import SupervisedVAEDataset_onlyPredict
-    from experiment import VAEXperiment
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.experiment import VAEXperiment
     data_predict = SupervisedVAEDataset_onlyPredict(predict_data=data_x, predict_batch_size=len(data_x))
 
     experiment = VAEXperiment(MyVAEModel, config['exp_params'])
@@ -175,7 +179,6 @@ def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
 
     cell_time_stereo = pd.concat([query_adata.obs, pseudoTime_directly_predict_by_pretrained_model_df], axis=1)
 
-
     color_dic = plot_violin_240223(cell_time_stereo, save_path)
     # print(color_dic)
     from utils.utils_Dandan_plot import plot_umap_240223
@@ -187,7 +190,7 @@ def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
                  'Meninges': "#EE82EE", 'Jaw and tooth': "#8B4513",
                  'Cartilage primordium': "#8E44AD", 'Epidermis': "#AD9BA5"}
     plot_umap_240223(mu_predict_by_pretrained_model, cell_time_stereo, color_dic, save_path, attr_str="celltype_update")
-    cell_time_stereo["pseudotime"]=cell_time_stereo["physical_pseudotime_by_preTrained_mouseAtlas_model"]
+    cell_time_stereo["pseudotime"] = cell_time_stereo["physical_pseudotime_by_preTrained_mouseAtlas_model"]
     print("Final corr:", calculate_real_predict_corrlation_score(cell_time_stereo["time"], cell_time_stereo["pseudotime"]))
 
     cell_time_stereo.to_csv(f'{save_path}/{method}_result_df.csv', index=True)
@@ -195,6 +198,7 @@ def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
 
     plot_psupertime_density(cell_time_stereo, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=method)
     print(f"Finish {method} train on baseline data and predict on query data.")
+
 
 # ---------------------------------------- train LR model -----------------------------------------------------
 def train_LR_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path, ):
@@ -263,12 +267,9 @@ def train_PCA_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_p
     query_result_df.to_csv(f'{save_path}/{method}_result_df.csv', index=True)
     print(f"test result save at {save_path}/{method}result_df.csv")
 
-
     plot_psupertime_density(query_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=method)
 
     print(f"Finish {method} train on baseline data and predict on query data.")
-
-
 
 
 #

@@ -1,42 +1,40 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：VAE_mouse_kFoldOn_oneDataset.py
+@File    ：VAE_mouse_kFoldOn_mouseAtlas.py
 @IDE     ：PyCharm 
 @Author  ：awa121
 @Date    ：2023/7/31 11:37
 
 2023-07-31 11:38:33
 train on mouse_embryonic_development data,
-test on Dr.huang data for_yijun_YZ
 """
 
 import os
 import sys
 
-# sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan")
-
-# from utils.GPU_manager_pytorch import auto_select_gpu_and_cpu
-
 import torch
 
 torch.set_float32_matmul_precision('high')
 import pyro
-
 import logging
 from utils.logging_system import LogHelper
 
 smoke_test = ('CI' in os.environ)  # ignore; used to check code integrity in the Pyro repo
 assert pyro.__version__.startswith('1.8.5')
 pyro.set_rng_seed(1)
-from utils.utils_DandanProject import *
+from utils.utils_DandanProject import str2bool, auto_select_gpu_and_cpu, preprocessData_and_dropout_some_donor_or_gene
+from utils.utils_DandanProject import task_kFoldTest, onlyTrain_model, identify_timeCorGene
 from collections import Counter
-import os
+
 import yaml
 import argparse
-from utils.utils_Dandan_plot import *
+from utils.utils_Dandan_plot import Embryodonor_resort_key
+import numpy as np
+import os
+
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
 
 
 def main():
@@ -45,13 +43,11 @@ def main():
                         default="test",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
-                        # default="/mouse_embryo_stereo/preprocess_Mouse_embryo_all_stage_minGene100/",
                         default="/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/",
-                        # default="/mouse_embryo_stereo/preprocess_Mouse_embryo_all_stage_minGene50_ofBrain/",
                         help="sc file folder path.")
     # ------------------ preprocess sc data setting ------------------
     parser.add_argument('--min_gene_num', type=int,
-                        default="50",
+                        default="100",
                         help="filter cell with min gene num, default 50")
     parser.add_argument('--min_cell_num', type=int,
                         default="50",
@@ -66,15 +62,16 @@ def main():
     parser.add_argument('--time_standard_type', type=str,
                         default="embryoneg5to5",
                         help="y_time_nor_train standard type may cause different latent space: log2, 0to1, neg1to1, labeldic,sigmoid,logit")
-    # supervise_vae            supervise_vae_regressionclfdecoder
     parser.add_argument('--vae_param_file', type=str,
                         default="supervise_vae_regressionclfdecoder_mouse_stereo",
-                        # default="supervise_vae_regressionclfdecoder",
                         help="vae model parameters file.")
     # ------------------ task setting ------------------
-    parser.add_argument('--kfold_test', action="store_true", help="(Optional) make the task k fold test on dataset.", default=False)
-    parser.add_argument('--train_whole_model', action="store_true", help="(Optional) use all data to train a model.", default=False)
-    parser.add_argument('--identify_time_cor_gene', action="store_true", help="(Optional) identify time-cor gene by model trained by all.", default=False)
+    parser.add_argument('--kfold_test', action="store_true",
+                        help="(Optional) make the task k fold test on dataset.", default=True)
+    parser.add_argument('--train_whole_model', action="store_true",
+                        help="(Optional) use all data to train a model.", default=True)
+    parser.add_argument('--identify_time_cor_gene', action="store_true",
+                        help="(Optional) identify time-cor gene by model trained by all.", default=False)
 
     # Todo, useless, wait to delete "KNN_smooth_type"
     parser.add_argument('--KNN_smooth_type', type=str,
@@ -85,16 +82,12 @@ def main():
                         help="use checkpoint file as pre-trained model or not.")
     args = parser.parse_args()
 
-    data_golbal_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/"
-    result_save_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/" + args.result_save_path + "/"
+    data_golbal_path = "data/"
+    result_save_path = "results/" + args.result_save_path + "/"
     data_path = args.file_path + "/"
-    yaml_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/vae_model_configs/"
+    yaml_path = "vae_model_configs/"
     if args.use_checkpoint_bool:
-        checkpoint_file = '/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/' \
-                          '231020_plotLatentSpace_mouse_data_minGene50_hvg1000CalByEachOrgan_timeCorGene/' \
-                          'mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/' \
-                          'supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_epoch200_minGeneNum100/' \
-                          'wholeData/SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial/version_0/checkpoints/last.ckpt'
+        checkpoint_file = 'checkpoint_files/mouse_atlas.ckpt'
     else:
         checkpoint_file = None
     # --------------------------------------- import vae model parameters from yaml file----------------------------------------------
@@ -103,9 +96,8 @@ def main():
             config = yaml.safe_load(file)
         except yaml.YAMLError as exc:
             print(exc)
-    # ---------------------------------------set logger and parameters, creat result save path and folder----------------------------------------------
+    # --------------------------set logger and parameters, creat result save path and folder----------------------------------
     latent_dim = config['model_params']['latent_dim']
-    KNN_smooth_type = args.KNN_smooth_type
 
     time_standard_type = args.time_standard_type
     sc_data_file_csv = data_path + "/data_count_hvg.csv"
@@ -128,7 +120,7 @@ def main():
     # ------------ Preprocess data, with hvg gene from preprocess_data_mouse_embryonic_development.py------------------------
     sc_expression_df, cell_time = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path, sc_data_file_csv, cell_info_file_csv,
                                                                                 min_cell_num=args.min_cell_num,
-                                                                                min_gene_num=args.min_gene_num)  # 2023-10-02 19:48:20 min_gene_num change to 100
+                                                                                min_gene_num=args.min_gene_num)
 
     special_path_str = ""
     # ---------------------------------------- set donor list and dictionary -----------------------------------------------------
@@ -143,8 +135,9 @@ def main():
 
     # # # ----------------------------------TASK 1: K-FOLD TEST--------------------------------------
     if args.kfold_test:
-        predict_donors_dic, label_dic = task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic, special_path_str, cell_time, time_standard_type,
-                                                       config, args.train_epoch_num, _logger,checkpoint_file=checkpoint_file,batch_size=args.batch_size)
+        predict_donors_dic, label_dic = task_kFoldTest(donor_list, sc_expression_df,
+                                                       donor_dic, batch_dic, special_path_str, cell_time, time_standard_type,
+                                                       config, args.train_epoch_num, _logger, checkpoint_file=checkpoint_file, batch_size=args.batch_size)
 
     _logger.info("Finish plot image and fold-test.")
 
@@ -157,7 +150,8 @@ def main():
             cell_time,
             time_standard_type, config, args,
             device=device, plot_latentSpaceUmap=False, time_saved_asFloat=True,
-            batch_size=int(args.batch_size),checkpoint_file=checkpoint_file)  # 2023-10-24 17:44:31 batch as 10,000 due to overfit, batch size as 100,000 may be have different result
+            batch_size=int(args.batch_size),
+            checkpoint_file=checkpoint_file)  # 2023-10-24 17:44:31 batch as 10,000 due to overfit, batch size as 100,000 may be have different result
         import anndata as ad
         save_path = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}/"
         plt_image_adata = ad.AnnData(X=total_result["mu"].cpu().numpy())
@@ -173,53 +167,6 @@ def main():
                                  special_path_str, config, parallel_bool=False)
 
     _logger.info("Finish all.")
-
-
-# def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
-#                    special_path_str, cell_time, time_standard_type,
-#                    config, args, _logger,checkpoint_file=None):
-#     _logger.info(f"start task: k-fold test with {donor_list}.")
-#     predict_donors_dic = dict()
-#
-#     for fold in range(len(donor_list)):
-#         predict_donor_dic, test_clf_result, label_dic = one_fold_test(fold, donor_list, sc_expression_df, donor_dic,
-#                                                                       batch_dic,
-#                                                                       special_path_str, cell_time, time_standard_type,
-#                                                                       config, args.train_epoch_num,
-#                                                                       plot_trainingLossLine=False,
-#                                                                       plot_latentSpaceUmap=False,
-#                                                                       time_saved_asFloat=True, batch_size=int(args.batch_size),
-#                                                                       checkpoint_file=checkpoint_file)
-#         predict_donors_dic.update(predict_donor_dic)
-#     predict_donors_df = pd.DataFrame(columns=["pseudotime"])
-#     for fold in range(len(donor_list)):
-#         predict_donors_df = pd.concat([predict_donors_df, predict_donors_dic[donor_list[fold]]])
-#     predict_donors_df['predicted_time'] = predict_donors_df['pseudotime'].apply(denormalize, args=(min(label_dic.keys()) / 100, max(label_dic.keys()) / 100,
-#                                                                                                    min(label_dic.values()), max(label_dic.values())))
-#     cell_time = pd.concat([cell_time, predict_donors_df], axis=1)
-#     cell_time.to_csv(f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}/k_fold_test_result.csv")
-#
-#
-#     plot_on_each_test_donor_violin(predict_donors_dic.copy(), cell_time.copy(), special_path_str,
-#                                    model_name=config['model_params']['name'], time_standard_type=time_standard_type)
-#     plot_on_each_test_donor_continueTime_windowTime( donor_list, predict_donors_dic.copy(), "",
-#                                                     time_standard_type, label_orginalAsKey_transAsValue_dic=label_dic,
-#                                                     model_name=config['model_params']['name'], cell_time=cell_time.copy(),
-#                                                     special_path_str=special_path_str,
-#                                                     plot_subtype_str="celltype_update", special_str="_celltype_update",
-#                                                     plot_on_each_cell_type=False)
-#     plot_on_each_test_donor_continueTime( donor_list, predict_donors_dic.copy(), "",
-#                                          time_standard_type, label_orginalAsKey_transAsValue_dic=label_dic,
-#                                          model_name=config['model_params']['name'], cell_time=cell_time.copy(),
-#                                          special_path_str=special_path_str,
-#                                          plot_subtype_str="celltype_update", special_str="_celltype_update",
-#                                          plot_on_each_cell_type=False)
-#
-#     _logger.info("Finish plot image and fold-test.")
-#     return predict_donors_dic, label_dic
-
-
-
 
 
 if __name__ == '__main__':

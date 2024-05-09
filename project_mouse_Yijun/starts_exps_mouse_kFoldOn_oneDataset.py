@@ -54,7 +54,7 @@ def main():
     min_gene_num_list = [100]
     epoch_num = 100
     batch_size = 100000
-    python_file = "project_mouse_Yijun/VAE_mouse_kFoldOn_oneDataset.py"
+    python_file = "project_mouse_Yijun/VAE_mouse_kFoldOn_mouseAtlas.py"
     time_type_list_re = ["embryoneg5to5"]
     result_save_path = f"240328_kFold_mouse_atlas_data_onlyTestTime"
     use_checkpoint_bool = "False"  # 2024-03-21 14:12:55 take care to use the pre-train model
