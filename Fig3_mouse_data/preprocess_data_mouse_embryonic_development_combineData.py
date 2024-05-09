@@ -6,8 +6,8 @@
 @Author  ：awa121
 @Date    ：2023/8/25 10:12
 
-*** References is Qiu, C., Martin, B.K., Welsh, I.C. et al. A single-cell time-lapse of mouse prenatal development from gastrula to birth. Nature 626, 1084–1093 (2024).
-*** Data source is https://shendure-web.gs.washington.edu/content/members/cxqiu/public/backup/jax/download/adata/
+*** References: Qiu, C., Martin, B.K., Welsh, I.C. et al. A single-cell time-lapse of mouse prenatal development from gastrula to birth. Nature 626, 1084–1093 (2024).
+*** Data source: https://shendure-web.gs.washington.edu/content/members/cxqiu/public/backup/jax/download/adata/
     1. directly download:
         adata_JAX_dataset_1.h5ad	2023-04-02 13:15	11G
         adata_JAX_dataset_2.h5ad	2023-04-02 13:15	8.9G
@@ -18,8 +18,7 @@
     2. combine four .h5ad files, remove cells with "P0" day annotation.
     3. random select 1/10 cells to calculate hvgs.
     4. filter cells with less than 100 gene expressed and genes with less than 50 cells expressed.
-    5. finally save at "data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/"
-        "data_count_hvg.csv", "cell_with_time.csv", "gene_info.csv"
+    5. finally save at "data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/": "data_count_hvg.csv", "cell_with_time.csv", "gene_info.csv"
 """
 import os
 import scanpy as sc

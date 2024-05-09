@@ -10,10 +10,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="fig2">
+    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="preprocess mouse atlas .py add more annotation.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/preprocess_data_mouse_embryonic_development_combineData.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/preprocess_data_mouse_embryonic_development_combineData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOn_oneDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_oneDataset.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -834,7 +833,7 @@
       <workItem from="1714975142283" duration="1029000" />
       <workItem from="1715008759508" duration="6345000" />
       <workItem from="1715093355362" duration="2532000" />
-      <workItem from="1715130145050" duration="23618000" />
+      <workItem from="1715130145050" duration="23745000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -884,7 +883,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715221433087</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="preprocess mouse atlas .py add more annotation.">
+      <option name="closed" value="true" />
+      <created>1715225862377</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1715225862377</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -905,7 +912,8 @@
     <MESSAGE value="test" />
     <MESSAGE value="test2" />
     <MESSAGE value="fig2" />
-    <option name="LAST_COMMIT_MESSAGE" value="fig2" />
+    <MESSAGE value="preprocess mouse atlas .py add more annotation." />
+    <option name="LAST_COMMIT_MESSAGE" value="preprocess mouse atlas .py add more annotation." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
