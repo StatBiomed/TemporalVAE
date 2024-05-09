@@ -10,226 +10,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/model_master/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_LR_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_LR_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_pca_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_pca_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_psupertime_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_psupertime_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_randomForest_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_randomForest_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/kFold_check_corr_addLR.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/kFold_check_corr_addLR.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/LICENSE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/Variational Autoencoder.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/BetaTCVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/BetaVAE_B_20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/BetaVAE_B_35.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/BetaVAE_H_20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/CategoricalVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/ConditionalVAE_20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/DFCVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/DIPVAE_83.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/IWAE_19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/InfoVAE_31.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/InfoVAE_7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/JointVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/LogCoshVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/MIWAE_29.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/MSSIMVAE_29.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/SWAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/Vanilla VAE_25.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/WAE_IMQ_15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/WAE_RBF_18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_BetaTCVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_BetaVAE_B_20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_BetaVAE_B_35.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_BetaVAE_H_20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_CategoricalVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_ConditionalVAE_20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_DFCVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_DIPVAE_83.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_IWAE_19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_InfoVAE_31.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_JointVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_LogCoshVAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_MIWAE_29.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_MSSIMVAE_29.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_SWAE_49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_VQVAE_29.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_Vanilla VAE_25.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_WAE_IMQ_15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/assets/recons_WAE_RBF_19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/bbvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/betatc_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/bhvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/cat_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/cvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/dfc_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/dip_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/factorvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/gammavae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/hvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/infovae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/iwae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/joint_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/logcosh_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/lvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/miwae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/mssim_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/swae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/vampvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/vq_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/wae_mmd_imq.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/configs/wae_mmd_rbf.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/experiment.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/experiment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/experiment_RNA_velocity.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/experiment_RNA_velocity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/experiment_adversarial.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/experiment_adversarial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/experiment_fineTune.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/experiment_fineTune.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/experiment_fineTune_u_s_focusDecoder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/experiment_fineTune_u_s_focusEncoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/experiment_fineTune_u_s_focusEncoder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/RNA_velocity_u_s_Ft_on_s.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/RNA_velocity_u_s_Ft_on_s.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/base.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/beta_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/betatc_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/cat_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/cvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/dfcvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/dip_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/fvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/gamma_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/hvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/info_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/iwae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/joint_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/logcosh_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/lvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/miwae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/mssim_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_discreteLabel_Joy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_discreteLabel_Joy_constrastive_adversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_noClfDecoder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_regressionClfDecoder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_regressionClfDecoder_adversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_regressionClfDecoder_mouse_batchDecoder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_regressionClfDecoder_mouse_noAdversarial.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/supervise_vanilla_vae_regressionClfDecoder_mouse_noAdversarial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_regressionClfDecoder_mouse_noAdversarial_u_s_focusDecoder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_regressionClfDecoder_mouse_noAdversarial_u_s_focusEncoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/supervise_vanilla_vae_regressionClfDecoder_mouse_noAdversarial_u_s_focusEncoder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_regressionClfDecoder_mouse_noAdversarial_u_s_focusEncoder_moreFeatures.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_regressionClfDecoder_of_subLatentSpace.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_regressionClfDecoder_with_removeBatchEffectDecoder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/supervise_vanilla_vae_with_removeBatchEffectDecoder.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/swae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/twostage_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/types_.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/types_.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/vampvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/vanilla_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/vq_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/models/wae_mmd.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/run.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/bvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_betatcvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_cat_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_dfc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_dipvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_fvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_gvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_hvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_iwae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_joint_Vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_logcosh.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_lvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_miwae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_mssimvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_swae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_vq_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/test_wae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/text_cvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/tests/text_vamp.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PyTorch-VAE-master/utils_VAE_master.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_data_mouse_embryonic_development_combineData.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocess_data/preprocess_data_mouse_embryonic_development_combineData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOnStereoAndAtlas_withOrWithoutAdversarial.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOnStereoAndAtlas_withOrWithoutAdversarial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOnStereoAndAtlas_withOrWithoutAdversarial_lessCellForFastCheck.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOnStereoAndAtlas_withOrWithoutAdversarial_lessCellForFastCheck.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOnStereo_trainOnAtlasAndSubStereo_withOrWithoutAdversarial.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOnStereo_trainOnAtlasAndSubStereo_withOrWithoutAdversarial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOn_oneDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOn_oneDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_plotLatentSpace_oneDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_plotLatentSpace_oneDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_plotLatentSpace_trainOnStereoAndAtlas_withOrWithoutAdversarial.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_plotLatentSpace_trainOnStereoAndAtlas_withOrWithoutAdversarial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/LR_PCA_RF_directlyPredictOn_mouseStereo.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/LR_PCA_RF_directlyPredictOn_mouseStereo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/randomForest_atlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/randomForest_atlas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/VAE_human_directPredict.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/VAE_human_directPredict.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/compare_manyResult_df.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/compare_manyResult_df.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/linearRegression_xiang2019.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/linearRegression_xiang2019.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/randomForest_xiang2019.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/randomForest_xiang2019.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_manySetting240223/VAE_mouse_noTimeLabel_directPredictOnStereo.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_manySetting240223/VAE_mouse_noTimeLabel_directPredictOnStereo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_manySetting240223/VAE_mouse_withTimeLabel_fineTune.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_manySetting240223/VAE_mouse_withTimeLabel_fineTune.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/regress_onlyBy_cellTotalCount_cellExpressNum.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/regress_onlyBy_cellTotalCount_cellExpressNum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo_adversarial_mulitDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo_adversarial_mulitDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils_DandanProject.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_DandanProject.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_discretelabel_organ_Joy.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_discretelabel_organ_Joy.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_discretelabel_organ_Joy_adversarial.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_discretelabel_organ_Joy_adversarial.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_noclfdecoder.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_noclfdecoder.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_01.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_01.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_02.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_02.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_03.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_03.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_04.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_04.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_05.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_05.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_500epoch.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_500epoch.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_clfWeight0.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_clfWeight0.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_gamma2.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_gamma2.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_gamma5.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_gamma5.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_onlyAtlasLoss.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_onlyAtlasLoss.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_test.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_07.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_07.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_08.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_08.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_09.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_09.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_10.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_10.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_11.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_11.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_12.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_12.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_13.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_13.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_14.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_14.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_15.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_15.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_240405_humanEmbryo.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_240405_humanEmbryo.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_240405_humanEmbryo_epoch200.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_240405_humanEmbryo_epoch200.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial0121212_240407_humanEmbryo.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_240407_humanEmbryo.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_012.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_012.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_10lowBatchWeight.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_10lowBatchWeight.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0911.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0911.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0912.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0912.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091202_lessCell_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091202_lessCell_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091203_lessCell_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091203_lessCell_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0912_lessCell_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0912_lessCell_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0913_lessCell_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0913_lessCell_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091402_lessCell_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091402_lessCell_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0914_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0914_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0914_lessCell_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0914_lessCell_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091602_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091602_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091603_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091603_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0916_dropoutLayer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0916_dropoutLayer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_012_100lowBatchWeight.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_012_100lowBatchWeight.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_adversarial_0816_012_version0911.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_012_version0911.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_batchDecoder_240405_humanEmbryo.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_batchDecoder_240405_humanEmbryo.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_mouse_atlas_finetune.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_atlas_finetune.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_mouse_atlas_finetune_u_s_focusDecoder.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_atlas_finetune_u_s_focusDecoder.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_mouse_atlas_finetune_u_s_focusEncoder_moreFeatures.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_atlas_finetune_u_s_focusEncoder_moreFeatures.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_mouse_stereo.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_stereo.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_mouse_stereo_humanEmbryo240401.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_stereo_humanEmbryo240401.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_mouse_stereo_latentDim500.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_stereo_latentDim500.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_of_sublatentspace.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_of_sublatentspace.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="fig2" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -1049,7 +830,7 @@
       <workItem from="1714975142283" duration="1029000" />
       <workItem from="1715008759508" duration="6345000" />
       <workItem from="1715093355362" duration="2532000" />
-      <workItem from="1715130145050" duration="19485000" />
+      <workItem from="1715130145050" duration="20390000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -1083,7 +864,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715141729253</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fig2">
+      <option name="closed" value="true" />
+      <created>1715183825275</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1715183825275</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1103,7 +892,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test" />
     <MESSAGE value="test2" />
-    <option name="LAST_COMMIT_MESSAGE" value="test2" />
+    <MESSAGE value="fig2" />
+    <option name="LAST_COMMIT_MESSAGE" value="fig2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
