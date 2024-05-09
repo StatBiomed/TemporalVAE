@@ -3250,7 +3250,6 @@ def predict_newData_preprocess_df(gene_dic, adata_new, min_gene_num, mouse_atlas
     # sc_expression_df = pd.DataFrame(data=denseM, columns=sc_expression_df.columns, index=sc_expression_df.index)
     adata_new_normalized = adata_concated[new_test_cell_list].copy()
 
-
     sc_expression_test_df = pd.DataFrame(data=adata_new_normalized.layers["X_normalized"],
                                          columns=adata_new_normalized.var_names, index=list(adata_new_normalized.obs_names))
     loss_gene_shortName_list = list(set(mouse_atlas_adata.obs_names) - set(adata_new_normalized.var_names))
@@ -3330,16 +3329,29 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
             predict_donors_dic.update(predict_donor_dic)
     else:
         for fold in range(len(donor_list)):
-            predict_donor_dic, test_clf_result, label_dic, test_mu_result = one_fold_test(fold, donor_list,
-                                                                                          sc_expression_df,
-                                                                                          donor_dic, batch_dic,
-                                                                                          special_path_str, cell_time,
-                                                                                          time_standard_type,
-                                                                                          config, train_epoch_num,
-                                                                                          plot_trainingLossLine=True,
-                                                                                          plot_latentSpaceUmap=False,
-                                                                                          time_saved_asFloat=True, batch_size=batch_size, donor_str=donor_str,
-                                                                                          checkpoint_file=checkpoint_file, recall_predicted_mu=recall_predicted_mu)
+            if recall_predicted_mu:
+                predict_donor_dic, test_clf_result, label_dic, test_mu_result = one_fold_test(fold, donor_list,
+                                                                                              sc_expression_df,
+                                                                                              donor_dic, batch_dic,
+                                                                                              special_path_str, cell_time,
+                                                                                              time_standard_type,
+                                                                                              config, train_epoch_num,
+                                                                                              plot_trainingLossLine=True,
+                                                                                              plot_latentSpaceUmap=False,
+                                                                                              time_saved_asFloat=True, batch_size=batch_size, donor_str=donor_str,
+                                                                                              checkpoint_file=checkpoint_file, recall_predicted_mu=recall_predicted_mu)
+
+            else:
+                predict_donor_dic, test_clf_result, label_dic = one_fold_test(fold, donor_list,
+                                                                              sc_expression_df,
+                                                                              donor_dic, batch_dic,
+                                                                              special_path_str, cell_time,
+                                                                              time_standard_type,
+                                                                              config, train_epoch_num,
+                                                                              plot_trainingLossLine=True,
+                                                                              plot_latentSpaceUmap=False,
+                                                                              time_saved_asFloat=True, batch_size=batch_size, donor_str=donor_str,
+                                                                              checkpoint_file=checkpoint_file, recall_predicted_mu=recall_predicted_mu)
             predict_donors_dic.update(predict_donor_dic)
 
     predict_donors_df = pd.DataFrame(columns=["pseudotime"])
@@ -3443,4 +3455,3 @@ def read_rds_file(file_name):
     with localconverter(ro.default_converter + pandas2ri.converter):
         df = pandas2ri.rpy2py(df_rds)
     return df
-

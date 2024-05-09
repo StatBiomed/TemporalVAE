@@ -13,6 +13,10 @@ train on mouse_embryonic_development data,
 import os
 import sys
 
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+sys.path.append(os.getcwd())
+
 import torch
 
 torch.set_float32_matmul_precision('high')
@@ -31,10 +35,6 @@ import yaml
 import argparse
 from utils.utils_Dandan_plot import Embryodonor_resort_key
 import numpy as np
-import os
-
-if os.getcwd().split("/")[-1] != "TemporalVAE":
-    os.chdir("..")
 
 
 def main():

@@ -6,18 +6,13 @@
 @Author  ：awa121
 @Date    ：2024/3/22 10:21 
 
-cd /mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/
-source ~/.bashrc
-nohup python -u project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py >> logs/for_figure3_compareWithBaseLine_LR_atlas.log 2>&1 &
-
 """
-
-import sys
 import os
-print(os.getcwd())
-# sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan")
+import sys
+
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+sys.path.append(os.getcwd())
 
 import anndata as ad
 from collections import Counter
@@ -29,11 +24,11 @@ from utils.logging_system import LogHelper
 from sklearn.linear_model import LinearRegression
 def main():
     method = "linearRegression"
-    save_path=f"/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240328_kFold_mouse_atlas_data_onlyTestTime/{method}_atlas/"
+    save_path=f"results/240509_kFold_mouse_atlas_data_onlyTestTime/{method}_atlas/"
     # save_path=f"/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240322_forFig3_compareWithBaseLine/{method}_atlas/"
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-    data_golbal_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/"
+    data_golbal_path = "data/"
     data_path = "/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/"
     sc_data_file_csv = f"{data_path}/data_count_hvg.csv"
     cell_info_file_csv = f"{data_path}/cell_with_time.csv"

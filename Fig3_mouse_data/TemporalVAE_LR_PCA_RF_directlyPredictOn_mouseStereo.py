@@ -9,10 +9,12 @@
 
 """
 
-import sys
 import os
+import sys
 
-print(os.getcwd())
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+sys.path.append(os.getcwd())
 
 import anndata as ad
 import pandas as pd
@@ -24,9 +26,6 @@ import logging
 from utils.logging_system import LogHelper
 import yaml
 from utils.utils_Dandan_plot import plot_violin_240223
-
-if os.getcwd().split("/")[-1] != "TemporalVAE":
-    os.chdir("..")
 
 
 def main():
@@ -47,12 +46,6 @@ def main():
     _logger.info(f"baseline dataset: {data_golbal_path}/{baseline_data_path}, \n and query dataset: {data_golbal_path}/{query_data_path}")
     with open(config_file, 'r') as file:
         config = yaml.safe_load(file)
-    # ---------------------------------------set logger and parameters, creat result save path and folder----------------------------------------------
-    logger_file = f'{save_path}/run.log'
-    LogHelper.setup(log_path=logger_file, level='INFO')
-    _logger = logging.getLogger(__name__)
-    _logger.info("Finished setting up the logger at: {}.".format(logger_file))
-    _logger.info(f"baseline dataset: {data_golbal_path}/{baseline_data_path}, \n and query dataset: {data_golbal_path}/{query_data_path}")
     # --------------------------------preprocess on query data-----------------------------------------
     gene_dic = geneId_geneName_dic()
     try:
@@ -179,10 +172,10 @@ def directly_predict_on_vae(query_adata, save_path, checkpoint_file, config):
 
     cell_time_stereo = pd.concat([query_adata.obs, pseudoTime_directly_predict_by_pretrained_model_df], axis=1)
 
-    color_dic = plot_violin_240223(cell_time_stereo, save_path)
+    color_dic = plot_violin_240223(cell_time_stereo, save_path, real_attr="time")
     # print(color_dic)
     from utils.utils_Dandan_plot import plot_umap_240223
-    plot_umap_240223(mu_predict_by_pretrained_model, cell_time_stereo, color_dic, save_path, attr_str="day")
+    plot_umap_240223(mu_predict_by_pretrained_model, cell_time_stereo, color_dic, save_path, attr_str="time")
 
     color_dic = {'Brain': "#FA8072", 'Connective tissue': "#32CD32",
                  'Muscle': "#4169E1", 'Cavity': "#FFA500",
@@ -293,5 +286,4 @@ def random_forest_regressor(train_x, train_y):
 
 
 if __name__ == '__main__':
-    method_list = ["linearRegression", "PCA", "RF"]
     main()

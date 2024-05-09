@@ -49,7 +49,6 @@ def Embryodonor_resort_key(item):
     return (0, 0)
 
 
-
 def plot_training_loss(latent_dim, losses, golbal_path, file_path, args=None):
     """For GPLVM model, plot training loss"""
     plt.plot(losses)
@@ -222,7 +221,7 @@ def plot_on_each_test_donor_violin(predict_donors_dic, cell_time, special_path_s
     plt.close()
 
 
-def plot_on_each_test_donor_violin_fromDF(cell_time_df, save_path, physical_str, x_str="time", special_file_name_str="",cmap_color="viridis"):
+def plot_on_each_test_donor_violin_fromDF(cell_time_df, save_path, physical_str, x_str="time", special_file_name_str="", cmap_color="viridis"):
     # from utils_Dandan_plot import calculate_real_predict_corrlation_score
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -773,7 +772,7 @@ def plot_training_loss_for_tags(tb_logger, plot_tag_list, special_str="", title=
         plt.plot(tag_values_array[:, 0], tag_values_array[:, 1], marker='.', label=_tag)
         max_epoch = max(max_epoch, max(tag_values_array[:, 0]))
     # Add vertical lines every 'interval' epochs
-    for epoch in range(0, int(max_epoch)+1, interval):
+    for epoch in range(0, int(max_epoch) + 1, interval):
         plt.axvline(x=epoch, color='r', linestyle='--', linewidth=1, label=f'Epoch {epoch}' if epoch == 0 else "")
 
     plt.legend()
@@ -1383,7 +1382,7 @@ def draw_venn(lists_dict):
 
 
 def plt_umap_byScanpy(adata, attr_list, save_path, mode=None, special_file_name_str="",
-                      figure_size=(15, 6), show_in_row=True, color_map=None, palette_dic=None,n_neighbors=10, n_pcs=40):
+                      figure_size=(15, 6), show_in_row=True, color_map=None, palette_dic=None, n_neighbors=10, n_pcs=40):
     import scanpy as sc
     # attr = attr + list({"physical_time", "physical_pseudotime_by_preTrained_mouseAtlas_model", "physical_pseudotime_by_finetune_model"} & set(adata.obs.columns))
     # attr = ["day", "physical_pseudotime_by_preTrained_mouseAtlas_model", "physical_pseudotime_by_finetune_model", "cell_type", "s_or_mrna", "sample"]
@@ -1447,7 +1446,7 @@ def plot_psupertime_density(test_results, save_path, label_key="time", psupertim
     print(f"figure save at {save_path}/{method}_labelsOverPsupertime.png")
 
 
-def plot_violin_240223(cell_info_df, save_path, real_attr="time", pseudo_attr="physical_pseudotime_by_preTrained_mouseAtlas_model", special_file_name="",color_map="viridis"):
+def plot_violin_240223(cell_info_df, save_path, real_attr="time", pseudo_attr="physical_pseudotime_by_preTrained_mouseAtlas_model", special_file_name="", color_map="viridis"):
     from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -1482,7 +1481,7 @@ def plot_violin_240223(cell_info_df, save_path, real_attr="time", pseudo_attr="p
     return color_dict
 
 
-def plot_umap_240223(mu_predict_by_pretrained_model, cell_time_stereo, color_dic=None, save_path="", attr_str="time",color_map=None):
+def plot_umap_240223(mu_predict_by_pretrained_model, cell_time_stereo, color_dic=None, save_path="", attr_str="time", color_map=None):
     import anndata as ad
     import scanpy as sc
     sc.settings.figdir = save_path
@@ -1497,7 +1496,7 @@ def plot_umap_240223(mu_predict_by_pretrained_model, cell_time_stereo, color_dic
     #     color_dic = {f"E{str(key)}": value for key, value in color_dic.items()}
     with plt.rc_context({'figure.figsize': (5, 4)}):
         try:
-            sc.pl.umap(adata, color=attr_str, palette=color_dic, show=False, legend_fontsize=5.5, s=10, legend_loc='right margin',color_map=color_map)
+            sc.pl.umap(adata, color=attr_str, palette=color_dic, show=False, legend_fontsize=5.5, s=10, legend_loc='right margin', color_map=color_map)
         except:
             sc.pl.umap(adata, color=attr_str, show=False, legend_fontsize=5.5, s=10, legend_loc='right margin')
     plt.savefig(f"{save_path}/latentSpace_umap_byScanpy_{attr_str}.png", dpi=300, bbox_inches='tight')
@@ -1505,12 +1504,12 @@ def plot_umap_240223(mu_predict_by_pretrained_model, cell_time_stereo, color_dic
     plt.close()
     print(f"save at {save_path}")
 
-def plot_boxplot_from_dic(data,legend_loc="lower right"):
+
+def plot_boxplot_from_dic(data, legend_loc="lower right"):
     # ----------------------------------------------------------------------------------------------------------
     import pandas as pd
     import matplotlib.pyplot as plt
     import seaborn as sns
-
 
     df = pd.DataFrame(data)
 
@@ -1519,7 +1518,7 @@ def plot_boxplot_from_dic(data,legend_loc="lower right"):
 
     # 创建条形图
     plt.figure(figsize=(8, 6))
-    barplot = sns.barplot(x='Method', y='Value', hue='Correlation Type', data=df, palette=["#B0E0E6","#D8BFD8"])
+    barplot = sns.barplot(x='Method', y='Value', hue='Correlation Type', data=df, palette=["#B0E0E6", "#D8BFD8"])
 
     # 添加标题和坐标轴标签
     plt.title('Method Performance: Spearman vs Pearson Correlation', fontsize=16)
@@ -1527,7 +1526,7 @@ def plot_boxplot_from_dic(data,legend_loc="lower right"):
     plt.xlabel('Method', fontsize=14)
 
     # 调整图例
-    plt.legend(title='Correlation Type', title_fontsize='13', fontsize='12',loc=legend_loc)
+    plt.legend(title='Correlation Type', title_fontsize='13', fontsize='12', loc=legend_loc)
 
     # 在每个条形上显示数值
     for p in barplot.patches:

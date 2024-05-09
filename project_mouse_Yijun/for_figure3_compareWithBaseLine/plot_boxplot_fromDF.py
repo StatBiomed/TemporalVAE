@@ -36,29 +36,6 @@ def main():
         'Correlation Type': ['Spearman', 'Pearson', 'Spearman', 'Pearson', 'Spearman', 'Pearson', 'Spearman', 'Pearson'],
         'Value': [0.89082, 0.91370, 0.78595, 0.79398, 0.25161, 0.14779, 0.07168, 0.36478]
     }
-    # -----------------------------------------------------------------------------------------------------------------------
-
-    # ---------- pretrain a model (TemporalVAE, LR, PCA, RF) on mouse atlas data, directly predict on mouse stereo data -----------------------
-    file_name = "nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240225_Figure4_manySetting/noTimeLabel_directPredictOnStereo/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_externalDataminGene50_minGeneNum50"
-    VAE="Spearman correlation=0.67368, p-value=0.00000; Pearson correlation=0.73412, p-value=0.00000; Kendall correlation=0.52958, p-value=0.00000; R-squared=0.11931."
-
-    file_name = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240329_Figure3_LR_PCA_RF_directlyPredictOn_mouseStereo/linearRegression_result_df.csv"
-    data_pd = pd.read_csv(file_name)
-    LR = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"])
-
-    file_name = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240329_Figure3_LR_PCA_RF_directlyPredictOn_mouseStereo/PCA_result_df.csv"
-    data_pd = pd.read_csv(file_name)
-    PCA = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"])
-
-    file_name = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240329_Figure3_LR_PCA_RF_directlyPredictOn_mouseStereo/randomForest_result_df.csv"
-    data_pd = pd.read_csv(file_name)
-    RF = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"])
-    data = {
-        'Method': ['TemporalVAE', 'TemporalVAE', 'LR', 'LR', 'PCA', 'PCA', "RF", "RF"],
-        'Correlation Type': ['Spearman', 'Pearson', 'Spearman', 'Pearson', 'Spearman', 'Pearson', 'Spearman', 'Pearson'],
-        'Value': [0.67368, 0.73412, 0.61865, 0.63367, 0.04529, 0.02326, 0.05945, 0.05404]
-    }
-    # -----------------------------------------------------------------------------------------------------------------------
 
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -105,28 +82,5 @@ def main():
 
     return
 
-
-# file_name="/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_dim50_timeembryoneg5to5_epoch100_dropDonorno_mouseEmbryonicDevelopment_embryoneg5to5/SuperviseVanillaVAE_regressionClfDecoder_plot_on_all_test_donor_timeembryoneg5to5_celltype_update_testCLF.json"
-# cell_time_info_file = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/" \
-#                       "mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/cell_with_time.csv"
-# with open(file_name, "r") as json_file:
-#     data_list = []
-#     for line in json_file:
-#         json_obj = json.loads(line)
-#         data_list.append(json_obj)
-# # get donor list from json file
-# data_dic = data_list[0]
-# donor_list = list(data_dic.keys())
-# donor_list = list(set([i.replace("_pseudotime", "").replace("_cellid", "") for i in donor_list]))
-# cell_time_atlas_pd = pd.read_csv(cell_time_info_file, sep="\t", index_col=0)
-# donor_atlas_df = pd.DataFrame(columns=["pseudotime"])
-# for _donor in donor_list:
-#     _temp_df = pd.DataFrame(dict(pseudotime=data_dic[_donor + "_pseudotime"]),index=data_dic[_donor + "_cellid"])
-#     donor_atlas_df = pd.concat([donor_atlas_df, _temp_df], axis=0)
-#
-# donor_atlas_df['predicted_time'] = donor_atlas_df['pseudotime'].apply(denormalize, args=(8.5, 18.75, -5, 5))
-# cell_time_atlas_pd=pd.concat([cell_time_atlas_pd,donor_atlas_df],axis=1)
-# cell_time_atlas_pd.to_csv(
-#     "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_dim50_timeembryoneg5to5_epoch100_dropDonorno_mouseEmbryonicDevelopment_embryoneg5to5/result_df.csv")
 if __name__ == '__main__':
     main()

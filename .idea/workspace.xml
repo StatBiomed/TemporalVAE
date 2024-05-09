@@ -10,7 +10,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="figure3 code" />
+    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="figure3 code">
+      <change afterPath="$PROJECT_DIR$/.idea/jupyter-settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/utils_DandanProject.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_DandanProject.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,8 +32,8 @@
       <list>
         <option value="Jupyter Script" />
         <option value="R Script" />
-        <option value="Jupyter Notebook" />
         <option value="Python Script" />
+        <option value="Jupyter Notebook" />
       </list>
     </option>
   </component>
@@ -46,8 +57,21 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
   <component name="GithubDefaultAccount">
     <option name="defaultAccountId" value="16d6ff24-cadd-4e1e-ac11-bbee5dabbd06" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="16d6ff24-cadd-4e1e-ac11-bbee5dabbd06" />
+        <option name="url" value="https://github.com/StatBiomed/TemporalVAE.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -62,32 +86,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
-    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
-    "WebServerToolWindowPanel.toolwindow.show.date": "false",
-    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
-    "WebServerToolWindowPanel.toolwindow.show.size": "false",
-    "credentialsType com.jetbrains.python.remote.PyCreateRemoteInterpreterDialog$PyCreateRemoteSdkForm": "SSH Configuration",
-    "full.screen.before.presentation.mode": "true",
-    "last_opened_file_path": "/Users/awa121/Documents/awa_project/awa_github/TemporalVAE/Fig3_mouse_data",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "python.debugger.dataview.autoresize": "false",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "two.files.diff.last.used.folder": "D:/awa_project/pairsRegulatePrediction/CNNC-master/GPLVM_dandan",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
+    &quot;credentialsType com.jetbrains.python.remote.PyCreateRemoteInterpreterDialog$PyCreateRemoteSdkForm&quot;: &quot;SSH Configuration&quot;,
+    &quot;full.screen.before.presentation.mode&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/awa121/Documents/awa_project/awa_github/TemporalVAE/Fig3_mouse_data&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;python.debugger.dataview.autoresize&quot;: &quot;false&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.notebooks.jupyter.connections.configuration.JupyterServerConfigurable&quot;,
+    &quot;two.files.diff.last.used.folder&quot;: &quot;D:/awa_project/pairsRegulatePrediction/CNNC-master/GPLVM_dandan&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings module-name="pairsRegulatePrediction" is-module-sdk="true">
@@ -116,7 +140,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo">
+  <component name="RunManager" selected="Python.linearRegression_atlas">
     <configuration name="GPLVM_fromDandan_trainOnAllData" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -316,6 +340,9 @@
       <module name="TemporalVAE" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig3_mouse_data" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -397,29 +424,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="exp2_psupertime_toyDataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="TemporalVAE" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_psupertime_toyDataset.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="exp2_vae_toyDataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -439,6 +450,9 @@
       <module name="TemporalVAE" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -446,6 +460,25 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/kFold_check_corr_addLR.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="linearRegression_atlas" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TemporalVAE" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -465,19 +498,19 @@
       <item itemvalue="Python.GPLVM_fromDandan_trainOnAllData" />
       <item itemvalue="Python.VAE_fromDandan_testOnOneDonor" />
       <item itemvalue="Python.VAE_fromDandan_testOnExternal_eachTestOnOneSample_newAnnor0717" />
+      <item itemvalue="Python.linearRegression_atlas" />
       <item itemvalue="Python.TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo" />
       <item itemvalue="Python.VAE_mouse_kFoldOn_mouseAtlas" />
       <item itemvalue="Python.kFold_check_corr_addLR" />
-      <item itemvalue="Python.exp2_psupertime_toyDataset" />
       <item itemvalue="Python.exp2_vae_toyDataset" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.linearRegression_atlas" />
         <item itemvalue="Python.TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo" />
         <item itemvalue="Python.VAE_mouse_kFoldOn_mouseAtlas" />
         <item itemvalue="Python.kFold_check_corr_addLR" />
         <item itemvalue="Python.exp2_vae_toyDataset" />
-        <item itemvalue="Python.exp2_psupertime_toyDataset" />
       </list>
     </recent_temporary>
   </component>
@@ -836,7 +869,8 @@
       <workItem from="1714975142283" duration="1029000" />
       <workItem from="1715008759508" duration="6345000" />
       <workItem from="1715093355362" duration="2532000" />
-      <workItem from="1715130145050" duration="31970000" />
+      <workItem from="1715130145050" duration="39229000" />
+      <workItem from="1715257531314" duration="2517000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -910,7 +944,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715239690171</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="figure3 code">
+      <option name="closed" value="true" />
+      <created>1715240154338</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1715240154338</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -970,7 +1012,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/linearRegression_atlas.py</url>
-          <line>63</line>
+          <line>58</line>
           <option name="timeStamp" value="3219" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -980,7 +1022,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py</url>
-          <line>105</line>
+          <line>82</line>
           <option name="timeStamp" value="3234" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1000,7 +1042,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py</url>
-          <line>62</line>
+          <line>39</line>
           <option name="timeStamp" value="3253" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1032,11 +1074,6 @@
           <url>file://$PROJECT_DIR$/preprocess_data/preprocess_humanEmbryo_okubo2023.py</url>
           <line>29</line>
           <option name="timeStamp" value="3268" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/plot_boxplot_fromDF.py</url>
-          <line>55</line>
-          <option name="timeStamp" value="3274" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/draw_images/read_json_plotViolin_oneTimeMulitDonor.py</url>
@@ -1180,7 +1217,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/utils/utils_DandanProject.py</url>
-          <line>3435</line>
+          <line>3447</line>
           <option name="timeStamp" value="3367" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1215,27 +1252,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py</url>
-          <line>93</line>
+          <line>92</line>
           <option name="timeStamp" value="3395" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py</url>
-          <line>124</line>
+          <line>123</line>
           <option name="timeStamp" value="3398" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py</url>
-          <line>115</line>
-          <option name="timeStamp" value="3399" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py</url>
-          <line>233</line>
+          <line>232</line>
           <option name="timeStamp" value="3400" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py</url>
-          <line>229</line>
+          <line>228</line>
           <option name="timeStamp" value="3404" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1315,12 +1347,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/utils/utils_Dandan_plot.py</url>
-          <line>1391</line>
+          <line>1390</line>
           <option name="timeStamp" value="3463" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/utils/utils_Dandan_plot.py</url>
-          <line>1398</line>
+          <line>1397</line>
           <option name="timeStamp" value="3465" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -1430,8 +1462,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py</url>
-          <line>76</line>
-          <option name="timeStamp" value="3503" />
+          <line>177</line>
+          <option name="timeStamp" value="3504" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/utils/utils_DandanProject.py</url>
+          <line>3332</line>
+          <option name="timeStamp" value="3506" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="jupyter-line">
+          <url>notebook:///Users/awa121/Documents/awa_project/awa_github/TemporalVAE/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.ipynb</url>
+          <line>6</line>
+          <option name="timeStamp" value="3505" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -1571,7 +1613,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$exp2_randomForest_toyDataset.coverage" NAME="exp2_randomForest_toyDataset Coverage Results" MODIFIED="1695714121950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/baseline_method" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$grnboost2MS.coverage" NAME="grnboost2MS Coverage Results" MODIFIED="1680254960123" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/result/forGrace220331" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_yhh_Experiment2.coverage" NAME="main-yhh-Experiment2 Coverage Results" MODIFIED="1679575225220" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
-    <SUITE FILE_PATH="coverage/TemporalVAE$TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.coverage" NAME="TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo Coverage Results" MODIFIED="1715239499572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig3_mouse_data" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.coverage" NAME="TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo Coverage Results" MODIFIED="1715241066461" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig3_mouse_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$CNNC0422_onlysc.coverage" NAME="CNNC0422-onlysc Coverage Results" MODIFIED="1682424406531" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_humanEmbryo_CS7_Tyser.coverage" NAME="preprocess_humanEmbryo_CS7_Tyser Coverage Results" MODIFIED="1712719017522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/preprocess_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$CNNC0422_onlybulk.coverage" NAME="CNNC0422-onlybulk Coverage Results" MODIFIED="1682424130095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
