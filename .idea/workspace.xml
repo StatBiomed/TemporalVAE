@@ -10,15 +10,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="preprocess mouse atlas .py add more annotation.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_oneDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure3_compareWithBaseLine/LR_PCA_RF_directlyPredictOn_mouseStereo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_kFoldOn_oneDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_kFoldOn_oneDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/checkpoint_files/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils_DandanProject.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_DandanProject.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_stereo.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/vae_model_configs/supervise_vae_regressionclfdecoder_mouse_stereo.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="figure3 code" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,6 +38,12 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GithubDefaultAccount">
@@ -838,7 +836,7 @@
       <workItem from="1714975142283" duration="1029000" />
       <workItem from="1715008759508" duration="6345000" />
       <workItem from="1715093355362" duration="2532000" />
-      <workItem from="1715130145050" duration="31476000" />
+      <workItem from="1715130145050" duration="31970000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -904,7 +902,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715225939550</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="figure3 code">
+      <option name="closed" value="true" />
+      <created>1715239690171</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1715239690171</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -926,7 +932,8 @@
     <MESSAGE value="test2" />
     <MESSAGE value="fig2" />
     <MESSAGE value="preprocess mouse atlas .py add more annotation." />
-    <option name="LAST_COMMIT_MESSAGE" value="preprocess mouse atlas .py add more annotation." />
+    <MESSAGE value="figure3 code" />
+    <option name="LAST_COMMIT_MESSAGE" value="figure3 code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
