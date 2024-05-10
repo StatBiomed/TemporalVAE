@@ -6,25 +6,24 @@
 @Author  ：awa121
 @Date    ：2024/3/23 14:12 
 """
+
 import os
-from typing import Tuple, Union
-import tempfile
-from collections import Counter
-import urllib.request as request
-from contextlib import closing
-import gzip
+import sys
+
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+sys.path.append(os.getcwd())
 from utils.utils_DandanProject import calHVG_adata as calHVG
 from utils.utils_DandanProject import series_matrix2csv
 from utils.utils_Dandan_plot import draw_venn
-import click
 import pandas as pd
 import anndata as ad
 import scanpy as sc
 
 
 def main():
-    hvg_num = 1000
-    file_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/240322Human_embryo/xiang2019/"
+    hvg_num = 500
+    file_path = "data/240322Human_embryo/xiang2019/"
     raw_count = f"{file_path}/GSE136447_555sample_gene_count_matrix.txt"
     raw_count = pd.read_csv(raw_count, sep="\t", header=0, index_col=0)
 

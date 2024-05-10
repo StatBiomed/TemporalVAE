@@ -3234,7 +3234,8 @@ def predict_newData_preprocess_df(gene_dic, adata_new, min_gene_num, mouse_atlas
     # 数据数目统计
     sc.pp.filter_cells(adata_concated, min_genes=min_gene_num)
     print("After cell threshold: {}, remain adata shape (cell, gene): {}".format(min_gene_num, adata_concated.shape))
-    new_test_cell_list = list(set(adata_new.obs_names) & set(adata_concated.obs_names))
+    # new_test_cell_list = list(set(adata_new.obs_names) & set(adata_concated.obs_names))
+    new_test_cell_list = [_cell for _cell in adata_concated.obs_names if _cell in set(adata_new.obs_names)]
     print(f"remain test adata cell num {len(new_test_cell_list)}")
     sc.pp.normalize_total(adata_concated, target_sum=1e6)
     sc.pp.log1p(adata_concated)
@@ -3310,7 +3311,8 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
                    special_path_str, cell_time, time_standard_type,
                    config, train_epoch_num, _logger, donor_str="donor",
                    checkpoint_file=None, batch_size=100000, adversarial_bool=False,
-                   recall_predicted_mu=False):
+                   recall_predicted_mu=False,
+                   cmap_color="viridis"):
     save_path = _logger.root.handlers[0].baseFilename.replace('.log', '')
     _logger.info(f"start task: k-fold test with {donor_list}.")
     predict_donors_dic = dict()
@@ -3362,7 +3364,7 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
     cell_time = pd.concat([cell_time, predict_donors_df], axis=1)
     cell_time.to_csv(f"{save_path}/k_fold_test_result.csv")
 
-    color_dic = plot_on_each_test_donor_violin_fromDF(cell_time.copy(), save_path, physical_str="predicted_time", x_str="time")
+    color_dic = plot_on_each_test_donor_violin_fromDF(cell_time.copy(), save_path, physical_str="predicted_time", x_str="time",cmap_color=cmap_color)
 
     _logger.info("Finish plot image and fold-test.")
     if recall_predicted_mu:

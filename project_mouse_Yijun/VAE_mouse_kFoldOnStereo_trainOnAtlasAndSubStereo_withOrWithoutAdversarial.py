@@ -16,8 +16,6 @@ k-fold on stereo-seq data: one embryo from stereo-seq data as test data, other e
 
 import os
 
-import pandas as pd
-
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:128"
 import sys
 
@@ -30,7 +28,6 @@ import torch
 torch.set_float32_matmul_precision('high')
 import pyro
 
-import logging
 from utils.logging_system import LogHelper
 
 smoke_test = ('CI' in os.environ)  # ignore; used to check code integrity in the Pyro repo

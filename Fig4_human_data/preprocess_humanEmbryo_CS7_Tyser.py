@@ -6,6 +6,13 @@
 @Author  ：awa121
 @Date    ：2024/4/9 23:03 
 """
+
+import os
+import sys
+
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+sys.path.append(os.getcwd())
 import scanpy as sc
 import pandas as pd
 import anndata as ad
@@ -19,7 +26,7 @@ from utils.utils_Dandan_plot import draw_venn
 def main():
     select_hvg_bool = True  # 2024-04-03 17:51:44 add here
     hvg_num = 1000
-    file_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/240322Human_embryo/Tyser2021/"
+    file_path = "data/240322Human_embryo/Tyser2021/"
 
     exp_count_pd = read_rds_file(f"{file_path}/raw_reads.rds")
     cell_info_pd = read_rds_file(f"{file_path}/annot_umap.rds")

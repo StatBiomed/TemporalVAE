@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：pairsRegulatePrediction
-@File    ：vae_humanEmbryo.py
+@File    ：vae_humanEmbryo_Melania.py
 @IDE     ：PyCharm
 @Author  ：awa121
 @Date    ：2024/3/3 21:02
@@ -60,7 +60,6 @@ def main():
                         default=100000,
                         help="batch size")
     parser.add_argument('--time_standard_type', type=str,
-                        # default="embryoneg1to1",
                         default="embryoneg5to5",
                         help="y_time_nor_train standard type may cause different latent space: log2, 0to1, neg1to1, labeldic,sigmoid,logit")
     # supervise_vae            supervise_vae_regressionclfdecoder

@@ -6,19 +6,17 @@
 @Author  ：awa121
 @Date    ：2024/3/22 10:21 
 
-cd /mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/
-source ~/.bashrc
-nohup python -u project_mouse_Yijun/for_figure4_humanEmbryo240322/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py >> logs/for_figure4_humanEmbryo240322_LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.log 2>&1 &
-
 """
 
-import sys
 import os
+import sys
+
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+sys.path.append(os.getcwd())
+
 
 print(os.getcwd())
-# sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan")
 
 import anndata as ad
 import pandas as pd
@@ -34,16 +32,14 @@ from utils.utils_Dandan_plot import plot_violin_240223
 
 
 def main():
-    save_path = f"/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240402_Figure4_LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS_xiang19hvg500/"
+    save_path = f"results/240510_Figure4_LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS_xiang19hvg500/"
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-    data_golbal_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/"
+    data_golbal_path = "data/"
     baseline_data_path = "/240322Human_embryo/xiang2019/hvg500/"
     query_data_path = "/240322Human_embryo/PLOS2019/"
-    checkpoint_file = '/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240402_humanEmbryo/240322Human_embryo/xiang2019/hvg500/supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_epoch70_minGeneNum50/wholeData/SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial/version_1/checkpoints/last.ckpt'
-    # checkpoint_file = '/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240323_humanEmbryo/240322Human_embryo/xiang2019/supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_epoch100_minGeneNum50/wholeData/SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial/version_5/checkpoints/last.ckpt'
-
-    config_file = f"/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/vae_model_configs/supervise_vae_regressionclfdecoder_mouse_stereo.yaml"
+    checkpoint_file = 'results/240505_humanEmbryo_xiang2019/240322Human_embryo/xiang2019/hvg500/supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_epoch70_minGeneNum50/wholeData/SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial/version_0/checkpoints/last.ckpt'
+    config_file = f"vae_model_configs/supervise_vae_regressionclfdecoder_mouse_stereo.yaml"
     # ---------------------------------------set logger and parameters, creat result save path and folder----------------------------------------------
     logger_file = f'{save_path}/run.log'
     LogHelper.setup(log_path=logger_file, level='INFO')
@@ -128,7 +124,7 @@ def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
     # MyVAEModel = vae_models[config['model_params']['name']](**config['model_params'])
     config['model_params']['in_channels'] = query_adata.X.shape[1]  # the number of features
 
-    from models import vae_models
+    from model_master import vae_models
     MyVAEModel = vae_models["SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial"](**config['model_params'])
     MyVAEModel.load_state_dict(new_state_dict)
     MyVAEModel.eval()
@@ -145,8 +141,8 @@ def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
     data_x = [[x_sc[:, i], 0, 0] for i in range(x_sc.shape[1])]
 
     # predict batch size will not influence the training
-    from dataset import SupervisedVAEDataset_onlyPredict
-    from experiment import VAEXperiment
+    from model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from model_master.experiment import VAEXperiment
     data_predict = SupervisedVAEDataset_onlyPredict(predict_data=data_x, predict_batch_size=len(data_x))
 
     experiment = VAEXperiment(MyVAEModel, config['exp_params'])

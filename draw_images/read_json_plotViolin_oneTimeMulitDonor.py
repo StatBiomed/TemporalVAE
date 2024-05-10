@@ -8,6 +8,12 @@
 
 """
 import os
+import sys
+
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+sys.path.append(os.getcwd())
+
 
 from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score, umap_vae_latent_space_adata_version
 import pandas as pd
@@ -24,8 +30,7 @@ from utils.utils_Dandan_plot import colors_tuple_hexadecimalColorCode,plt_umap_b
 import numpy as np
 import anndata as ad
 
-global_folder_path = "/mnt/yijun/" \
-                     "nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_dim50_timeembryoneg5to5_epoch100_dropDonorno_mouseEmbryonicDevelopment_embryoneg5to5"
+global_folder_path = "results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_dim50_timeembryoneg5to5_epoch100_dropDonorno_mouseEmbryonicDevelopment_embryoneg5to5"
 
 
 def main():
@@ -45,7 +50,7 @@ def main():
 
 def plot_kfold_mouseAtlas():
     file_name = f"{global_folder_path}/SuperviseVanillaVAE_regressionClfDecoder_plot_on_all_test_donor_timeembryoneg5to5_celltype_update_testCLF.json"
-    cell_time_info_file = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/" \
+    cell_time_info_file = "data/" \
                           "mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/cell_with_time.csv"
     print(f"preditced time file is {file_name} \n,cell file which stores the real time is {cell_time_info_file}")
     with open(file_name, "r") as json_file:
@@ -116,7 +121,7 @@ def plot_kfold_mouseAtlas():
     # plt.legend(handles=legend_elements, title="Cell Num", bbox_to_anchor=(1.01, 0), loc="lower left", borderaxespad=0, prop={'size': 5.6})
     plt.xticks(size=11, rotation=90)
 
-    # plt.savefig( "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/test/231012.pdf", format='pdf')
+
     plt.savefig(f"{file_name.replace('.json', '.pdf')}")
     plt.savefig(f"{file_name.replace('.json', '.png')}", dpi=350)
     print("Finish save images at: {}".format(f"{file_name.replace('.json', '.png')}"))
@@ -188,40 +193,6 @@ def plt_latentSpace_mouseAtlas():
     # cal_pc1pc2(adata_subCells2.copy(), "celltype_update", save_path, custom_palette_bool=True)  # ["day", "embryo_id","experimental_batch","batch"]
     plt_umap_byScanpy(adata_subCells2.copy(), ["time", "celltype_update"], save_path, mode="read",figure_size=(7,6),color_map="turbo")
 
-
-    # adata_subatlas_stereo = ad.concat([adata_atlas_subCells.copy(), adata_stereo.copy()])
-    # adata_subatlas_stereo.obs["atlas_stereo"]=np.where(adata_subatlas_stereo.obs["batch"]>=0,"Atlas" , "Stereo")
-    # adata_subatlas_stereo = adata_subatlas_stereo[adata_subatlas_stereo.obs.sort_values(by='time',ascending=False).index]
-
-    # adata_stereo = adata[adata.obs["batch"] == -1]
-    # plt_umap_byScanpy(adata.copy(), ["time", "celltype_update"], save_path, special_file_name_str="240401_umap_")
-
-    # cal_pc1pc2(adata_subatlas_stereo.copy(), "day", save_path, ncol=3,grey_indexes=list(adata_stereo.obs_names))
-    # cal_pc1pc2(adata_subatlas_stereo.copy(), "day", save_path, ncol=2,grey_indexes=list(adata_atlas_subCells.obs_names))
-    # cal_pc1pc2(adata_subatlas_stereo.copy(), "atlas_stereo", save_path, ncol=2)
-
-    # plot pc map
-    # cal_pc1pc2(adata_subCells, "day", save_path, ncol=2)  # ["day", "embryo_id","experimental_batch","batch"]
-    # cal_pc1pc2(adata_subCells, "embryo_id", save_path, ncol=3)  # ["day", "embryo_id","experimental_batch","batch"]
-    # cal_pc1pc2(adata_subCells, "experimental_batch", save_path)  # ["day", "embryo_id","experimental_batch","batch"]
-    # cal_pc1pc2(adata_subCells, "batch", save_path)  # ["day", "embryo_id","experimental_batch","batch"]
-
-    # too many cell type, only use top 10 cell types
-    # celltype_dic = Counter(adata_subCells.obs["celltype_update"])
-    # top_10_celltype = sorted(celltype_dic, key=celltype_dic.get, reverse=True)[:10]
-    # gery_cell_indices = list(set(adata_subCells.obs_names) - set(adata_subCells.obs.loc[adata_subCells.obs["celltype_update"].isin(list(top_10_celltype))].index))
-    # cal_pc1pc2(adata_subCells.copy(), "celltype_update", save_path, grey_indexes=gery_cell_indices,custom_palette_bool=True)  # ["day", "embryo_id","experimental_batch","batch"]
-
-    # adata_subCells2 = adata_subCells[adata_subCells.obs.loc[adata_subCells.obs["celltype_update"].isin(list(top_10_celltype))].index].copy()
-    # cal_pc1pc2(adata_subCells2.copy(), "day", save_path, custom_palette_bool=True, ncol=3)  # ["day", "embryo_id","experimental_batch","batch"]
-    # cal_pc1pc2(adata_subCells2.copy(), "celltype_update", save_path, custom_palette_bool=True)  # ["day", "embryo_id","experimental_batch","batch"]
-    # plt_umap_byScanpy(adata_subCells2.copy(), ["time", "celltype_update"], save_path, mode="read")
-
-    # sc.pp.neighbors(adata_subCells2, n_neighbors=10, n_pcs=40)
-    # sc.tl.umap(adata_subCells2)
-    # sc.pl.umap(adata_subCells2,  color=["celltype_update"])
-
-    # embeddings = umap_vae_latent_space_adata_version(adata_subCells2, "celltype_update")
 
     return
 

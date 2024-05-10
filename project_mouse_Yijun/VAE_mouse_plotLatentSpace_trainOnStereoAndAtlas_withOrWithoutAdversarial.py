@@ -9,22 +9,18 @@
 
 import os
 
-import pandas as pd
-
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:128"
 import sys
 
 # sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
 sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
 sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan")
-from utils.GPU_manager_pytorch import check_memory
 
 import torch
 
 torch.set_float32_matmul_precision('high')
 import pyro
 
-import logging
 from utils.logging_system import LogHelper
 
 smoke_test = ('CI' in os.environ)  # ignore; used to check code integrity in the Pyro repo
