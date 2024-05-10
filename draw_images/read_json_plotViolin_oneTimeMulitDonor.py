@@ -27,20 +27,6 @@ import anndata as ad
 global_folder_path = "/mnt/yijun/" \
                      "nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_dim50_timeembryoneg5to5_epoch100_dropDonorno_mouseEmbryonicDevelopment_embryoneg5to5"
 
-# global_folder_path = "/mnt/yijun/" \
-#                      "nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/" \
-#                      "231119_plotLatentSpace_trainOnStereoAndAtlas_minGeneNum100_withoutAdversarial/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_epoch300_externalDataofBrain/"
-
-
-# global_folder_path = "/mnt/yijun/" \
-#                      "nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/" \
-#                      "231119_plotLatentSpace_trainOnStereoAndAltas_minGeneNum100_withAdversarial/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_dim50_timeembryoneg5to5_epoch300_externalDataofBrain/"
-# global_folder_path = "/mnt/yijun/" \
-#                      "nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/" \
-#                      "230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809/" \
-#                      "mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/" \
-#                      "supervise_vae_regressionclfdecoder_dim50_timeembryoneg5to5_epoch100_dropDonorno_mouseEmbryonicDevelopment_embryoneg5to5/"
-
 
 def main():
     plot_kfold_mouseAtlas()

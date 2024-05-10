@@ -54,7 +54,7 @@ def main():
                         help="filter gene with min cell num, default 50")
     # ------------------ model training setting ------------------
     parser.add_argument('--train_epoch_num', type=int,
-                        default="100",
+                        default="2",
                         help="Train epoch num")
     parser.add_argument('--batch_size', type=int,
                         default=100000,

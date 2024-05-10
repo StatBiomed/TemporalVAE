@@ -31,7 +31,7 @@ from pytorch_lightning import seed_everything
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pathlib import Path
 
-from kFold_check_corr_addLR import preprocess_parameters, corr
+from plotFig2_check_corr import preprocess_parameters, corr
 
 
 def main():

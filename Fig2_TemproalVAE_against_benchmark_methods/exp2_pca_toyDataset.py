@@ -26,7 +26,7 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from utils.utils_Dandan_plot import plot_psupertime_density
 
-from kFold_check_corr_addLR import preprocess_parameters,corr
+from plotFig2_check_corr import preprocess_parameters,corr
 def main():
     dataset_list = [ "acinarHVG", "embryoBeta", "humanGermline"]
     for dataset in dataset_list:

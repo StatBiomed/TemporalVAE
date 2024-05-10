@@ -19,7 +19,7 @@ import anndata
 import os
 import numpy as np
 import pandas as pd
-from kFold_check_corr_addLR import preprocess_parameters,corr
+from plotFig2_check_corr import preprocess_parameters,corr
 
 def main():
     dataset_list = [ "acinarHVG", "embryoBeta", "humanGermline"]
