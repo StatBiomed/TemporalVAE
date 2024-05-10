@@ -1,10 +1,11 @@
 # -*-coding:utf-8 -*-
 """
-@Project ：TemporalVAE 
+@Project ：pairsRegulatePrediction
 @File    ：vae_humanEmbryo.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
 @Date    ：2024/3/3 21:02
+
 
 """
 
@@ -14,6 +15,7 @@ import sys
 if os.getcwd().split("/")[-1] != "TemporalVAE":
     os.chdir("..")
 sys.path.append(os.getcwd())
+
 import torch
 
 torch.set_float32_matmul_precision('high')
@@ -38,7 +40,7 @@ import numpy as np
 def main():
     parser = argparse.ArgumentParser(description="CNN model for prediction of gene paris' regulatory relationship")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22
-                        default="240510_preimplantation_Melania",
+                        default="240505_preimplantation_Melania",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
                         default="/240405_preimplantation_Melania/",
@@ -58,10 +60,14 @@ def main():
                         default=100000,
                         help="batch size")
     parser.add_argument('--time_standard_type', type=str,
+                        # default="embryoneg1to1",
                         default="embryoneg5to5",
                         help="y_time_nor_train standard type may cause different latent space: log2, 0to1, neg1to1, labeldic,sigmoid,logit")
+    # supervise_vae            supervise_vae_regressionclfdecoder
     parser.add_argument('--vae_param_file', type=str,
+                        # default="supervise_vae_regressionclfdecoder_mouse_stereo_humanEmbryo240401",
                         default="supervise_vae_regressionclfdecoder_mouse_stereo",
+                        # default="supervise_vae_regressionclfdecoder",
                         help="vae model parameters file.")
     # ------------------ task setting ------------------
     parser.add_argument('--kfold_test', action="store_true", help="(Optional) make the task k fold test on dataset.", default=True)
@@ -156,31 +162,19 @@ def main():
         plt_umap_byScanpy(plt_image_adata.copy(), ["time", "predicted_time", "dataset_label", "cell_type"], save_path=save_file_name, mode=None, figure_size=(5, 4),
                           color_map="turbo",
                           n_neighbors=50, n_pcs=20, special_file_name_str="n50_")  # color_map="viridis"
-        # plt_umap_byScanpy(plt_image_adata.copy(), ["time", "predicted_time", "dataset_label", "day", "cell_type"], save_path=save_file_name, mode=None, figure_size=(5, 4),
-        #                   color_map="turbo",
-        #                   n_neighbors=40, n_pcs=20, special_file_name_str="n40_")  # color_map="viridis"
-        # plt_umap_byScanpy(plt_image_adata.copy(), ["time", "predicted_time", "dataset_label", "day", "cell_type"], save_path=save_file_name, mode=None, figure_size=(5, 4),
-        #                   color_map="turbo",
-        #                   n_neighbors=30, n_pcs=20, special_file_name_str="n30_")  # color_map="viridis"
-        # plt_umap_byScanpy(plt_image_adata.copy(), ["time", "predicted_time", "dataset_label", "day", "cell_type"], save_path=save_file_name, mode=None, figure_size=(5, 4),
-        #                   color_map="turbo",
-        #                   n_neighbors=20, n_pcs=20, special_file_name_str="n20_")  # color_map="viridis"
-        # plt_umap_byScanpy(plt_image_adata.copy(), ["time", "predicted_time", "day", "dataset_label", "cell_type"], save_path=save_file_name, mode=None, figure_size=(5, 4),
-        #                   color_map="turbo",
-        #                   n_neighbors=10, n_pcs=20, special_file_name_str="n10_")  # color_map="viridis"
 
     ## # # ----------------------------------TASK 1: K-FOLD TEST--------------------------------------
     if args.kfold_test:
         test_donor_list = ["D_14_21_t"]
-        predict_donors_dic, label_dic, test_mu_result = task_kFoldTest(test_donor_list, sc_expression_df, donor_dic, batch_dic, special_path_str, cell_time, time_standard_type,
-                                                                       config, args.train_epoch_num, _logger, donor_str="day", batch_size=args.batch_size, recall_predicted_mu=True)
+        predict_donors_dic, label_dic, mu_result = task_kFoldTest(test_donor_list, sc_expression_df, donor_dic, batch_dic, special_path_str, cell_time, time_standard_type,
+                                                                  config, args.train_epoch_num, _logger, donor_str="day", batch_size=args.batch_size, recall_predicted_mu=True)
+        train_mu_result, test_mu_result = mu_result
         cell_time_tyser = cell_time.loc[predict_donors_dic["D_14_21_t"].index]
         cell_time_tyser["predicted_time"] = predict_donors_dic["D_14_21_t"]['pseudotime'].apply(denormalize, args=(min(label_dic.keys()) / 100, max(label_dic.keys()) / 100,
                                                                                                                    min(label_dic.values()), max(label_dic.values())))
         cell_time_tyser = cell_time_tyser[["time", "predicted_time", "dataset_label", "day", "cell_type"]]
         adata_mu_tyser = ad.AnnData(X=test_mu_result.cpu().numpy(), obs=cell_time_tyser)
         adata_mu_tyser.obs['data_type'] = 't'
-
 
         adata_mu_4dataset = ad.read_h5ad(f"{save_file_name}/n50_latent_mu.h5ad")
         adata_mu_4dataset.obs['data_type'] = 'l & m & p & z'
@@ -197,7 +191,7 @@ def main():
         # ----2 method mapping tyser data to other 4 dataset's umap, use same umap model by 4 dataset,
         # Create a UMAP model instance
         import umap
-        reducer = umap.UMAP(n_neighbors=50, min_dist=0.75, n_components=2)
+        reducer = umap.UMAP(n_neighbors=50, min_dist=0.75, n_components=2, random_state=0)
         embedding_4dataset = reducer.fit_transform(adata_mu_4dataset.X)
         embedding_tyser = reducer.transform(adata_mu_tyser.X)
         adata_mu_4dataset.obsm['X_umap'] = embedding_4dataset
@@ -207,16 +201,16 @@ def main():
         # combin two AnnData's UMAP loc
         combined_umap = np.vstack([adata_mu_4dataset.obsm['X_umap'], adata_mu_tyser.obsm['X_umap']])
         adata_all.obsm["X_umap"] = combined_umap
-
+        adata_all.write_h5ad(f"{save_file_name}/5dataset_mu.h5ad")
         # ----
         with plt.rc_context({'figure.figsize': (6, 5)}):
             sc.pl.umap(adata_all, color="dataset_label", show=False, legend_fontsize=5.5, s=25,
-                       palette={'l': "#B292CA", 'm': '#7ED957', 'p': '#FFC947', 'z': '#00CED1', 't': (0.9, 0.9, 0.9)})
+                       palette={'l': "#B292CA", 'm': '#7ED957', 'p': '#FFC947', 'z': '#00CED1', 't': (0.9, 0.9, 0.9, 0)})
         plt.savefig(f"{save_file_name}/tyser_mapping_to_4dataset_datatype_maskt.png", dpi=300, )
         plt.show()
         plt.close()
         with plt.rc_context({'figure.figsize': (6, 5)}):
-            sc.pl.umap(adata_all, color="data_type", show=False, legend_fontsize=5.5, s=25, palette={'l & m & p & z': (0.9, 0.9, 0.9), 't': "#E06D83"})
+            sc.pl.umap(adata_all, color="data_type", show=False, legend_fontsize=5.5, s=25, palette={'l & m & p & z': (0.9, 0.9, 0.9, 0.7), 't': "#E06D83"})
         plt.tight_layout()
         plt.savefig(f"{save_file_name}/tyser_mapping_to_4dataset_datatype_maskl & m & p & z.png", dpi=300)
         plt.show()
@@ -230,11 +224,12 @@ def main():
         plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, mask_dataset_label='l & m & p & z', attr='predicted_time')
 
         with plt.rc_context({'figure.figsize': (6, 5)}):
-            sc.pl.umap(adata_all, color="data_type", show=False, legend_fontsize=5.5, s=25, palette={'l & m & p & z': (0.9, 0.9, 0.9, 1), 't': "#E06D83"})
+            sc.pl.umap(adata_all, color="data_type", show=False, legend_fontsize=5.5, s=25, palette={'l & m & p & z': (0.9, 0.9, 0.9, 0.7), 't': "#E06D83"})
         plt.tight_layout()
         plt.savefig(f"{save_file_name}/tyser_mapping_to_4dataset_datatype_maskl & m & p & z.png", dpi=300)
         plt.show()
         plt.close()
+
         adata_all.write_h5ad(f"{save_file_name}/mappint_tyser_to4dataset_latent_mu.h5ad")
 
         # ---- combine and plot umap
@@ -282,7 +277,7 @@ def plot_tyser_mapping_to_4dataset_time_catgorial(adata_all, save_file_name, mas
     elif mask_dataset_label == "l & m & p & z":
         for _t in color_dict.keys():
             if _t != '17.5':
-                color_dict[_t] = (0.9, 0.9, 0.9, 1)
+                color_dict[_t] = (0.9, 0.9, 0.9, 0.7)
     # mask = adata_all.obs['data_type'] == mask_dataset_label
     # 应用颜色映射
     # colors[mask] = [0.9, 0.9, 0.9, 1]
@@ -316,14 +311,14 @@ def plot_tyser_mapping_to_4dataset_predictedTime(adata_all, save_file_name, mask
     if mask_dataset_label == "t":
         colors[mask] = (0.9, 0.9, 0.9, 0)
     else:
-        colors[mask] = (0.9, 0.9, 0.9, 1)
+        colors[mask] = (0.9, 0.9, 0.9, 0.7)
     plt.figure(figsize=(13, 10))
     plt.scatter(
         adata_all.obsm['X_umap'][:, 0],
         adata_all.obsm['X_umap'][:, 1],
         c=colors,  # 使用自定义颜色
         s=20,  # 点的大小
-        alpha=0.8  # 点的透明度
+        # alpha=0.8  # 点的透明度
     )
     plt.title(f'UMAP colored by {attr}')
     plt.xlabel('UMAP1')
@@ -358,7 +353,7 @@ def plot_tyser_mapping_to_4dataset_cellType_mask4dataset(adata_all, save_file_na
     # 应用颜色映射
     # colors[mask] = [0.9, 0.9, 0.9, 1]
     color_map = {cat: color for cat, color in zip(unique_categories, palette)}
-    color_map['l & m & p & z'] = (0.9, 0.9, 0.9)
+    color_map['l & m & p & z'] = (0.9, 0.9, 0.9, 0.7)
     # for _c in dataset_celltype_dic[mask_dataset_label]:
     #     color_map[_c] = (0.9, 0.9, 0.9)
     with plt.rc_context({'figure.figsize': (8, 5)}):
@@ -375,11 +370,11 @@ def plot_tyser_mapping_to_4dataset_cellType_maskTyser(adata_all, save_file_name,
 
     unique_categories = adata_all.obs[attr].unique()
     palette = sns.color_palette("hsv", len(unique_categories))  # 可以选择不同的调色板
-    # mask = adata_all.obs['data_type'] == mask_dataset_label
+    # palette = plt.get_cmap('tab20b',len(unique_categories))
     # 应用颜色映射
     # colors[mask] = [0.9, 0.9, 0.9, 1]
     color_map = {cat: color for cat, color in zip(unique_categories, palette)}
-    color_map['t'] = (0.9, 0.9, 0.9)
+    color_map['t'] = (0.9, 0.9, 0.9, 0)
     # for _c in dataset_celltype_dic[mask_dataset_label]:
     #     color_map[_c] = (0.9, 0.9, 0.9)
     with plt.rc_context({'figure.figsize': (8, 5)}):

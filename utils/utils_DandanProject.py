@@ -1718,7 +1718,7 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
     if recall_used_device:
         return predict_donors_dic, test_clf_result, label_dic, device
     elif recall_predicted_mu:
-        return predict_donors_dic, test_clf_result, label_dic, test_latent_mu_result
+        return predict_donors_dic, test_clf_result, label_dic, (train_latent_mu_result, test_latent_mu_result)
     else:
         return predict_donors_dic, test_clf_result, label_dic
 
