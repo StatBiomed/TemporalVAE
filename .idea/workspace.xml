@@ -11,18 +11,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="figure3 code">
-      <change beforePath="$PROJECT_DIR$/.idea/jupyter-settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jupyter-settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_LR_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_LR_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_pca_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_pca_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_psupertime_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_psupertime_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_randomForest_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_randomForest_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/kFold_check_corr_addLR.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/LR_PCA_RF_kFoldOn_mouseAtlas.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/LR_PCA_RF_kFoldOn_mouseAtlas.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/read_json_plotViolin_oneTimeMulitDonor.py" beforeDir="false" afterPath="$PROJECT_DIR$/draw_images/read_json_plotViolin_oneTimeMulitDonor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +134,7 @@
       <recent name="$PROJECT_DIR$/vae_model_configs/all_configs" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.VAE_mouse_kFoldOn_mouseAtlas">
+  <component name="RunManager" selected="Python.vae_humanEmbryo">
     <configuration name="GPLVM_fromDandan_trainOnAllData" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -429,28 +421,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="exp2_vae_toyDataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="TemporalVAE" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="linearRegression_atlas" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -492,6 +462,25 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="vae_humanEmbryo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TemporalVAE" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig4_human_data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.VAE_mouse_fineTune_Train_on_X" />
       <item itemvalue="Python.VAE_mouse_plotLatentSpace_trainOnStereoAndAtlas_withOrWithoutAdversarial" />
@@ -503,19 +492,19 @@
       <item itemvalue="Python.GPLVM_fromDandan_trainOnAllData" />
       <item itemvalue="Python.VAE_fromDandan_testOnOneDonor" />
       <item itemvalue="Python.VAE_fromDandan_testOnExternal_eachTestOnOneSample_newAnnor0717" />
+      <item itemvalue="Python.plotFig2_check_corr" />
+      <item itemvalue="Python.vae_humanEmbryo" />
       <item itemvalue="Python.linearRegression_atlas" />
       <item itemvalue="Python.TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo" />
       <item itemvalue="Python.VAE_mouse_kFoldOn_mouseAtlas" />
-      <item itemvalue="Python.exp2_vae_toyDataset" />
-      <item itemvalue="Python.plotFig2_check_corr" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.vae_humanEmbryo" />
         <item itemvalue="Python.VAE_mouse_kFoldOn_mouseAtlas" />
         <item itemvalue="Python.linearRegression_atlas" />
         <item itemvalue="Python.TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo" />
         <item itemvalue="Python.plotFig2_check_corr" />
-        <item itemvalue="Python.exp2_vae_toyDataset" />
       </list>
     </recent_temporary>
   </component>
@@ -876,7 +865,7 @@
       <workItem from="1715093355362" duration="2532000" />
       <workItem from="1715130145050" duration="39229000" />
       <workItem from="1715257531314" duration="4522000" />
-      <workItem from="1715265216961" duration="10214000" />
+      <workItem from="1715265216961" duration="12887000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -974,7 +963,23 @@
       <option name="project" value="LOCAL" />
       <updated>1715268526053</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="figure3 code">
+      <option name="closed" value="true" />
+      <created>1715305254126</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1715305254126</updated>
+    </task>
+    <task id="LOCAL-00014" summary="figure3 code">
+      <option name="closed" value="true" />
+      <created>1715305307904</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1715305307904</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

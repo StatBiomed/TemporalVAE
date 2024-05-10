@@ -6,23 +6,14 @@
 @Author  ：awa121
 @Date    ：2024/3/3 21:02
 
-cd /mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/
-source ~/.bashrc
-nohup python -u project_mouse_Yijun/vae_humanEmbryo.py --result_save_path 240423_preimplantation_Melania_umapMappingMethod2 >> logs/240422_preimplantation_Melania_umapMappingMethod2.log 2>&1 &
-
-nohup python -u project_mouse_Yijun/vae_humanEmbryo.py --result_save_path 240421_preimplantation_Melania >> logs/vae_humanEmbryo.log 2>&1 &
 """
 
 import os
 import sys
 
-import matplotlib.pyplot as plt
-import pandas as pd
-
-# sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master")
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan")
-
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+sys.path.append(os.getcwd())
 import torch
 
 torch.set_float32_matmul_precision('high')
@@ -47,15 +38,10 @@ import numpy as np
 def main():
     parser = argparse.ArgumentParser(description="CNN model for prediction of gene paris' regulatory relationship")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22
-                        default="240421_preimplantation_Melania",
+                        default="240510_preimplantation_Melania",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
-                        # default="/mouse_embryo_stereo/preprocess_Mouse_embryo_all_stage_minGene100/",
-                        # default="/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/",
-                        # default="/240322Human_embryo/PLOS2019/",
-                        # default="/240322Human_embryo/xiang2019/hvg500/",
                         default="/240405_preimplantation_Melania/",
-                        # default="/240322Human_embryo/xiang2019",
                         help="sc file folder path.")
     # ------------------ preprocess sc data setting ------------------
     parser.add_argument('--min_gene_num', type=int,
@@ -72,14 +58,10 @@ def main():
                         default=100000,
                         help="batch size")
     parser.add_argument('--time_standard_type', type=str,
-                        # default="embryoneg1to1",
                         default="embryoneg5to5",
                         help="y_time_nor_train standard type may cause different latent space: log2, 0to1, neg1to1, labeldic,sigmoid,logit")
-    # supervise_vae            supervise_vae_regressionclfdecoder
     parser.add_argument('--vae_param_file', type=str,
-                        # default="supervise_vae_regressionclfdecoder_mouse_stereo_humanEmbryo240401",
                         default="supervise_vae_regressionclfdecoder_mouse_stereo",
-                        # default="supervise_vae_regressionclfdecoder",
                         help="vae model parameters file.")
     # ------------------ task setting ------------------
     parser.add_argument('--kfold_test', action="store_true", help="(Optional) make the task k fold test on dataset.", default=True)
@@ -93,10 +75,10 @@ def main():
 
     args = parser.parse_args()
 
-    data_golbal_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/"
-    result_save_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/" + args.result_save_path + "/"
+    data_golbal_path = "data/"
+    result_save_path = "results/" + args.result_save_path + "/"
     data_path = args.file_path + "/"
-    yaml_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/vae_model_configs/"
+    yaml_path = "vae_model_configs/"
     # --------------------------------------- import vae model parameters from yaml file----------------------------------------------
     with open(yaml_path + "/" + args.vae_param_file + ".yaml", 'r') as file:
         try:
@@ -199,8 +181,7 @@ def main():
         adata_mu_tyser = ad.AnnData(X=test_mu_result.cpu().numpy(), obs=cell_time_tyser)
         adata_mu_tyser.obs['data_type'] = 't'
 
-        # mapping tyser dataset to other dataset
-        # save_file_name = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/results/240420_preimplantation_Melania/240405_preimplantation_Melania/supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_epoch100_minGeneNum50"
+
         adata_mu_4dataset = ad.read_h5ad(f"{save_file_name}/n50_latent_mu.h5ad")
         adata_mu_4dataset.obs['data_type'] = 'l & m & p & z'
 
