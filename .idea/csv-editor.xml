@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CsvFileAttributes">
+    <option name="attributeMap">
+      <map>
+        <entry key="/Fig2_TemproalVAE_against_benchmark_methods/data_fromPsupertime/acinar_hvg_sce_Y.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/Fig2_TemproalVAE_against_benchmark_methods/data_fromPsupertime/embryoBeta_Y.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/Fig2_TemproalVAE_against_benchmark_methods/data_fromPsupertime/embryoBeta_gene_list.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/Fig2_TemproalVAE_against_benchmark_methods/data_fromPsupertime/humanGermline_Y.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/Fig2_TemproalVAE_against_benchmark_methods/data_fromPsupertime/humanGermline_gene_list.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

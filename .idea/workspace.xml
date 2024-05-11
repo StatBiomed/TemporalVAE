@@ -10,132 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="figure5 code">
-      <change afterPath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S_neuron.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fig5_RNA_velocity/scVelo_hematopoiesis.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fig5_RNA_velocity/scVelo_neuron.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fig1_model_structure.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/pypsupertime/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/pypsupertime/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/pypsupertime/plots.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/pypsupertime/plots.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/LR_PCA_RF_kFoldOn_mouseAtlas.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/LR_PCA_RF_kFoldOn_mouseAtlas.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_Melania.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_Melania.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_Melania.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_Melania.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/draw_hotmap_ordered.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/gene.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/heatmap.R" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/heatmap_awa0622.R" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/plot_maySmallBox.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/read_json_and_print_correlation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/read_json_plotViolin_oneTimeMulitDonor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/read_json_result_and_plotTimeWindow.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/test_fangXinData.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/draw_images/test_limix.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/environment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/environment.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/readme.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_master/RNA_velocity_u_s_Ft_on_s.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_master/RNA_velocity_u_s_Ft_on_s.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/plot_pie_data_mouse_embryo_stereo_eachDonor_cellTypeDistribution.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_data_mouse_embryo_stereo_calHvg_subOrgan.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_data_mouse_embryo_stereo_subOrgan.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_data_mouse_embryonic_development.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_data_mouse_embryonic_development_combineData.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_data_mouse_projectionNeuron.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_humanEmbryo_Hislop2023.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_humanEmbryo_okubo2023.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_preimplantation_Melania.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S_hematopoiesis.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/preprocess_preimplantation_Melania.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preprocess_data/test_orginal_download_stereo_data.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/RNA_velocity_hematopoiesis.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/RNA_velocity_neuron_prog.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_fineTune_Train_on_U_concat_S.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_fineTune_Train_on_U_pairs_S.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_fineTune_Train_on_X.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOnStereoAndAtlas_withOrWithoutAdversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOnStereoAndAtlas_withOrWithoutAdversarial_lessCellForFastCheck.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_kFoldOnStereo_trainOnAtlasAndSubStereo_withOrWithoutAdversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_plotLatentSpace_oneDataset.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/VAE_mouse_plotLatentSpace_trainOnStereoAndAtlas_withOrWithoutAdversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/check_highGeneExpressNumCell_corr.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/PCA_xiang2019.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/VAE_human_directPredict.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/compare_manyResult_df.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/linearRegression_xiang2019.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/plot_boxplot_fromDF.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_humanEmbryo240322/randomForest_xiang2019.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_manySetting240223/VAE_mouse_noTimeLabel_directPredictOnStereo.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_manySetting240223/VAE_mouse_withTimeLabel_fineTune.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/for_figure4_manySetting240223/plot_violin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/regress_onlyBy_cellTotalCount_cellExpressNum.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_fineTune.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_kFoldOnStereoAndAtlas_withAdversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_kFoldOnStereoAndAtlas_withoutAdversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_kFoldOnStereo_trainOnAtlasAndSubStereo_withAdversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_kFoldOnStereo_trainOnAtlasAndSubStereo_withoutAdversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_kFoldOn_oneDataset.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_plotLatentSpace_oneDataset.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_plotLatentSpace_trainOnStereoAndAtlas_withAdversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_mouse_plotLatentSpace_trainOnStereoAndAtlas_withoutAdversarial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/starts_exps_vae_humanEmbryo_kFold.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_mouse_Yijun/vae_humanEmbryo_adversarial_mulitDataset.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils_DandanProject.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_DandanProject.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_discretelabel_organ_Joy.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_discretelabel_organ_Joy_adversarial.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_noclfdecoder.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_01.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_02.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_03.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_04.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_05.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_500epoch.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_clfWeight0.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_gamma2.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_gamma5.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_onlyAtlasLoss.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_06_test.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_07.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_08.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_09.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_10.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_11.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_12.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_13.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_14.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_231001_15.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_240405_humanEmbryo.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_240405_humanEmbryo_epoch200.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial0121212_240407_humanEmbryo.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_012.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_10lowBatchWeight.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0911.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0912.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091202_lessCell_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091203_lessCell_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0912_lessCell_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0913_lessCell_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091402_lessCell_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0914_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0914_lessCell_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091602_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version091603_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_0121212_version0916_dropoutLayer.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_012_100lowBatchWeight.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_adversarial_0816_012_version0911.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_batchDecoder_240405_humanEmbryo.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_atlas_finetune.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_atlas_finetune_u_s_focusDecoder.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_atlas_finetune_u_s_focusEncoder_moreFeatures.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_stereo_humanEmbryo240401.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_mouse_stereo_latentDim500.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vae_model_configs/all_configs/supervise_vae_regressionclfdecoder_of_sublatentspace.yaml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -1001,7 +878,7 @@
       <workItem from="1715361033252" duration="9078000" />
       <workItem from="1715431696960" duration="137000" />
       <workItem from="1715431845311" duration="4373000" />
-      <workItem from="1715436566414" duration="1462000" />
+      <workItem from="1715436566414" duration="2403000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -1139,7 +1016,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715361176884</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="figure5 code">
+      <option name="closed" value="true" />
+      <created>1715438198589</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1715438198589</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1163,21 +1048,12 @@
     <MESSAGE value="preprocess mouse atlas .py add more annotation." />
     <MESSAGE value="figure3 code" />
     <MESSAGE value="figure4 code" />
-    <option name="LAST_COMMIT_MESSAGE" value="figure4 code" />
+    <MESSAGE value="figure5 code" />
+    <option name="LAST_COMMIT_MESSAGE" value="figure5 code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py</url>
-          <line>415</line>
-          <option name="timeStamp" value="3203" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py</url>
-          <line>456</line>
-          <option name="timeStamp" value="3204" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_xiang2019data.py</url>
           <line>100</line>

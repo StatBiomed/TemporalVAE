@@ -40,7 +40,7 @@ def main():
                         help="sc file folder path.")
     parser.add_argument('--clf_weight', type=float,
                         default=0.2,
-                        # default=0.01, # for neruon
+                        # default=0.1, # for neruon
                         help="clf_weight.")
     parser.add_argument('--detT', type=float,
                         default=0.001,
