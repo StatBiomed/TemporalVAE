@@ -31,9 +31,8 @@ from collections import Counter
 import os
 import yaml
 import argparse
-from utils.utils_Dandan_plot import *
+from utils.utils_Dandan_plot import plt_umap_byScanpy
 import anndata as ad
-from draw_images.read_json_plotViolin_oneTimeMulitDonor import plt_umap_byScanpy
 import numpy as np
 
 

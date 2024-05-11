@@ -1,8 +1,8 @@
 from model_master import *
 from torch import nn
 from model_master import BaseVAE
-
-
+import torch
+from .types_ import *
 # 2023-10-04 22:21:36 change model name from SuperviseVanillaVAE_regressionClfDecoder_mouse_mouse_toyDataset to SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial
 class RNA_velocity_u_s_Ft_on_s(BaseVAE):
 

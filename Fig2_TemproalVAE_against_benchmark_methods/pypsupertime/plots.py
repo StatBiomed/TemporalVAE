@@ -101,7 +101,7 @@ def plot_model_perf(model: PsupertimeBaseModel, train: Tuple[Iterable, Iterable]
 
     if test is not None:
 
-        labels = np.unique(np.concatenate([y_test, y_train]))
+        # labels = np.unique(np.concatenate([y_test, y_train]))
         
         X_train, y_train = train
         X_test, y_test = test

@@ -157,7 +157,7 @@ def main():
         plt_image_adata = ad.AnnData(X=total_result["mu"].cpu().numpy())
         plt_image_adata.obs = cell_time
         plt_image_adata.write_h5ad(f"{save_path}/latent_mu.h5ad")
-        from draw_images.read_json_plotViolin_oneTimeMulitDonor import plt_umap_byScanpy
+        from utils.utils_Dandan_plot import plt_umap_byScanpy
         # plt_umap_byScanpy(plt_image_adata.copy(), ["time", "celltype_update"], save_path=save_path,mode=None)
         plt_umap_byScanpy(plt_image_adata.copy(), ["time"],
                           save_path=save_path, mode=None, figure_size=(7, 6), color_map="viridis")

@@ -9,13 +9,16 @@
 use dataset mentioned in psupertime manuscript
 
 """
-import sys
 import os
+import sys
 
+if os.getcwd().split("/")[-1] != "TemporalVAE":
+    os.chdir("..")
+sys.path.append(os.getcwd())
 from utils.GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory
 import logging
 from utils.logging_system import LogHelper
-from utils.utils_DandanProject import *
+from utils.utils_DandanProject import trans_time,plot_training_loss_for_tags
 import anndata
 import pandas as pd
 
@@ -53,8 +56,7 @@ def method_calculate(dataset):
     train_epoch_num = 60  # 2024-04-16 18:19:48
     # train_epoch_num = 150
     import yaml
-    with open("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/vae_model_configs/"
-              "supervise_vae_regressionclfdecoder_exp2_toyDataset.yaml", 'r') as file:
+    with open("vae_model_configs/supervise_vae_regressionclfdecoder_exp2_toyDataset.yaml", 'r') as file:
         try:
             config = yaml.safe_load(file)
         except yaml.YAMLError as exc:

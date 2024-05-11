@@ -8,19 +8,10 @@
 """
 import logging
 
-# import torch
-
 _logger = logging.getLogger(__name__)
-import sys
+
 import os
 
-sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/model_master/")
-# sys.path.append("/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/CNNC-master/utils/")
-
-# from torch.nn import Parameter
-# import pyro
-# import pyro.contrib.gp as gp
-# import pyro.distributions as dist
 from .GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory, check_gpu_memory
 from model_master import *
 import time
@@ -1338,8 +1329,7 @@ def pertub_one_gene(gene, sc_expression_df, y_time_nor_tensor, donor_index_tenso
 
 
 def geneId_geneName_dic(return_total_gene_pd_bool=False):
-    global_file_path = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/"
-    gene_data = pd.read_csv("{}/mouse_embryonic_development//df_gene.csv".format(global_file_path), index_col=0)
+    gene_data = pd.read_csv("data/mouse_embryonic_development//df_gene.csv", index_col=0)
     gene_dict = gene_data.set_index('gene_id')['gene_short_name'].to_dict()
     if return_total_gene_pd_bool:
         return gene_dict, gene_data
@@ -1511,7 +1501,7 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
     if not os.path.exists(subFold_save_file_path):
         os.makedirs(subFold_save_file_path)
     if checkpoint_file is not None:
-        gene_list_file = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/gene_info.csv"
+        gene_list_file = "data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/gene_info.csv"
         gene_list = list(pd.read_csv(gene_list_file, sep="\t")["gene_id"])
         _logger.info(f"checkpoint file is not none, make the train data have the same size with checkpoint file and "
                      f"make the gene with the same order, so use the gene list file: "
@@ -1773,7 +1763,7 @@ def one_fold_test_adversarialTrain(fold, donor_list, sc_expression_df, donor_dic
     if not os.path.exists(subFold_save_file_path):
         os.makedirs(subFold_save_file_path)
     if checkpoint_file is not None:
-        gene_list_file = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/gene_info.csv"
+        gene_list_file = "data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/gene_info.csv"
         gene_list = list(pd.read_csv(gene_list_file, sep="\t")["gene_id"])
         _logger.info(f"checkpoint file is not none, make the train data have the same size with checkpoint file and "
                      f"make the gene with the same order, so use the gene list file: "
@@ -2042,7 +2032,7 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     if not os.path.exists(subFold_save_file_path):
         os.makedirs(subFold_save_file_path)
     if checkpoint_file is not None:
-        gene_list_file = "/mnt/yijun/nfs_share/awa_project/pairsRegulatePrediction/GPLVM_dandan/data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/gene_info.csv"
+        gene_list_file = "data/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/gene_info.csv"
         gene_list = list(pd.read_csv(gene_list_file, sep="\t")["gene_id"])
         _logger.info(f"checkpoint file is not none, make the train data have the same size with checkpoint file and "
                      f"make the gene with the same order, so use the gene list file: "
@@ -3364,7 +3354,7 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
     cell_time = pd.concat([cell_time, predict_donors_df], axis=1)
     cell_time.to_csv(f"{save_path}/k_fold_test_result.csv")
 
-    color_dic = plot_on_each_test_donor_violin_fromDF(cell_time.copy(), save_path, physical_str="predicted_time", x_str="time",cmap_color=cmap_color)
+    color_dic = plot_on_each_test_donor_violin_fromDF(cell_time.copy(), save_path, physical_str="predicted_time", x_str="time", cmap_color=cmap_color)
 
     _logger.info("Finish plot image and fold-test.")
     if recall_predicted_mu:

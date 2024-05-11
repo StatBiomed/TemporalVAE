@@ -53,7 +53,7 @@ class PsupertimeBaseModel(ClassifierMixin, BaseEstimator, ABC):
     is_fitted_: bool = False
 
     @abstractmethod
-    def _binary_estimator_factory():
+    def _binary_estimator_factory(self):
         raise NotImplementedError()
  
     def get_binary_estimator(self):

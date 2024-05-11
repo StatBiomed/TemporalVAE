@@ -1,4 +1,4 @@
-name: stemVAE
+name: TemporalVAE
 channels:
   - defaults
   - nvidia
