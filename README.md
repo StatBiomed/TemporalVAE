@@ -28,7 +28,7 @@ A preprint describing TemporalVAE's algorithms and results is at [bioRxiv](https
 
 ## Latest Updates
 
-* v0.1 (May, 2025): Initial release.
+* v0.1 (May, 2024): Initial release.
 
 ---
 

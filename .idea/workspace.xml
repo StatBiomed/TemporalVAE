@@ -11,7 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="figure5 code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S_neuron.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S_neuron.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -878,7 +878,9 @@
       <workItem from="1715361033252" duration="9078000" />
       <workItem from="1715431696960" duration="137000" />
       <workItem from="1715431845311" duration="4373000" />
-      <workItem from="1715436566414" duration="2403000" />
+      <workItem from="1715436566414" duration="3870000" />
+      <workItem from="1715479950689" duration="2513000" />
+      <workItem from="1715564827223" duration="1617000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -1024,7 +1026,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715438198589</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="figure5 code">
+      <option name="closed" value="true" />
+      <created>1715445725946</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1715445725946</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
