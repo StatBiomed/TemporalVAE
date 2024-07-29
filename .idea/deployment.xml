@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="github_temporalVAE" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;*.hprof;*.pyc;" confirmBeforeUploading="false" confirmBeforeDeletion="false" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="TemporalVAE_github" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;*.hprof;*.pyc;" confirmBeforeUploading="false" confirmBeforeDeletion="false" autoUploadExternalChanges="true">
     <option name="confirmBeforeDeletion" value="false" />
     <option name="confirmBeforeUploading" value="false" />
     <serverData>
-      <paths name="HKU-GPU2">
+      <paths name="TemporalVAE_github">
         <serverdata>
           <mappings>
-            <mapping deploy="/pairsRegulatePrediction" local="$PROJECT_DIR$/../../pairsRegulatePrediction" web="/" />
+            <mapping deploy="/mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
@@ -15,20 +15,6 @@
         <serverdata>
           <mappings>
             <mapping deploy="/mnt/yijun/nfs_share/awa_project/awa_github/stemVAE_endometrium" local="$PROJECT_DIR$/../stemVAE_endometrium" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="github_temporalVAE">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="yijun@192.168.50.25:22">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

@@ -68,22 +68,22 @@ def get_method_result(method, dataset): #
     return data
 def preprocess_parameters(dataset): #"acinarHVG", "embryoBeta", "humanGermline"
     print(f"for dataset {dataset}.")
-    # ------------ for Mouse embryonic beta cells dataset:
-    if dataset=="embryoBeta":
+    # ------------ for Mouse embryonic beta cells dataset and Human Germline dataset:
+    if dataset in ["embryoBeta","humanGermline"]:
         data_x_df = pd.read_csv(f'data_fromPsupertime/{dataset}_X.csv', index_col=0).T
-        hvg_gene_list = pd.read_csv(f'{os.getcwd()}/data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
+        hvg_gene_list = pd.read_csv(f'data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
         data_x_df = data_x_df[hvg_gene_list["gene_name"]]
         data_y_df = pd.read_csv(f'data_fromPsupertime/{dataset}_Y.csv', index_col=0)
         data_y_df = data_y_df["time"]
         preprocessing_params = {"select_genes": "all", "log": True}
-    # ------------ for Human Germline dataset:
-    elif dataset == "humanGermline":
-        data_x_df = pd.read_csv('data_fromPsupertime/humanGermline_X.csv', index_col=0).T
-        hvg_gene_list = pd.read_csv(f'{os.getcwd()}/data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
-        data_x_df = data_x_df[hvg_gene_list["gene_name"]]
-        data_y_df = pd.read_csv('data_fromPsupertime/humanGermline_Y.csv', index_col=0)
-        data_y_df = data_y_df["time"]
-        preprocessing_params = {"select_genes": "all", "log": True}
+    # # ------------ for Human Germline dataset:
+    # elif dataset == "humanGermline":
+    #     data_x_df = pd.read_csv('data_fromPsupertime/humanGermline_X.csv', index_col=0).T
+    #     hvg_gene_list = pd.read_csv(f'{os.getcwd()}/data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
+    #     data_x_df = data_x_df[hvg_gene_list["gene_name"]]
+    #     data_y_df = pd.read_csv('data_fromPsupertime/humanGermline_Y.csv', index_col=0)
+    #     data_y_df = data_y_df["time"]
+    #     preprocessing_params = {"select_genes": "all", "log": True}
     # ------------ for Acinar dataset, in acinar data set total 8 donors with 8 ages:
     elif dataset == "acinarHVG":
         data_x_df = pd.read_csv('data_fromPsupertime/acinar_hvg_sce_X.csv', index_col=0).T
@@ -240,6 +240,26 @@ def corr(x1, x2, special_str=""):
     print(ke)
 
     return sp, ke
+def distribution_metric(y_true,y_pred):
+    from scipy.stats import wasserstein_distance
+    emd = wasserstein_distance(y_true, y_pred)
+
+    from sklearn.metrics.pairwise import rbf_kernel
+
+    def compute_mmd(x, y, kernel=rbf_kernel):
+        """计算 MMD 距离"""
+        xx = kernel(x, x)
+        yy = kernel(y, y)
+        xy = kernel(x, y)
+        return xx.mean() + yy.mean() - 2 * xy.mean()
+
+    mmd = compute_mmd(y_true.reshape(len(y_true),1), y_pred.reshape(len(y_pred),1))
+    # 计算 R^2
+    ss_res = np.sum((y_true - y_pred) ** 2)
+    ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
+    r_squared = 1 - (ss_res / ss_tot)
+    print(f"EMD is {emd}; MMD is {mmd}; R2 is {r_squared}")
+    return emd,mmd,r_squared
 
 if __name__ == '__main__':
     main()

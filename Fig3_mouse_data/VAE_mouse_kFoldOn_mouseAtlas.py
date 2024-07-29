@@ -8,6 +8,10 @@
 
 2023-07-31 11:38:33
 train on mouse_embryonic_development data,
+
+cd /mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE/
+source ~/.bashrc
+nohup python -u Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py --result_save_path 240611_mouseAtlas_test --kfold_test --train_whole_model >> logs/VAE_mouse_kFoldOn_mouseAtlas.log 2>&1 &
 """
 
 import os
@@ -54,7 +58,7 @@ def main():
                         help="filter gene with min cell num, default 50")
     # ------------------ model training setting ------------------
     parser.add_argument('--train_epoch_num', type=int,
-                        default="2",
+                        default="100",
                         help="Train epoch num")
     parser.add_argument('--batch_size', type=int,
                         default=100000,
