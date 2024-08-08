@@ -11,14 +11,14 @@ use dataset mentioned in psupertime manuscript
 """
 import os
 import sys
-
-if os.getcwd().split("/")[-1] != "TemporalVAE":
-    os.chdir("..")
+# necessary: change current path to TemporalVAE
+# if os.getcwd().split("/")[-1] != "TemporalVAE":
+#     os.chdir("..")
 sys.path.append(os.getcwd())
 from utils.GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory
 import logging
 from utils.logging_system import LogHelper
-from utils.utils_DandanProject import trans_time,plot_training_loss_for_tags
+from utils.utils_DandanProject import trans_time,plot_training_loss_for_tags,denormalize
 import anndata
 import pandas as pd
 
@@ -56,7 +56,7 @@ def method_calculate(dataset):
     train_epoch_num = 60  # 2024-04-16 18:19:48
     # train_epoch_num = 150
     import yaml
-    with open("vae_model_configs/supervise_vae_regressionclfdecoder_exp2_toyDataset.yaml", 'r') as file:
+    with open("../vae_model_configs/supervise_vae_regressionclfdecoder_exp2_toyDataset.yaml", 'r') as file:
         try:
             config = yaml.safe_load(file)
         except yaml.YAMLError as exc:
@@ -154,7 +154,7 @@ def process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config,
 
     MyVAEModel = vae_models[config['model_params']['name']](**config['model_params'])
 
-    ## 打印模型的权重和偏置
+    ## print parameters of model
     # for name, param in MyVAEModel.named_parameters():
     #     print(name, param)
     train_data = [[x_sc_train[:, i], y_time_nor_train[i], y_time_train[i]] for i in range(x_sc_train.shape[1])]
@@ -214,6 +214,7 @@ def process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config,
 
     _result_df = pd.DataFrame({'time': donor_list[fold],  # First column with a constant value of 1
                                'pseudotime': np.squeeze(test_clf_result, axis=1)})
+    # _result_df['pseudotime'] = _result_df['pseudotime_normalized'].apply(denormalize, args=(min(label_dic.keys()), max(label_dic.keys()), min(label_dic.values()), max(label_dic.values())))
     _result_df["trans_label"] = _result_df["time"].map(label_dic)
     print("Plot training loss line for check.")
 

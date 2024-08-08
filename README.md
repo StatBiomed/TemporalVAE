@@ -74,10 +74,11 @@ conda install pytorch torchvision torchaudio cpuonly -c pytorch
 
 The code is in folder named by figure-index
 
-### Figure 2: Compare the TemporalVAE with baseline methods in three small datasets cited in Psupertime mansucript
-
+### Figure 2: 
+Compare the TemporalVAE with baseline methods in three small datasets cited in [Psupertime](https://academic.oup.com/bioinformatics/article/38/Supplement_1/i290/6617492) mansucript.
+1. Preprocess three datasets by the code described in [preprocess_data_fromPsupertimeManuscript.md](./Fig2_TemproalVAE_against_benchmark_methods/preprocess_data_fromPsupertimeManuscript.md)
+2. run the code of each benchmarking method, then run [plotFig2_check_corr.py](./Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py) to generate Fig2.
 ### Figure 3:
-
 1. Preprocess the mouse atlas data and mouse stereo data by
 
 ```bash
@@ -85,7 +86,7 @@ python -u Fig3_mouse_data/preprocess_data_mouse_embryonic_development_combineDat
 python -u Fig3_mouse_data/preprocess_data_mouse_embryo_stereo.py
 ```
 
-2. 2 Reproduce the result of **Figure3.A&B** and save results in folder _results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809_
+2. Reproduce the result of **Figure3.A&B** and save results in folder _results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809_
 
 ```bash
 python -u Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py 
@@ -97,11 +98,11 @@ python -u Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py
 > logs/log.log
 ```
 
-2. 2 Plot **Figure3.A&B** with the result in _results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809_, please check _Fig3_mouse_data/plot_figure3AB.ipynb_
+2. Plot **Figure3.A&B** with the result in _results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809_, please check _Fig3_mouse_data/plot_figure3AB.ipynb_
 
-2. 3 **Figure3.C**: Compare TemporalVAE with LR, PCA, RF on mouse atlas data, please check _Fig3_mouse_data/LR_PCA_RF_kFoldOn_mouseAtlas.ipynb_
+3. **Figure3.C**: Compare TemporalVAE with LR, PCA, RF on mouse atlas data, please check _Fig3_mouse_data/LR_PCA_RF_kFoldOn_mouseAtlas.ipynb_
 
-3. **Figure3.D&E**: Models train on mouse atlas data and predict on mouse stereo-seq data, please check _Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.ipynb_
+4. **Figure3.D&E**: Models train on mouse atlas data and predict on mouse stereo-seq data, please check _Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.ipynb_
    or run code _Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py_ on console.
 
 ### Figure 4:

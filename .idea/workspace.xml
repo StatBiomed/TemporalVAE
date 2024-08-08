@@ -9,51 +9,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="figure5 code">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/rAvailablePackageCache.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/rGraphicsSettings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/rSettings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/rpackages.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_moscot_toyDataset.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_ot_toyDataset.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_seurat_toyDataset.R" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/ot/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/ot/ot_module.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/DC_tensorflow_helpers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/atac_drosophila_age_inference.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/check_bulk_sample_predictions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/drosophila_age_inference.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/atac_NNv1/keras_metadata.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/atac_NNv1/saved_model.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/atac_NNv1/variables/variables.data-00000-of-00001" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/atac_NNv1/variables/variables.index" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/atac_NNv2/keras_metadata.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/atac_NNv2/saved_model.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/atac_NNv2/variables/variables.data-00000-of-00001" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/atac_NNv2/variables/variables.index" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/rna_NNv1/keras_metadata.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/rna_NNv1/saved_model.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/rna_NNv1/variables/variables.data-00000-of-00001" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/rna_NNv1/variables/variables.index" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/rna_NNv2/keras_metadata.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/rna_NNv2/saved_model.pb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/rna_NNv2/variables/variables.data-00000-of-00001" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/models/rna_NNv2/variables/variables.index" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/ok_genes.Rds" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/ok_peaks.Rds" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demo/240606_yingzhang.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/TemporalVAE.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TemporalVAE.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="revision change">
+      <change afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/preprocess_data_fromPsupertimeManuscript.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/240714_human_CS8/cs8_human_embryo.rds" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_moscot_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_moscot_toyDataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,8 +31,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Jupyter Script" />
-        <option value="Jupyter Notebook" />
         <option value="R Script" />
+        <option value="Jupyter Notebook" />
         <option value="Python Script" />
       </list>
     </option>
@@ -126,8 +93,12 @@
   "keyToString": {
     "Notification.DisplayName-DoNotAsk-Error Report": "Internal error report submitted",
     "Notification.DoNotAsk-Error Report": "true",
-    "Python.exp2_ot_toyDataset.executor": "Run",
+    "Python.exp2_moscot_toyDataset.executor": "Debug",
+    "Python.exp2_ot_toyDataset.executor": "Debug",
     "Python.exp2_science2022_toyDataset.executor": "Debug",
+    "Python.exp2_vae_toyDataset.executor": "Debug",
+    "Python.plotFig2_check_corr.executor": "Run",
+    "Python.test.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -174,14 +145,14 @@
       <recent name="$PROJECT_DIR$/Fig5_RNA_velocity" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Fig4_human_data" />
+      <recent name="$PROJECT_DIR$/data/240714_human_CS8" />
       <recent name="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference" />
       <recent name="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
       <recent name="$PROJECT_DIR$/Fig5_RNA_velocity" />
-      <recent name="$PROJECT_DIR$/draw_images" />
-      <recent name="$PROJECT_DIR$/Fig4_human_data" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.exp2_ot_toyDataset">
+  <component name="RunManager" selected="Python.plotFig2_check_corr">
     <configuration name="GPLVM_fromDandan_trainOnAllData" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="ENV_FILES" value="" />
@@ -199,29 +170,6 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GPLVM_dandan/project_endometrium_DanDan/GPLVM_fromDandan_trainOnAllData.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
-      <module name="TemporalVAE" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig4_human_data" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -268,29 +216,6 @@
       <option name="SCRIPT_NAME" value="D:/awa_project/pairsRegulatePrediction/GPLVM_dandan/VAE_fromDandan_testOnOneDonor.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="VAE_mouse_fineTune_Train_on_U_pairs_S" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
-      <module name="TemporalVAE" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig5_RNA_velocity" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -481,6 +406,26 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="exp2_moscot_toyDataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TemporalVAE" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_moscot_toyDataset.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="exp2_ot_toyDataset" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="ENV_FILES" value="" />
@@ -504,7 +449,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="exp2_psupertime_toyDataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="exp2_vae_toyDataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -518,7 +463,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_psupertime_toyDataset.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -527,7 +472,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="exp2_science2022_toyDataset" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="plotFig2_check_corr" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TemporalVAE" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -541,9 +506,9 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/test.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -561,19 +526,19 @@
       <item itemvalue="Python.GPLVM_fromDandan_trainOnAllData" />
       <item itemvalue="Python.VAE_fromDandan_testOnOneDonor" />
       <item itemvalue="Python.VAE_fromDandan_testOnExternal_eachTestOnOneSample_newAnnor0717" />
+      <item itemvalue="Python.exp2_moscot_toyDataset" />
+      <item itemvalue="Python.exp2_vae_toyDataset" />
+      <item itemvalue="Python.plotFig2_check_corr" />
+      <item itemvalue="Python.test" />
       <item itemvalue="Python.exp2_ot_toyDataset" />
-      <item itemvalue="Python.exp2_science2022_toyDataset" />
-      <item itemvalue="Python.exp2_psupertime_toyDataset" />
-      <item itemvalue="Python.VAE_mouse_fineTune_Train_on_U_pairs_S" />
-      <item itemvalue="Python.LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.plotFig2_check_corr" />
+        <item itemvalue="Python.exp2_vae_toyDataset" />
         <item itemvalue="Python.exp2_ot_toyDataset" />
-        <item itemvalue="Python.exp2_science2022_toyDataset" />
-        <item itemvalue="Python.exp2_psupertime_toyDataset" />
-        <item itemvalue="Python.VAE_mouse_fineTune_Train_on_U_pairs_S" />
-        <item itemvalue="Python.LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.exp2_moscot_toyDataset" />
       </list>
     </recent_temporary>
   </component>
@@ -1159,7 +1124,23 @@
       <option name="project" value="LOCAL" />
       <updated>1715608464211</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="revision change">
+      <option name="closed" value="true" />
+      <created>1722235351303</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1722235351304</updated>
+    </task>
+    <task id="LOCAL-00024" summary="revision change">
+      <option name="closed" value="true" />
+      <created>1722235404715</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1722235404715</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1184,7 +1165,8 @@
     <MESSAGE value="figure3 code" />
     <MESSAGE value="figure4 code" />
     <MESSAGE value="figure5 code" />
-    <option name="LAST_COMMIT_MESSAGE" value="figure5 code" />
+    <MESSAGE value="revision change" />
+    <option name="LAST_COMMIT_MESSAGE" value="revision change" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1259,6 +1241,56 @@
           <line>83</line>
           <option name="timeStamp" value="3574" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_moscot_toyDataset.py</url>
+          <line>251</line>
+          <option name="timeStamp" value="3575" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/moscot/problems/time/_mixins.py</url>
+          <line>216</line>
+          <option name="timeStamp" value="3583" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/moscot/base/problems/_mixins.py</url>
+          <line>150</line>
+          <option name="timeStamp" value="3584" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/test.py</url>
+          <line>60</line>
+          <option name="timeStamp" value="3586" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/networkx/algorithms/shortest_paths/unweighted.py</url>
+          <line>307</line>
+          <option name="timeStamp" value="3587" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/networkx/algorithms/shortest_paths/unweighted.py</url>
+          <line>239</line>
+          <option name="timeStamp" value="3588" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/networkx/algorithms/shortest_paths/unweighted.py</url>
+          <line>282</line>
+          <option name="timeStamp" value="3589" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/moscot/utils/subset_policy.py</url>
+          <line>292</line>
+          <option name="timeStamp" value="3590" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py</url>
+          <line>214</line>
+          <option name="timeStamp" value="3593" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py</url>
+          <line>100</line>
+          <option name="timeStamp" value="3599" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint enabled="true" type="javascript-exception" />
@@ -1292,6 +1324,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$.coverage" NAME=" Coverage Results" MODIFIED="1700631494627" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/draw_images" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$kFold_check_corr.coverage" NAME="kFold_check_corr Coverage Results" MODIFIED="1713243855157" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/baseline_method" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_mouse_plotLatentSpace_trainOnAtlasAndStereo_withOrWithoutAdversarial.coverage" NAME="VAE_mouse_plotLatentSpace_trainOnAtlasAndStereo_withOrWithoutAdversarial Coverage Results" MODIFIED="1696942178279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$exp2_moscot_toyDataset.coverage" NAME="exp2_moscot_toyDataset Coverage Results" MODIFIED="1722659339556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$regress_onlyBy_cellTotalCount_cellExpressNum.coverage" NAME="regress_onlyBy_cellTotalCount_cellExpressNum Coverage Results" MODIFIED="1696762985716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$calculate_motif_target_score__1_.coverage" NAME="calculate_motif_target_score (1) Coverage Results" MODIFIED="1683111523457" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/preprocess_generate_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_mouse_fineTune_Train_on_U_concat_S.coverage" NAME="VAE_mouse_fineTune_Train_on_U_concat_S Coverage Results" MODIFIED="1704687438921" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/project_mouse_Yijun" />
@@ -1316,6 +1349,7 @@
     <SUITE FILE_PATH="coverage/TemporalVAE$VAE_mouse_fineTune_Train_on_U_pairs_S.coverage" NAME="VAE_mouse_fineTune_Train_on_U_pairs_S Coverage Results" MODIFIED="1715419249274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig5_RNA_velocity" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$exp2_vae_toyDataset.coverage" NAME="exp2_vae_toyDataset Coverage Results" MODIFIED="1713265305911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/baseline_method" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$vae_keras.coverage" NAME="vae_keras Coverage Results" MODIFIED="1687786535190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$plotFig2_check_corr.coverage" NAME="plotFig2_check_corr Coverage Results" MODIFIED="1723013695507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$read_json_result_and_plot.coverage" NAME="read_json_result_and_plot Coverage Results" MODIFIED="1694575468961" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$lyj_train_3labels_3foldx_pytorch__1_.coverage" NAME="lyj_train_3labels_3foldx_pytorch (1) Coverage Results" MODIFIED="1676967245103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/train_new_model" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$exp2_randomForest_toyDataset.coverage" NAME="exp2_randomForest_toyDataset Coverage Results" MODIFIED="1695714121950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/baseline_method" />
@@ -1367,7 +1401,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_data_mouse_embryo_stereo_subOrgan.coverage" NAME="preprocess_data_mouse_embryo_stereo_subOrgan Coverage Results" MODIFIED="1708310656212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/preprocess_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$experiment_adversarial.coverage" NAME="experiment_adversarial Coverage Results" MODIFIED="1694067846327" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/PyTorch-VAE-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_mouse_plotLatentSpace_oneDataset.coverage" NAME="VAE_mouse_plotLatentSpace_oneDataset Coverage Results" MODIFIED="1700380358159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
-    <SUITE FILE_PATH="coverage/TemporalVAE$exp2_vae_toyDataset.coverage" NAME="exp2_vae_toyDataset Coverage Results" MODIFIED="1715181226298" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$exp2_vae_toyDataset.coverage" NAME="exp2_vae_toyDataset Coverage Results" MODIFIED="1722916954266" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_organ_Joy.coverage" NAME="VAE_organ_Joy Coverage Results" MODIFIED="1699955238914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$vanillaVAE_fromDandan_testOnOneDonor.coverage" NAME="vanillaVAE_fromDandan_testOnOneDonor Coverage Results" MODIFIED="1688049359504" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$GPLVM_fromDandan__1_.coverage" NAME="GPLVM_fromDandan (1) Coverage Results" MODIFIED="1686736826867" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
@@ -1382,6 +1416,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$0531_main_resnet18_only_motif.coverage" NAME="0531-main-resnet18-only-motif Coverage Results" MODIFIED="1685623032367" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_fromDandan_testOnOneDonor_withCellTypeSameCellNumber.coverage" NAME="VAE_fromDandan_testOnOneDonor_withCellTypeSameCellNumber Coverage Results" MODIFIED="1690772493995" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_SCdata.coverage" NAME="preprocess_SCdata Coverage Results" MODIFIED="1676363167003" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/utils" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$test.coverage" NAME="test Coverage Results" MODIFIED="1722686334838" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$functional.coverage" NAME="functional Coverage Results" MODIFIED="1687137378832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/AppData/Local/JetBrains/PyCharm2022.1/remote_sources/952064903/-1004608565/torch" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$0512_main_resnet18_3class_mouse_neuron_motif_image.coverage" NAME="0512-main-resnet18-3class-mouse_neuron-motif+image Coverage Results" MODIFIED="1683862504629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_humanEmbryo_Hislop2023.coverage" NAME="preprocess_humanEmbryo_Hislop2023 Coverage Results" MODIFIED="1712721647888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/preprocess_data" />
@@ -1484,7 +1519,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_time_points_data.coverage" NAME="preprocess_time_points_data Coverage Results" MODIFIED="1684399648883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/preprocess_generate_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$get_xy_label_data_cnn_combine_from_database.coverage" NAME="get_xy_label_data_cnn_combine_from_database Coverage Results" MODIFIED="1679391661574" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/utils" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$test_fangXinData.coverage" NAME="test_fangXinData Coverage Results" MODIFIED="1700632945913" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/draw_images" />
-    <SUITE FILE_PATH="coverage/TemporalVAE$exp2_ot_toyDataset.coverage" NAME="exp2_ot_toyDataset Coverage Results" MODIFIED="1722234926508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$exp2_ot_toyDataset.coverage" NAME="exp2_ot_toyDataset Coverage Results" MODIFIED="1722916178703" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$exp2_gplvm_toyDataset.coverage" NAME="exp2_gplvm_toyDataset Coverage Results" MODIFIED="1695985642294" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/baseline_method" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$test0817.coverage" NAME="test0817 Coverage Results" MODIFIED="1700057540325" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$Guo__1_.coverage" NAME="Guo (1) Coverage Results" MODIFIED="1685933944633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />

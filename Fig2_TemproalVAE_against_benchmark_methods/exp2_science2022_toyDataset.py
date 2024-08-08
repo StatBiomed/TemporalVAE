@@ -71,7 +71,7 @@ def method_calculate(dataset):
     print("k-fold test final result:")
     sp, ke=corr(kFold_test_result_df["time"], kFold_test_result_df["pseudotime"])
 
-    emd, mmd, r_squared=distribution_metric(np.array(kFold_test_result_df["time"]),np.array(kFold_test_result_df["pseudotime"]))
+    # emd, mmd, r_squared=distribution_metric(np.array(kFold_test_result_df["time"]),np.array(kFold_test_result_df["pseudotime"]))
 
     kFold_test_result_df.to_csv(f'{os.getcwd()}/{method}_results/{dataset}_{method}_result.csv', index=True)
     print(f"test result save at {os.getcwd()}/{method}_results/{dataset}_{method}_result.csv")

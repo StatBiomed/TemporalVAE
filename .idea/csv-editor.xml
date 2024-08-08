@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="/Fig2_TemproalVAE_against_benchmark_methods/data_fromPsupertime/acinar_hvg_sce_X.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/Fig2_TemproalVAE_against_benchmark_methods/data_fromPsupertime/acinar_hvg_sce_Y.csv">
           <value>
             <Attribute>
@@ -32,6 +39,13 @@
           </value>
         </entry>
         <entry key="/Fig2_TemproalVAE_against_benchmark_methods/data_fromPsupertime/humanGermline_gene_list.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/Fig2_TemproalVAE_against_benchmark_methods/preprocessedData_ByPypsupertime_forSeurat/acinarHVG_X.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
