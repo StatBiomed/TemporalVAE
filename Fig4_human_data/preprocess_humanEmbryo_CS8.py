@@ -9,7 +9,6 @@
 data from Xiao, Zhenyu, et al. "3D reconstruction of a gastrulating human embryo." Cell 187.11 (2024): 2855-2874.
 count matrix download from https://cs8.3dembryo.com/#/download
 """
-
 import os
 import sys
 
@@ -21,58 +20,78 @@ import pandas as pd
 import anndata as ad
 from collections import Counter
 from utils.utils_DandanProject import calHVG_adata as calHVG
+from utils.utils_DandanProject import read_rds_file
 from utils.utils_DandanProject import series_matrix2csv
-from utils.utils_Dandan_plot import draw_venn
+from utils.utils_Dandan_plot import draw_venn,plot_data_quality
 
 
 def main():
-    select_hvg_bool = False  # 2024-04-03 17:51:44 add here
-    file_path = "data/240322Human_embryo/PLOS2019/"
-    count_data = pd.read_csv(f"{file_path}/data_count.csv", index_col=0, sep="\t")
-    _cell_temp = pd.read_csv(f"{file_path}/sample.csv", index_col=0, sep=",")
-    _cell_temp2 = pd.read_csv(f"{file_path}/SraRunTable.txt", index_col=0, sep=",")
-    _cell_temp["GEO_Accession (exp)"] = _cell_temp.index
-    _cell_temp2["Run"] = _cell_temp2.index
-    cell_info_pd = pd.merge(_cell_temp, _cell_temp2, on="GEO_Accession (exp)", how="inner")
-    cell_info_pd.index = cell_info_pd["Title"]
+    select_hvg_bool = True  # 2024-04-03 17:51:44 add here
+    hvg_num = 1000
+    file_path = "data/240322Human_embryo/xiaoCellCS8/"
 
-    # cell_infotemp = series_matrix2csv(f"{file_path}/GSE125616_series_matrix.txt.gz")
+    # exp_count_pd = pd.read_csv(f"{file_path}/data_count.csv",sep="\t")
+    exp_count_pd = pd.read_csv(f"{file_path}/data_count.csv", header=None)
+    exp_count_pd.columns = ['data']
 
-    Counter(cell_info_pd["development_day"])
-    cell_info_pd = cell_info_pd.loc[count_data.columns]
-    Counter(cell_info_pd["development_day"])
-    adata = ad.AnnData(X=count_data.values.T, obs=cell_info_pd, var=pd.DataFrame(index=count_data.index))
+    column_names = exp_count_pd.iloc[0, 0].split('\t')
+    column_names = [name.strip('"').strip("'") for name in column_names]
+    exp_count_pd = exp_count_pd.iloc[1:]
+    exp_count_pd = exp_count_pd['data'].str.split('\t', expand=True)
+
+    row_names = exp_count_pd.iloc[:, 0]
+    exp_count_pd = exp_count_pd.iloc[:, 1:]
+
+    exp_count_pd.columns = column_names
+    exp_count_pd.index=row_names
+    exp_count_pd = exp_count_pd.astype(int)
+
+    cell_info_pd = pd.read_csv(f"{file_path}/cell_info.csv",sep="\t")
+    cell_info_pd["cell_name"]=cell_info_pd["cell"]
+    cell_info_pd.index = cell_info_pd["cell_name"]
+    exp_count_pd=exp_count_pd.T
+    adata = ad.AnnData(X=exp_count_pd, obs=cell_info_pd)
+    adata.write_h5ad(f"{file_path}/raw_count.h5ad")
+    # ------------ print and plot for show the structure of dataset
     print("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
     print("Cell number: {}".format(adata.n_obs))
     print("Gene number: {}".format(adata.n_vars))
     print("Annotation information of data includes: {}".format(adata.obs_keys()))  # 胞注釋信息的keys
     print("Cell id first 5: {}".format(adata.obs_names[:5]))  # 返回胞ID 数据类型是object
     print("Gene id first 5: {}".format(adata.var_names.to_list()[:5]))  # 返回基因数据类型是list adata.obs.head()# 査看前5行的数据
-    print("Gene id first 5: {}".format(adata.var.index.to_list()[:5]))  # 返回基因数据类型是list adata.obs.head()# 査看前5行的数据
-    # 定义你想要保留的 development_day 的值
-    # days_to_keep = ["day6", "day7", "day8", "day9","day10","day13","day14","day0"]
-    days_to_keep = ["day6", "day7", "day8", "day9","day10","day14"]
-    # days_to_keep = ["day6", "day7", "day8", "day9", "day10"]
-    # adata.obs['development_day'] = adata.obs['development_day'].replace('Endometrial', 'day0')
 
-    # 使用布尔索引来筛选 those observations in anndata.obs that meet the condition
-    filtered_adata = adata[adata.obs["development_day"].isin(days_to_keep)].copy()
-    filtered_adata.obs["time"] = filtered_adata.obs["development_day"].str.replace("day", "").astype(int)
-    print("Use gene list from mouse_embryo,Anndata with cell number: {}, gene number: {}".format(filtered_adata.n_obs, filtered_adata.n_vars))
+    sc.pl.highest_expr_genes(adata, n_top=10)
+    # mitochondrial genes, "MT-" for human, "Mt-" for mouse
+    adata.var["mt"] = adata.var_names.str.startswith("MT-")
+    # ribosomal genes
+    adata.var["ribo"] = adata.var_names.str.startswith(("RPS", "RPL"))
+    # hemoglobin genes
+    adata.var["hb"] = adata.var_names.str.contains("^HB[^(P)]")
+
+    plot_data_quality(adata)
+    for _var in ["mt", "ribo", "hb"]:
+        adata = adata[:, ~adata.var[_var]]
+    print(f"Data (cell,gene) {adata.shape} after remove mitochondrial({adata.var['mt'].sum()}), "
+          f"ribosomal({adata.var['ribo'].sum()}), "
+          f"and hemoglobin genes({adata.var['hb'].sum()})")
+
+
+    # ------------
+    adata.obs["time"] = 18.5
 
     if select_hvg_bool:
-        sc.pp.filter_genes(filtered_adata, min_cells=50)  # drop genes which none expression in 3 samples
-        hvg_cellRanger_list = calHVG(filtered_adata.copy(), gene_num=1000, method="cell_ranger")
-        hvg_seurat_list = calHVG(filtered_adata.copy(), gene_num=1000, method="seurat")
-        hvg_seurat_v3_list = calHVG(filtered_adata.copy(), gene_num=1000, method="seurat_v3")
+        sc.pp.filter_genes(adata, min_cells=50)  # drop genes which none expression in 3 samples
+        hvg_cellRanger_list = calHVG(adata.copy(), gene_num=hvg_num, method="cell_ranger")
+        hvg_seurat_list = calHVG(adata.copy(), gene_num=hvg_num, method="seurat")
+        hvg_seurat_v3_list = calHVG(adata.copy(), gene_num=hvg_num, method="seurat_v3")
         draw_venn({"cell ranger": hvg_cellRanger_list, "seurat": hvg_seurat_list, "seurat v3": hvg_seurat_v3_list})
 
         print(f"concat all hvg calculated")
         import itertools
         combined_hvg_list = list(set(itertools.chain(hvg_cellRanger_list, hvg_seurat_list, hvg_seurat_v3_list)))
-        filtered_adata_hvg = filtered_adata[:, combined_hvg_list].copy()
+        filtered_adata_hvg = adata[:, combined_hvg_list].copy()
     else:
-        filtered_adata_hvg = filtered_adata.copy()
+        filtered_adata_hvg = adata.copy()
 
     _shape = filtered_adata_hvg.shape
     _new_shape = (0, 0)
@@ -87,7 +106,9 @@ def main():
           "drop genes which none expression in {} samples".format(min_gene_num, min_cell_num))
     print("After filter, get cell number: {}, gene number: {}".format(filtered_adata_hvg.n_obs, filtered_adata_hvg.n_vars))
     print("the original sc expression anndata should be gene as row, cell as column")
-    filtered_adata_hvg.write_h5ad(f"{file_path}/adata_hvg.h5ad")
+    plot_data_quality(adata)
+
+    filtered_adata_hvg.write_h5ad(f"{file_path}/raw_count_hvg{hvg_num}.h5ad")
 
     sc_expression_df = pd.DataFrame(data=filtered_adata_hvg.X.T,
                                     columns=filtered_adata_hvg.obs.index,
@@ -96,18 +117,20 @@ def main():
     sc_expression_df.to_csv(f"{file_path}/data_count_hvg.csv", sep="\t")
 
     cell_info = filtered_adata_hvg.obs
-    cell_info["day"] = filtered_adata_hvg.obs["development_day"]
-    cell_info["time"] = cell_info['day'].str.replace(r'[A-Za-z]', '', regex=True)
+    cell_info["day"] = "day18.5"
+    cell_info["time"] = 18.5
     cell_info["cell_id"] = filtered_adata_hvg.obs.index
-    cell_info["dataset_label"]="PLOS"
-    cell_info["cell_type"]=cell_info["Stage"]
-    cell_info["title"]=cell_info.index
+    cell_info["dataset_label"] = "Xiao"
+    cell_info["cell_type"] = cell_info["clusters"]
+    cell_info["title"] = cell_info.index
     cell_info = cell_info.loc[sc_expression_df.columns]
     cell_info.to_csv(f"{file_path}/cell_with_time.csv", sep="\t")
     gene_info = filtered_adata_hvg.var
     gene_info.to_csv(f"{file_path}/gene_info.csv", sep="\t")
 
     print("Finish all")
+
+    return
 
 
 if __name__ == '__main__':

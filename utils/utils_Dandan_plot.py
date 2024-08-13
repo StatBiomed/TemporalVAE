@@ -17,7 +17,22 @@ import seaborn as sns
 import numpy as np
 import re
 
-
+def plot_data_quality(adata):
+    import scanpy as sc
+    print("Original data quality check by plot images.")
+    sc.settings.set_figure_params(dpi=200, facecolor="white")
+    sc.pl.highest_expr_genes(adata, n_top=20)
+    try:
+        sc.pp.calculate_qc_metrics(adata, qc_vars=["mt", "ribo", "hb"], inplace=True, log1p=True)
+    except:
+        try:
+            sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"], inplace=True, log1p=True)
+        except:
+            pass
+    sc.pl.violin(adata, ["n_genes_by_counts", "total_counts", "pct_counts_mt"], jitter=0.4, multi_panel=True, )
+    sc.pl.scatter(adata, "total_counts", "n_genes_by_counts", color="pct_counts_mt")
+    sc.pl.scatter(adata, x="total_counts", y="pct_counts_mt")
+    sc.pl.scatter(adata, x="total_counts", y="n_genes_by_counts")
 def LHdonor_resort_key(item):
     match = re.match(r'LH(\d+)_([0-9PGT]+)', item)
     if match:

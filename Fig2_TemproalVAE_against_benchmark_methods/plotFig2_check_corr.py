@@ -103,9 +103,12 @@ def main():
                                                        list(distribution_metric(vae_df['time'], vae_df['predicted_time']))
                                                        )
         print(f"*** {dataset}")
-
-        print( multi_corr_df)
-
+        print(multi_corr_df)
+        multi_corr_df.set_index("method",inplace=True)
+        df=multi_corr_df.applymap(lambda x: f"&{np.round(x,3)}")
+        with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+            print(df.to_string(index=True, header=True))
+            print('\\\\')
     return
 
 
