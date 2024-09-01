@@ -740,7 +740,7 @@ def downSample_matrix(matrix, target_location="row", reduce_multiple=10):
         return downsampled_matrix
 
 
-def preprocessData_and_dropout_some_donor_or_gene(golbal_path, file_name, cell_info_file,  # 2024-02-23 12:56:15 remove KNN_smooth_type
+def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, cell_info_file,  # 2024-02-23 12:56:15 remove KNN_smooth_type
                                                   drop_out_donor=None, donor_attr="donor", gene_list=None,
                                                   drop_out_cell_type=None,
                                                   min_cell_num=50, min_gene_num=100, keep_sub_type_with_cell_num=None,
@@ -754,7 +754,7 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_path, file_name, cell_i
                                                   random_drop_cell_bool=False,
                                                   normalized_cellTotalCount=1e6, data_raw_count_bool=True):
     """
-    :param golbal_path:
+    :param golbal_data_path:
     :param file_name:
     :param cell_info_file:
     :param drop_out_donor:
@@ -782,16 +782,16 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_path, file_name, cell_i
     # from .utils_Dandan_plot import plot_boxPlot_nonExpGene_percentage_whilePreprocess
     _logger.info("the original sc expression anndata should be gene as row, cell as column")
     try:
-        adata = anndata.read_csv("{}/{}".format(golbal_path, file_name), delimiter='\t')
+        adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter='\t')
     except:
-        adata = anndata.read_csv("{}/{}".format(golbal_path, file_name), delimiter=',')
+        adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter=',')
     _logger.info("read the original sc expression anndata with shape (gene, cell): {}".format(adata.shape))
 
     if external_file_name is not None:
         try:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_path, external_file_name), delimiter='\t')
+            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter='\t')
         except:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_path, external_file_name), delimiter=',')
+            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter=',')
         _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
         _logger.info("here is important, we want to use same cell compare with no integration method.")
         if external_cellId_list is not None:
@@ -816,9 +816,9 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_path, file_name, cell_i
         _logger.info("with gene list require, adata filted with {} genes.".format(len(overlap_gene)))
     adata = adata.T  # 基因和cell转置矩阵
     _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
-    cell_time = pd.read_csv(golbal_path + cell_info_file, sep="\t", index_col=0)
+    cell_time = pd.read_csv(golbal_data_path + cell_info_file, sep="\t", index_col=0)
     if external_cell_info_file is not None:
-        external_cell_time = pd.read_csv(golbal_path + external_cell_info_file, sep="\t", index_col=0)
+        external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file, sep="\t", index_col=0)
         _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
 
         external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
@@ -957,9 +957,8 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_path, file_name, cell_i
 
     if keep_sub_type_with_cell_num is not None:
         drop_out_cell = []
-        _logger.info(
-            "Random select {} cells in each sub celltype; if one sub type number less than the threshold, keep all.".format(
-                keep_sub_type_with_cell_num))
+        _logger.info(f"Random select {keep_sub_type_with_cell_num} cells in each sub celltype; "
+                     f"if one sub type number less than the threshold, keep all.")
         _cell_time = cell_time.loc[adata.obs_names]
         from collections import Counter
         _num_dic = dict(Counter(_cell_time["major_cell_type"]))
@@ -1717,7 +1716,8 @@ def one_fold_test_adversarialTrain(fold, donor_list, sc_expression_df, donor_dic
                                    special_path_str,
                                    cell_time, time_standard_type, config, train_epoch_num,
                                    donor_str="donor", time_str="time",
-                                   plot_trainingLossLine=True, plot_tags=["train_clf_loss_epoch", "val_clf_loss", "test_clf_loss_epoch"],
+                                   plot_trainingLossLine=True,
+                                   plot_tags=["train_clf_loss_epoch", "val_clf_loss", "test_clf_loss_epoch"],
                                    plot_latentSpaceUmap=True,
                                    time_saved_asFloat=False, batch_size=None,
                                    max_attempts=10000000,
@@ -3186,36 +3186,36 @@ def get_parameters_df(local_variables):
     return df
 
 
-def predict_newData_preprocess_df(gene_dic, adata_new, min_gene_num, mouse_atlas_file, hvg_dic=None
-                                  , bool_change_geneID_to_geneShortName=True):
+def predict_newData_preprocess_df(gene_dic, adata_new, min_gene_num, reference_file,
+                                  hvg_dic=None, bool_change_geneID_to_geneShortName=True):
     """
     2023-10-24 10:58:39
-    as new data, predict the preprocess of new data, by concat with atlas data, and only return the preprocessed new data
+    return the preprocess of new data, by concat with reference data, and only return the preprocessed new data
     :param gene_dic:
     :param adata_new:
     :param min_gene_num:
-    :param mouse_atlas_file:
+    :param reference_file:
     :return:
     """
     print("the original sc expression anndata should be gene as row, cell as column")
 
     try:
-        mouse_atlas_adata = anndata.read_csv(mouse_atlas_file, delimiter='\t')
+        reference_adata = anndata.read_csv(reference_file, delimiter='\t')
     except:
-        mouse_atlas_adata = anndata.read_csv(mouse_atlas_file, delimiter=',')
-    print("read the mouse atlas anndata with shape (gene, cell): {}".format(mouse_atlas_adata.shape))
+        reference_adata = anndata.read_csv(reference_file, delimiter=',')
+    print("read the mouse atlas anndata with shape (gene, cell): {}".format(reference_adata.shape))
     if bool_change_geneID_to_geneShortName:
-        mouse_atlas_adata.obs_names = [gene_dic.get(name, name) for name in mouse_atlas_adata.obs_names]
+        reference_adata.obs_names = [gene_dic.get(name, name) for name in reference_adata.obs_names]
         print("change gene name of mouse atlas data to short gene name")
     # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
-    if len(set(adata_new.obs_names) & set(mouse_atlas_adata.var_names)):
+    if len(set(adata_new.obs_names) & set(reference_adata.var_names)):
         print(
-            f"Error: check the test data and mouse atlas data have cells with same cell name: {set(adata_new.obs_names) & set(mouse_atlas_adata.var_names)}")
+            f"Error: check the test data and mouse atlas data have cells with same cell name: {set(adata_new.obs_names) & set(reference_adata.var_names)}")
         return
     # here
-    draw_venn({"atlas": mouse_atlas_adata.obs_names, "train": adata_new.var_names})
+    draw_venn({"atlas": reference_adata.obs_names, "train": adata_new.var_names})
 
-    adata_concated = anndata.concat([mouse_atlas_adata.copy(), adata_new.T.copy()], axis=1)
+    adata_concated = anndata.concat([reference_adata.copy(), adata_new.T.copy()], axis=1)
     print("merged sc data and external test dataset with shape (gene, cell): {}".format(adata_concated.shape))
 
     adata_concated = adata_concated.T  # 基因和cell转置矩阵
@@ -3225,7 +3225,10 @@ def predict_newData_preprocess_df(gene_dic, adata_new, min_gene_num, mouse_atlas
     sc.pp.filter_cells(adata_concated, min_genes=min_gene_num)
     print("After cell threshold: {}, remain adata shape (cell, gene): {}".format(min_gene_num, adata_concated.shape))
     # new_test_cell_list = list(set(adata_new.obs_names) & set(adata_concated.obs_names))
-    new_test_cell_list = [_cell for _cell in adata_concated.obs_names if _cell in set(adata_new.obs_names)]
+    _cells = adata_concated.obs_names.intersection(adata_new.obs_names)
+    new_test_cell_list = adata_concated.obs_names[adata_concated.obs_names.isin(_cells)].tolist()
+
+    # new_test_cell_list = [_cell for _cell in adata_concated.obs_names if _cell in set(adata_new.obs_names)]
     print(f"remain test adata cell num {len(new_test_cell_list)}")
     sc.pp.normalize_total(adata_concated, target_sum=1e6)
     sc.pp.log1p(adata_concated)
@@ -3243,10 +3246,10 @@ def predict_newData_preprocess_df(gene_dic, adata_new, min_gene_num, mouse_atlas
 
     sc_expression_test_df = pd.DataFrame(data=adata_new_normalized.layers["X_normalized"],
                                          columns=adata_new_normalized.var_names, index=list(adata_new_normalized.obs_names))
-    loss_gene_shortName_list = list(set(mouse_atlas_adata.obs_names) - set(adata_new_normalized.var_names))
+    loss_gene_shortName_list = list(set(reference_adata.obs_names) - set(adata_new_normalized.var_names))
 
     sc_expression_test_df[loss_gene_shortName_list] = 0
-    sc_expression_test_df = sc_expression_test_df[mouse_atlas_adata.obs_names]
+    sc_expression_test_df = sc_expression_test_df[reference_adata.obs_names]
     cell_time_df = pd.DataFrame(adata_new[new_test_cell_list].obs)
 
     if hvg_dic is None:
@@ -3322,7 +3325,7 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
     else:
         for fold in range(len(donor_list)):
             if recall_predicted_mu:
-                predict_donor_dic, test_clf_result, label_dic, test_mu_result = one_fold_test(fold, donor_list,
+                predict_donor_dic, test_clf_result, label_dic, train_test_mu_result = one_fold_test(fold, donor_list,
                                                                                               sc_expression_df,
                                                                                               donor_dic, batch_dic,
                                                                                               special_path_str, cell_time,
@@ -3358,7 +3361,7 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
 
     _logger.info("Finish plot image and fold-test.")
     if recall_predicted_mu:
-        return predict_donors_dic, label_dic, test_mu_result
+        return predict_donors_dic, label_dic, train_test_mu_result
     else:
         return predict_donors_dic, label_dic
 

@@ -37,7 +37,7 @@ import numpy as np
 
 
 def main():
-    parser = argparse.ArgumentParser(description="CNN model for prediction of gene paris' regulatory relationship")
+    parser = argparse.ArgumentParser(description="TemporalVAE")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22
                         default="240505_preimplantation_Melania",
                         help="results all save here")
@@ -83,7 +83,7 @@ def main():
     result_save_path = "results/" + args.result_save_path + "/"
     data_path = args.file_path + "/"
     yaml_path = "vae_model_configs/"
-    # --------------------------------------- import vae model parameters from yaml file----------------------------------------------
+    # ---------------------------- import vae model parameters from yaml file----------------------------------------------
     with open(yaml_path + "/" + args.vae_param_file + ".yaml", 'r') as file:
         try:
             config = yaml.safe_load(file)
@@ -113,7 +113,7 @@ def main():
     _logger.info("load vae model parameters from file: {}".format(yaml_path + args.vae_param_file + ".yaml"))
     # ------------ Preprocess data, with hvg gene from preprocess_data_mouse_embryonic_development.py------------------------
     if "Melania" in sc_data_file_csv:
-        data_raw_count_bool = False
+        data_raw_count_bool = False; print("Melania is already lognormalized by scanpy, so skip the log1p")
     else:
         data_raw_count_bool = True
 

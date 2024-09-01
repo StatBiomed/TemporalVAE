@@ -89,7 +89,7 @@ python -u Fig3_mouse_data/preprocess_data_mouse_embryo_stereo.py
 2. Reproduce the result of **Figure3.A&B** and save results in folder _results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809_
 
 ```bash
-python -u Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py 
+python -u Fig3_mouse_data/VAE_kFoldOn_mouseAtlas.py 
 --result_save_path=230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809
 --vae_param_file=supervise_vae_regressionclfdecoder_mouse_stereo
 --file_path=/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000 

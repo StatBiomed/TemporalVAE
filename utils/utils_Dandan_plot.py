@@ -29,10 +29,22 @@ def plot_data_quality(adata):
             sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"], inplace=True, log1p=True)
         except:
             pass
-    sc.pl.violin(adata, ["n_genes_by_counts", "total_counts", "pct_counts_mt"], jitter=0.4, multi_panel=True, )
-    sc.pl.scatter(adata, "total_counts", "n_genes_by_counts", color="pct_counts_mt")
-    sc.pl.scatter(adata, x="total_counts", y="pct_counts_mt")
-    sc.pl.scatter(adata, x="total_counts", y="n_genes_by_counts")
+    try:
+        sc.pl.violin(adata, ["n_genes_by_counts", "total_counts", "pct_counts_mt"], jitter=0.4, multi_panel=True, )
+    except:
+        pass
+    try:
+        sc.pl.scatter(adata, x="total_counts", y="n_genes_by_counts", color="pct_counts_mt")
+    except:
+        pass
+    try:
+        sc.pl.scatter(adata, x="total_counts", y="pct_counts_mt")
+    except:
+        pass
+    try:
+        sc.pl.scatter(adata, x="total_counts", y="n_genes_by_counts")
+    except:
+        pass
 def LHdonor_resort_key(item):
     match = re.match(r'LH(\d+)_([0-9PGT]+)', item)
     if match:
@@ -254,6 +266,9 @@ def plot_on_each_test_donor_violin_fromDF(cell_time_df, save_path, physical_str,
     plt.title(f"Violin Plot of k-fold test:{corr_str}.")
     plt.xlabel("Time")
     plt.ylabel("Pseudotime")
+    # legend_elements = [plt.Line2D([0], [0], marker='o', color='w',
+    #                               label=f"{time_counts[time_counts['time'] == time][physical_str].values[0]}",
+    #                               markerfacecolor=color_dict[time], markersize=10) for time in time_counts[x_str]]
     legend_elements = [plt.Line2D([0], [0], marker='o', color='w',
                                   label=f"{time_counts[time_counts['time'] == time][physical_str].values[0]}",
                                   markerfacecolor=color_dict[time], markersize=10) for time in time_counts[x_str]]
@@ -1424,7 +1439,7 @@ def plt_umap_byScanpy(adata, attr_list, save_path, mode=None, special_file_name_
                 sc.pl.umap(adata, color=attr, ax=ax, show=False, legend_fontsize=7.5, s=20, color_map=color_map)
         plt.tight_layout()  # 调整布局
     adata.write_h5ad(f"{save_path}/{special_file_name_str}latent_mu.h5ad")
-
+    print(f"latent mu save as {save_path}/{special_file_name_str}latent_mu.h5ad")
     plt.savefig(f"{save_path}/{special_file_name_str}latentSpace_umap_byScanpy.png", dpi=300, )
     plt.show()
     plt.close()

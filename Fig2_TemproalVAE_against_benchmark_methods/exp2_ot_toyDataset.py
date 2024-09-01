@@ -17,7 +17,7 @@ from utils.utils_Dandan_plot import plot_psupertime_density
 import anndata
 import numpy as np
 import pandas as pd
-
+from benchmarking_methods.benchmarking_methods import ot_svm_classifier
 from plotFig2_check_corr import preprocess_parameters,corr
 def main():
     dataset_list = ["acinarHVG", "embryoBeta", "humanGermline"]
@@ -51,12 +51,6 @@ def method_calculate(dataset):
     corr(kFold_test_result_df["time"], kFold_test_result_df["pseudotime"])
     kFold_test_result_df.to_csv(f'{os.getcwd()}/{method}_results/{dataset}_{method}_result.csv', index=True)
     print(f"test result save at {os.getcwd()}/{method}_results/{dataset}_{method}_result.csv")
-    # f = tp.plot_grid_search(title="Grid Search")
-    # f.savefig(f"{os.getcwd()}/psupertime_results/gridSearch.png")
-    # f = tp.plot_model_perf((adata.X, adata.obs.time), figsize=(6, 5))
-    # f.savefig(f"{os.getcwd()}/psupertime_results/modelPred.png")
-    # f = tp.plot_identified_gene_coefficients(adata, n_top=20)
-    # f.savefig(f"{os.getcwd()}/psupertime_results/geneCoff.png")
     save_path=f"{os.getcwd()}/{method}_results/"
     plot_psupertime_density(kFold_test_result_df, save_path,label_key="time", psupertime_key="pseudotime",method=dataset)
     # f.savefig(f"{os.getcwd()}/{method}_results/{result_file_name}_labelsOverPsupertime.png")
@@ -64,24 +58,7 @@ def method_calculate(dataset):
 
 
 
-def ot_svm_classifier(train_x, train_y,test_x,test_y):
-    # import ot
-    train_y=np.array(train_y)
-    from skada import JDOTClassifier,JDOTRegressor
-    from sklearn.linear_model import LogisticRegression
 
-    X=np.concatenate((train_x,test_x),axis=0)
-    y=np.concatenate((train_y,test_y),axis=0)
-    domain=np.concatenate((np.ones(len(train_y),dtype=np.int8),-1*(np.ones(len(test_y),dtype=np.int8))))
-
-    # jdot = JDOTClassifier(LogisticRegression(), alpha=0.1, verbose=True)
-    # jdot.fit(X, y, sample_domain=domain)
-    # ypred = jdot.predict(test_x)
-    # jdot = JDOTClassifier()
-    jdot = JDOTRegressor()
-    jdot.fit(X, y, sample_domain=domain)
-    ypred = jdot.predict(test_x)
-    return ypred
 
 
 if __name__ == '__main__':

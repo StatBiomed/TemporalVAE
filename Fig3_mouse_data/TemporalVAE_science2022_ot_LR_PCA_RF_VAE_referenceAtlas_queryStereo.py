@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py
+@File    ：TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.py
 @IDE     ：PyCharm 
 @Author  ：awa121
 @Date    ：2024/3/22 10:21 
@@ -26,11 +26,15 @@ import logging
 from utils.logging_system import LogHelper
 import yaml
 from utils.utils_Dandan_plot import plot_violin_240223
+import gc
 
 
 def main():
-    min_gene_num = 50
+    min_gene_num = 100
     save_path = f"results/Figure3_LR_PCA_RF_directlyPredictOn_mouseStereo_minGeneNum{min_gene_num}/"
+    plot_compare_corr_boxplot(save_path)
+
+
     if not os.path.exists(save_path):
         os.makedirs(save_path)
     data_golbal_path = "data/"
@@ -38,7 +42,7 @@ def main():
     query_data_path = "/mouse_embryo_stereo/preprocess_Mouse_embryo_all_stage_minGene50/"
     checkpoint_file = "checkpoint_files/mouse_atlas.ckpt"
     config_file = "vae_model_configs/supervise_vae_regressionclfdecoder_mouse_stereo.yaml"
-    # ---------------------------------------set logger and parameters, creat result save path and folder----------------------------------------------
+    # ----------------------set logger and parameters, creat result save path and folder------------------
     logger_file = f'{save_path}/run.log'
     LogHelper.setup(log_path=logger_file, level='INFO')
     _logger = logging.getLogger(__name__)
@@ -49,43 +53,88 @@ def main():
     # --------------------------------preprocess on query data-----------------------------------------
     gene_dic = geneId_geneName_dic()
     try:
-        query_adata_raw = ad.read_csv(f"{data_golbal_path}/{query_data_path}/data_count_hvg.csv", delimiter='\t')
+        query_adata = ad.read_csv(f"{data_golbal_path}/{query_data_path}/data_count_hvg.csv", delimiter='\t')
     except:
-        query_adata_raw = ad.read_csv(f"{data_golbal_path}/{query_data_path}/data_count_hvg.csv", delimiter=',')
+        query_adata = ad.read_csv(f"{data_golbal_path}/{query_data_path}/data_count_hvg.csv", delimiter=',')
     cell_time_query_pd = pd.read_csv(f"{data_golbal_path}/{query_data_path}/cell_with_time.csv", sep="\t", index_col=0)
-    query_adata_raw = query_adata_raw.copy().T
-    query_adata_raw.obs = cell_time_query_pd
+    query_adata = query_adata.copy().T
+    query_adata.obs = cell_time_query_pd
 
     # 计算每个细胞类型的数量
-    celltype_counts = query_adata_raw.obs["celltype_update"].value_counts()
-    print(f"plot for {len(query_adata_raw)} cells")
-    if len(celltype_counts) > 10:
-        # 选出数量前10的细胞类型
-        top_10_attr = celltype_counts.head(10).index.tolist()
-        # 根据选出的前10细胞类型筛选adata
-        query_adata_raw = query_adata_raw[query_adata_raw.obs["celltype_update"].isin(top_10_attr)].copy()
-        print(f"plot for celltype_update, as the number is more than 10, select top 10 to plot umap: {top_10_attr}, the cell is filtered to {len(query_adata_raw)}")
-        cell_time_query_pd = cell_time_query_pd[cell_time_query_pd["celltype_update"].isin(top_10_attr)]
-        cell_time_query_pd = cell_time_query_pd.loc[query_adata_raw.obs.index]
-    trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df = predict_newData_preprocess_df(
-        gene_dic, query_adata_raw,
-        min_gene_num=min_gene_num,
-        mouse_atlas_file=f"{data_golbal_path}/{baseline_data_path}/data_count_hvg.csv",
-        bool_change_geneID_to_geneShortName=False
-    )
-    query_adata = ad.AnnData(X=trainData_renormalized_df, obs=train_cell_info_df)
-    print(f"get query adata {query_adata}")
+    celltype_counts = query_adata.obs["celltype_update"].value_counts()
+    print(f"plot for {len(query_adata)} cells")
+    # if len(celltype_counts) > 10:
+    #     # 选出数量前10的细胞类型
+    #     top_10_attr = celltype_counts.head(10).index.tolist()
+    #     # 根据选出的前10细胞类型筛选adata
+    #     query_adata = query_adata[query_adata.obs["celltype_update"].isin(top_10_attr)].copy()
+    #     print(f"plot for celltype_update, as the number is more than 10, select top 10 to plot umap: {top_10_attr}, the cell is filtered to {len(query_adata)}")
+        # cell_time_query_pd = cell_time_query_pd[cell_time_query_pd["celltype_update"].isin(top_10_attr)]
+        # cell_time_query_pd = cell_time_query_pd.loc[query_adata.obs.index]
+    query_expression_df, _, query_cell_info_df = predict_newData_preprocess_df(gene_dic, query_adata,
+                                                                               min_gene_num=min_gene_num,
+                                                                               reference_file=f"{data_golbal_path}/{baseline_data_path}/data_count_hvg.csv",
+                                                                               bool_change_geneID_to_geneShortName=False)
+    query_adata = ad.AnnData(X=query_expression_df, obs=query_cell_info_df)
+    print(f"get query adata {query_adata.shape}")
+
+
     # ------------------------------preprocess on baseline data----------------------------------------------------------
-    atlas_sc_expression_df, cell_time_atlas = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path,
-                                                                                            f"{baseline_data_path}/data_count_hvg.csv",
-                                                                                            f"{baseline_data_path}/cell_with_time.csv",
-                                                                                            min_cell_num=50,
-                                                                                            min_gene_num=100)
+    reference_expression_df, reference_cell_info_df = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path,
+                                                                                                    f"{baseline_data_path}/data_count_hvg.csv",
+                                                                                                    f"{baseline_data_path}/cell_with_time.csv",
+                                                                                                    min_cell_num=50,
+                                                                                                    min_gene_num=100)
+    # 2024-08-28 23:58:23 add science2022 and ot as benchmarking method.
+    reference_adata = ad.AnnData(X=reference_expression_df, obs=reference_cell_info_df)
+    train_science2022_model(reference_adata, query_adata, save_path)
     directly_predict_on_vae(query_adata, save_path, checkpoint_file, config)
-    train_LR_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path)
-    train_PCA_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path)
-    train_RF_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path)
+    # train_ot_model(reference_adata, query_adata, save_path)
     plot_compare_corr_boxplot(save_path)
+
+    train_LR_model(reference_expression_df, reference_cell_info_df, query_adata, save_path)
+    train_PCA_model(reference_expression_df, reference_cell_info_df, query_adata, save_path)
+    train_RF_model(reference_expression_df, reference_cell_info_df, query_adata, save_path)
+
+
+def train_science2022_model(reference_adata, query_adata, save_path, ):
+    method = "science2022"
+    from benchmarking_methods.benchmarking_methods import science2022
+
+    query_predictions = science2022(train_x=reference_adata.X, train_y=reference_adata.obs["time"], test_df=query_adata.X)
+
+    query_result_df = pd.DataFrame(query_adata.obs["time"])
+    query_result_df["pseudotime"] = query_predictions
+    # query_result_df = pd.DataFrame({"time": query_adata.obs["time"], "pseudotime": query_predictions})
+
+    print("Final corr:", calculate_real_predict_corrlation_score(query_result_df["time"], query_result_df["pseudotime"]))
+
+    query_result_df.to_csv(f'{save_path}/{method}_result_df.csv', index=True)
+    print(f"test result save at {save_path}/{method}_result_df.csv")
+
+    plot_psupertime_density(query_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=method)
+
+    print(f"Finish {method} train on baseline data and predict on query data.")
+    gc.collect()
+
+
+def train_ot_model(reference_adata, query_adata, save_path, ):
+    method = "ot"
+    from benchmarking_methods.benchmarking_methods import ot_svm_classifier
+    test_y_predicted = ot_svm_classifier(train_x=reference_adata.X, train_y=reference_adata.obs["time"],
+                                         test_x=query_adata.X, test_y=query_adata.obs["time"])
+
+    query_result_df = pd.DataFrame({"time": query_adata.obs["time"], "pseudotime": test_y_predicted})
+
+    print("Final corr:", calculate_real_predict_corrlation_score(query_result_df["time"], query_result_df["pseudotime"]))
+
+    query_result_df.to_csv(f'{save_path}/{method}_result_df.csv', index=True)
+    print(f"test result save at {save_path}/{method}_result_df.csv")
+
+    plot_psupertime_density(query_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=method)
+
+    print(f"Finish {method} train on baseline data and predict on query data.")
+    gc.collect()
 
 
 def plot_compare_corr_boxplot(save_path):
@@ -107,14 +156,28 @@ def plot_compare_corr_boxplot(save_path):
     file_name = f"{save_path}/randomForest_result_df.csv"
     data_pd = pd.read_csv(file_name)
     RF = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"], only_str=False)
+
+    file_name = f"{save_path}/science2022_result_df.csv"
+    data_pd = pd.read_csv(file_name)
+    science2022 = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"], only_str=False)
+
     # 构建数据，确保按照VAE、LR、PCA的顺序
     data = {
-        'Method': ['TemporalVAE', 'TemporalVAE', 'LR', 'LR', 'PCA', 'PCA', 'RF', 'RF'],
-        'Correlation Type': ['Spearman', 'Pearson', 'Spearman', 'Pearson', 'Spearman', 'Pearson', 'Spearman', 'Pearson'],
+        'Method': ['TemporalVAE', 'TemporalVAE',
+                   'LR', 'LR',
+                   'PCA', 'PCA',
+                   'RF', 'RF',
+                   'Science2022','Science2022'],
+        'Correlation Type': ['Spearman', 'Pearson',
+                             'Spearman', 'Pearson',
+                             'Spearman', 'Pearson',
+                             'Spearman', 'Pearson',
+                             'Spearman', 'Pearson'],
         'Value': [VAE[1]['spearman'].correlation, VAE[1]['pearson'].correlation,
                   LR[1]['spearman'].correlation, LR[1]['pearson'].correlation,
                   PCA[1]['spearman'].correlation, PCA[1]['pearson'].correlation,
-                  RF[1]['spearman'].correlation, RF[1]['pearson'].correlation]
+                  RF[1]['spearman'].correlation, RF[1]['pearson'].correlation,
+                  science2022[1]['spearman'].correlation, science2022[1]['pearson'].correlation]
     }
     data["Value"] = [abs(_i) if _i < 0 else _i for _i in data["Value"]]
     plot_boxplot_from_dic(data, legend_loc="upper right")
@@ -213,6 +276,7 @@ def train_LR_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_pa
     plot_psupertime_density(query_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=method)
 
     print(f"Finish {method} train on baseline data and predict on query data.")
+    gc.collect()
 
 
 def train_RF_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path, ):

@@ -26,11 +26,13 @@ from utils.utils_Dandan_plot import draw_venn,plot_data_quality
 
 
 def main():
-    select_hvg_bool = True  # 2024-04-03 17:51:44 add here
+    select_hvg_bool = False  # 2024-04-03 17:51:44 add here
     hvg_num = 1000
     file_path = "data/240322Human_embryo/xiaoCellCS8/"
+    human_hvg_gene_list=pd.read_csv("data/240405_preimplantation_Melania/gene_info.csv",
+                                    sep='\t',index_col=0)
+    human_hvg_gene_list=list(human_hvg_gene_list.index)
 
-    # exp_count_pd = pd.read_csv(f"{file_path}/data_count.csv",sep="\t")
     exp_count_pd = pd.read_csv(f"{file_path}/data_count.csv", header=None)
     exp_count_pd.columns = ['data']
 
@@ -51,7 +53,8 @@ def main():
     cell_info_pd.index = cell_info_pd["cell_name"]
     exp_count_pd=exp_count_pd.T
     adata = ad.AnnData(X=exp_count_pd, obs=cell_info_pd)
-    adata.write_h5ad(f"{file_path}/raw_count.h5ad")
+    adata.var.index.name=str(adata.var.index.name)
+    # adata.write_h5ad(f"{file_path}/raw_count.h5ad")
     # ------------ print and plot for show the structure of dataset
     print("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
     print("Cell number: {}".format(adata.n_obs))
@@ -60,7 +63,6 @@ def main():
     print("Cell id first 5: {}".format(adata.obs_names[:5]))  # 返回胞ID 数据类型是object
     print("Gene id first 5: {}".format(adata.var_names.to_list()[:5]))  # 返回基因数据类型是list adata.obs.head()# 査看前5行的数据
 
-    sc.pl.highest_expr_genes(adata, n_top=10)
     # mitochondrial genes, "MT-" for human, "Mt-" for mouse
     adata.var["mt"] = adata.var_names.str.startswith("MT-")
     # ribosomal genes
@@ -68,18 +70,19 @@ def main():
     # hemoglobin genes
     adata.var["hb"] = adata.var_names.str.contains("^HB[^(P)]")
 
-    plot_data_quality(adata)
-    for _var in ["mt", "ribo", "hb"]:
-        adata = adata[:, ~adata.var[_var]]
-    print(f"Data (cell,gene) {adata.shape} after remove mitochondrial({adata.var['mt'].sum()}), "
-          f"ribosomal({adata.var['ribo'].sum()}), "
-          f"and hemoglobin genes({adata.var['hb'].sum()})")
 
 
     # ------------
     adata.obs["time"] = 18.5
 
     if select_hvg_bool:
+        plot_data_quality(adata)
+        for _var in ["mt", "ribo", "hb"]:
+            adata = adata[:, ~adata.var[_var]]
+        print(f"Data (cell,gene) {adata.shape} after remove mitochondrial({adata.var['mt'].sum()}), "
+              f"ribosomal({adata.var['ribo'].sum()}), "
+              f"and hemoglobin genes({adata.var['hb'].sum()})")
+        plot_data_quality(adata)
         sc.pp.filter_genes(adata, min_cells=50)  # drop genes which none expression in 3 samples
         hvg_cellRanger_list = calHVG(adata.copy(), gene_num=hvg_num, method="cell_ranger")
         hvg_seurat_list = calHVG(adata.copy(), gene_num=hvg_num, method="seurat")
@@ -91,11 +94,16 @@ def main():
         combined_hvg_list = list(set(itertools.chain(hvg_cellRanger_list, hvg_seurat_list, hvg_seurat_v3_list)))
         filtered_adata_hvg = adata[:, combined_hvg_list].copy()
     else:
-        filtered_adata_hvg = adata.copy()
+
+        filtered_adata_hvg = adata[:,list(set(adata.var_names) & set(human_hvg_gene_list))]
+
+    sc.pl.highest_expr_genes(filtered_adata_hvg, n_top=10)
+    plot_data_quality(filtered_adata_hvg)
 
     _shape = filtered_adata_hvg.shape
+    print(f"After filter by hvg gene: (cell, gene){_shape}")
     _new_shape = (0, 0)
-    min_gene_num = 50
+    min_gene_num = 200
     min_cell_num = 50
     while _new_shape != _shape:  # make sure drop samples and genes
         _shape = filtered_adata_hvg.shape
@@ -107,7 +115,7 @@ def main():
     print("After filter, get cell number: {}, gene number: {}".format(filtered_adata_hvg.n_obs, filtered_adata_hvg.n_vars))
     print("the original sc expression anndata should be gene as row, cell as column")
     plot_data_quality(adata)
-
+    # filtered_adata_hvg.var.index.name = str(filtered_adata_hvg.var.index.name)
     filtered_adata_hvg.write_h5ad(f"{file_path}/raw_count_hvg{hvg_num}.h5ad")
 
     sc_expression_df = pd.DataFrame(data=filtered_adata_hvg.X.T,
@@ -117,8 +125,8 @@ def main():
     sc_expression_df.to_csv(f"{file_path}/data_count_hvg.csv", sep="\t")
 
     cell_info = filtered_adata_hvg.obs
-    cell_info["day"] = "day18.5"
-    cell_info["time"] = 18.5
+    cell_info["day"] = "day18"
+    cell_info["time"] = 18
     cell_info["cell_id"] = filtered_adata_hvg.obs.index
     cell_info["dataset_label"] = "Xiao"
     cell_info["cell_type"] = cell_info["clusters"]

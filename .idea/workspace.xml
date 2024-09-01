@@ -11,11 +11,30 @@
   <component name="ChangeListManager">
     <list default="true" id="67b004b8-4a83-48a8-bb66-1b5303029b49" name="Changes" comment="revision change">
       <change afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fig3_mouse_data/science2022_kFoldOn_mouseAtlas.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_Melania.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_PLMZT.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_addCS8_queryOnCS7.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/benchmarking_methods/benchmarking_methods.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/data/240322Human_embryo/xiaoCellCS8/cs8_human_embryo.rds" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/240405_preimplantation_Melania/M_raw_count.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/240405_preimplantation_Melania/P_raw_count.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/240405_preimplantation_Melania/Z_raw_count_TPM.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_moscot_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_moscot_toyDataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_ot_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_ot_toyDataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_VAE_referenceAtlas_queryStereo.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_LR_PCA_RF_directlyPredictOn_mouseStereo.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig3_mouse_data/VAE_kFoldOn_mouseAtlas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_Melania.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_Melania.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py" beforeDir="false" afterPath="$PROJECT_DIR$/Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/240322Human_embryo/xiaoCellCS8/preprocess_human_CS8.R" beforeDir="false" afterPath="$PROJECT_DIR$/data/240322Human_embryo/xiaoCellCS8/preprocess_human_CS8.R" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/utils_DandanProject.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_DandanProject.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils_Dandan_plot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,6 +86,11 @@
     &quot;accountId&quot;: &quot;16d6ff24-cadd-4e1e-ac11-bbee5dabbd06&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/1052836773/random.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/ot/utils.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/skada/_ot.py" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -89,13 +113,22 @@
   "keyToString": {
     "Notification.DisplayName-DoNotAsk-Error Report": "Internal error report submitted",
     "Notification.DoNotAsk-Error Report": "true",
+    "Python.TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.executor": "Debug",
+    "Python.TemporalVAE_science2022_seurat_ot_PredictOn_mouseStereo.executor": "Debug",
+    "Python.TemporalVAE_science2022_seurat_ot_psupertime_directlyPredictOn_mouseStereo.executor": "Run",
     "Python.exp2_moscot_toyDataset.executor": "Debug",
     "Python.exp2_ot_toyDataset.executor": "Debug",
     "Python.exp2_science2022_toyDataset.executor": "Debug",
     "Python.exp2_vae_toyDataset.executor": "Debug",
     "Python.plotFig2_check_corr.executor": "Run",
     "Python.preprocess_humanEmbryo_CS8.executor": "Debug",
+    "Python.preprocess_humanEmbryo_Melania.executor": "Run",
+    "Python.preprocess_humanEmbryo_PLMZT.executor": "Debug",
+    "Python.science2022_kFoldOn_mouseAtlas.executor": "Debug",
     "Python.test.executor": "Debug",
+    "Python.vae_humanEmbryo_CS8.executor": "Debug",
+    "Python.vae_humanEmbryo_Melania.executor": "Run",
+    "Python.vae_humanEmbryo_addCS8_queryOnCS7.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -108,15 +141,16 @@
     "credentialsType com.jetbrains.python.remote.PyCreateRemoteInterpreterDialog$PyCreateRemoteSdkForm": "SSH Configuration",
     "full.screen.before.presentation.mode": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/awa121/Documents/awa_project/awa_github/TemporalVAE/Fig2_TemproalVAE_against_benchmark_methods",
+    "last_opened_file_path": "/Users/awa121/Documents/awa_project/awa_github/TemporalVAE/Fig3_mouse_data",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "python.debugger.dataview.autoresize": "false",
+    "python.debugger.dataview.coloredbydefault": "false",
     "run.code.analysis.last.selected.profile": "aDefault",
-    "settings.editor.selected.configurable": "configurable.group.editor",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.notebooks.jupyter.connections.configuration.JupyterServerConfigurable",
     "two.files.diff.last.used.folder": "D:/awa_project/pairsRegulatePrediction/CNNC-master/GPLVM_dandan",
     "vue.rearranger.settings.migration": "true"
   }
@@ -135,21 +169,21 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Fig3_mouse_data" />
+      <recent name="$PROJECT_DIR$/data/240405_preimplantation_Melania" />
+      <recent name="$PROJECT_DIR$/Fig4_human_data" />
       <recent name="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
       <recent name="$PROJECT_DIR$/benchmarking_methods/science2022" />
-      <recent name="$PROJECT_DIR$/benchmarking_methods" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/Fig5_RNA_velocity" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/benchmarking_methods" />
+      <recent name="$PROJECT_DIR$/data/240405_preimplantation_Melania" />
       <recent name="$PROJECT_DIR$/data/240322Human_embryo" />
       <recent name="$PROJECT_DIR$/Fig4_human_data" />
       <recent name="$PROJECT_DIR$/data/240714_human_CS8" />
-      <recent name="$PROJECT_DIR$/benchmarking_methods/science2022/time_inference" />
-      <recent name="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.preprocess_humanEmbryo_CS8">
+  <component name="RunManager" selected="Python.science2022_kFoldOn_mouseAtlas">
     <configuration name="GPLVM_fromDandan_trainOnAllData" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="ENV_FILES" value="" />
@@ -167,6 +201,52 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GPLVM_dandan/project_endometrium_DanDan/GPLVM_fromDandan_trainOnAllData.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TemporalVAE" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig3_mouse_data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TemporalVAE_science2022_seurat_ot_PredictOn_mouseStereo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="TemporalVAE" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig3_mouse_data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_science2022_seurat_ot_PredictOn_mouseStereo.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -403,7 +483,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="exp2_ot_toyDataset" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="exp2_science2022_toyDataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -417,30 +497,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_ot_toyDataset.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="exp2_vae_toyDataset" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="TemporalVAE" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_toyDataset.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -449,27 +506,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plotFig2_check_corr" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="TemporalVAE" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="preprocess_humanEmbryo_CS8" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="preprocess_humanEmbryo_CS8" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -492,21 +529,18 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="science2022_kFoldOn_mouseAtlas" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TemporalVAE" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Fig3_mouse_data" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Fig3_mouse_data/science2022_kFoldOn_mouseAtlas.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -526,27 +560,27 @@
       <item itemvalue="Python.GPLVM_fromDandan_trainOnAllData" />
       <item itemvalue="Python.VAE_fromDandan_testOnOneDonor" />
       <item itemvalue="Python.VAE_fromDandan_testOnExternal_eachTestOnOneSample_newAnnor0717" />
-      <item itemvalue="Python.exp2_vae_toyDataset" />
-      <item itemvalue="Python.plotFig2_check_corr" />
+      <item itemvalue="Python.science2022_kFoldOn_mouseAtlas" />
+      <item itemvalue="Python.TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo" />
+      <item itemvalue="Python.TemporalVAE_science2022_seurat_ot_PredictOn_mouseStereo" />
+      <item itemvalue="Python.exp2_science2022_toyDataset" />
       <item itemvalue="Python.preprocess_humanEmbryo_CS8" />
-      <item itemvalue="Python.test" />
-      <item itemvalue="Python.exp2_ot_toyDataset" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.science2022_kFoldOn_mouseAtlas" />
         <item itemvalue="Python.preprocess_humanEmbryo_CS8" />
-        <item itemvalue="Python.plotFig2_check_corr" />
-        <item itemvalue="Python.exp2_vae_toyDataset" />
-        <item itemvalue="Python.exp2_ot_toyDataset" />
-        <item itemvalue="Python.test" />
+        <item itemvalue="Python.TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo" />
+        <item itemvalue="Python.TemporalVAE_science2022_seurat_ot_PredictOn_mouseStereo" />
+        <item itemvalue="Python.exp2_science2022_toyDataset" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-PY-242.20224.89" />
-        <option value="bundled-python-sdk-c82b4742cc6a-39cff9de6eef-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.20224.89" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.19072.16" />
+        <option value="bundled-python-sdk-8336bb23522e-2767605e8bc2-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.19072.16" />
       </set>
     </attachedChunks>
   </component>
@@ -947,6 +981,17 @@
       <workItem from="1722171786598" duration="440000" />
       <workItem from="1722172236916" duration="11708000" />
       <workItem from="1722223367035" duration="129000" />
+      <workItem from="1723714434457" duration="12000" />
+      <workItem from="1723714462904" duration="2000" />
+      <workItem from="1724052042778" duration="454000" />
+      <workItem from="1724052508242" duration="7000" />
+      <workItem from="1724052528956" duration="5497000" />
+      <workItem from="1724138725570" duration="4000" />
+      <workItem from="1724511887474" duration="5562000" />
+      <workItem from="1724666079795" duration="10000" />
+      <workItem from="1724666131631" duration="338000" />
+      <workItem from="1724666548460" duration="49232000" />
+      <workItem from="1725024222886" duration="19854000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
@@ -1148,7 +1193,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723121668997</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="revision change">
+      <option name="closed" value="true" />
+      <created>1723564508373</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1723564508373</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1201,23 +1254,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py</url>
-          <line>73</line>
+          <line>70</line>
           <option name="timeStamp" value="3548" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/benchmarking_methods/science2022/time_inference/DC_tensorflow_helpers.py</url>
-          <line>330</line>
-          <option name="timeStamp" value="3551" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py</url>
-          <line>46</line>
+          <line>47</line>
           <option name="timeStamp" value="3553" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py</url>
-          <line>61</line>
-          <option name="timeStamp" value="3554" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/torch/utils/data/sampler.py</url>
@@ -1243,16 +1286,6 @@
           <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/torch/nn/functional.py</url>
           <line>3028</line>
           <option name="timeStamp" value="3568" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_ot_toyDataset.py</url>
-          <line>83</line>
-          <option name="timeStamp" value="3574" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_moscot_toyDataset.py</url>
-          <line>251</line>
-          <option name="timeStamp" value="3575" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/moscot/problems/time/_mixins.py</url>
@@ -1296,28 +1329,163 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py</url>
-          <line>100</line>
+          <line>101</line>
           <option name="timeStamp" value="3599" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/utils/utils_DandanProject.py</url>
-          <line>3446</line>
+          <line>3449</line>
           <option name="timeStamp" value="3602" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py</url>
+          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py</url>
+          <line>340</line>
+          <option name="timeStamp" value="3615" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py</url>
+          <line>328</line>
+          <option name="timeStamp" value="3617" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py</url>
+          <line>62</line>
+          <option name="timeStamp" value="3618" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_Melania.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="3623" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_Melania.py</url>
           <line>55</line>
-          <option name="timeStamp" value="3604" />
+          <option name="timeStamp" value="3633" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_PLMZT.py</url>
+          <line>44</line>
+          <option name="timeStamp" value="3634" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_PLMZT.py</url>
+          <line>27</line>
+          <option name="timeStamp" value="3635" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py</url>
-          <line>53</line>
-          <option name="timeStamp" value="3605" />
+          <line>116</line>
+          <option name="timeStamp" value="3638" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/Library/Caches/JetBrains/PyCharm2024.1/remote_sources/-340386241/796883913/anndata/_io/utils.py</url>
+          <line>116</line>
+          <option name="timeStamp" value="3644" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py</url>
-          <line>51</line>
-          <option name="timeStamp" value="3613" />
+          <line>100</line>
+          <option name="timeStamp" value="3649" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py</url>
+          <line>118</line>
+          <option name="timeStamp" value="3652" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py</url>
+          <line>117</line>
+          <option name="timeStamp" value="3653" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_Melania.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="3654" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_addCS8_queryOnCS7.py</url>
+          <line>241</line>
+          <option name="timeStamp" value="3660" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_addCS8_queryOnCS7.py</url>
+          <line>383</line>
+          <option name="timeStamp" value="3661" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_addCS8_queryOnCS7.py</url>
+          <line>388</line>
+          <option name="timeStamp" value="3662" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_addCS8_queryOnCS7.py</url>
+          <line>192</line>
+          <option name="timeStamp" value="3671" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/vae_humanEmbryo_addCS8_queryOnCS7.py</url>
+          <line>445</line>
+          <option name="timeStamp" value="3673" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods/exp2_science2022_toyDataset.py</url>
+          <line>63</line>
+          <option name="timeStamp" value="3674" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.py</url>
+          <line>182</line>
+          <option name="timeStamp" value="3685" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.py</url>
+          <line>164</line>
+          <option name="timeStamp" value="3688" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.py</url>
+          <line>161</line>
+          <option name="timeStamp" value="3689" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.py</url>
+          <line>92</line>
+          <option name="timeStamp" value="3690" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="3691" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig3_mouse_data/TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.py</url>
+          <line>147</line>
+          <option name="timeStamp" value="3692" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py</url>
+          <line>126</line>
+          <option name="timeStamp" value="3693" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig4_human_data/preprocess_humanEmbryo_CS8.py</url>
+          <line>75</line>
+          <option name="timeStamp" value="3694" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig3_mouse_data/science2022_kFoldOn_mouseAtlas.py</url>
+          <line>163</line>
+          <option name="timeStamp" value="3696" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig3_mouse_data/science2022_kFoldOn_mouseAtlas.py</url>
+          <line>153</line>
+          <option name="timeStamp" value="3699" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Fig3_mouse_data/science2022_kFoldOn_mouseAtlas.py</url>
+          <line>151</line>
+          <option name="timeStamp" value="3701" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -1370,6 +1538,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$utils_GPLVM.coverage" NAME="utils_GPLVM Coverage Results" MODIFIED="1687141247678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$classifier_train.coverage" NAME="classifier_train Coverage Results" MODIFIED="1680423928855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ED-DPM/scripts" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_data_mouse_embryo_stereo_detail_split.coverage" NAME="preprocess_data_mouse_embryo_stereo_detail_split Coverage Results" MODIFIED="1693380650718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$preprocess_humanEmbryo_PLMZT.coverage" NAME="preprocess_humanEmbryo_PLMZT Coverage Results" MODIFIED="1724315387508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig4_human_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$0512_main_resnet18_3class_human_erythriod_data_motif.coverage" NAME="0512-main-resnet18-3class-human_erythriod_data-motif Coverage Results" MODIFIED="1683866348510" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main.coverage" NAME="main-resnet18-2class-only-motif Coverage Results" MODIFIED="1683376826746" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_data_mouse_projectionNeuron.coverage" NAME="preprocess_data_mouse_projectionNeuron Coverage Results" MODIFIED="1704165495291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/preprocess_data" />
@@ -1377,7 +1546,7 @@
     <SUITE FILE_PATH="coverage/TemporalVAE$VAE_mouse_fineTune_Train_on_U_pairs_S.coverage" NAME="VAE_mouse_fineTune_Train_on_U_pairs_S Coverage Results" MODIFIED="1715419249274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig5_RNA_velocity" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$exp2_vae_toyDataset.coverage" NAME="exp2_vae_toyDataset Coverage Results" MODIFIED="1713265305911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/baseline_method" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$vae_keras.coverage" NAME="vae_keras Coverage Results" MODIFIED="1687786535190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
-    <SUITE FILE_PATH="coverage/TemporalVAE$plotFig2_check_corr.coverage" NAME="plotFig2_check_corr Coverage Results" MODIFIED="1723013695507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$plotFig2_check_corr.coverage" NAME="plotFig2_check_corr Coverage Results" MODIFIED="1723879509724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$read_json_result_and_plot.coverage" NAME="read_json_result_and_plot Coverage Results" MODIFIED="1694575468961" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$lyj_train_3labels_3foldx_pytorch__1_.coverage" NAME="lyj_train_3labels_3foldx_pytorch (1) Coverage Results" MODIFIED="1676967245103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/train_new_model" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$exp2_randomForest_toyDataset.coverage" NAME="exp2_randomForest_toyDataset Coverage Results" MODIFIED="1695714121950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/baseline_method" />
@@ -1386,6 +1555,8 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$readNpyFile.coverage" NAME="readNpyFile Coverage Results" MODIFIED="1674810954792" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_fromDandan_testRifDonor_dataAugmentation.coverage" NAME="VAE_fromDandan_testRifDonor_dataAugmentation Coverage Results" MODIFIED="1695654506416" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$test.coverage" NAME="test Coverage Results" MODIFIED="1713148923329" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/draw_images" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$preprocess_humanEmbryo_Melania.coverage" NAME="preprocess_humanEmbryo_Melania Coverage Results" MODIFIED="1724333702217" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig4_human_data" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$TemporalVAE_science2022_seurat_ot_PredictOn_mouseStereo.coverage" NAME="TemporalVAE_science2022_seurat_ot_PredictOn_mouseStereo Coverage Results" MODIFIED="1724859001830" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig3_mouse_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$GPLVM_fromDandan_trainOnAllData.coverage" NAME="GPLVM_fromDandan_trainOnAllData Coverage Results" MODIFIED="1686898821610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$calculate_motif_target_score.coverage" NAME="calculate_motif_target_score Coverage Results" MODIFIED="1682847658765" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/utils" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$CNNC0422_onlybulk.coverage" NAME="CNNC0422-onlybulk Coverage Results" MODIFIED="1682424130095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
@@ -1395,9 +1566,10 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_resnet18_2class_only_image_add_timeinfo.coverage" NAME="main-resnet18-2class-only-image_add_timeinfo Coverage Results" MODIFIED="1683442699141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_mouse_withTimeLabel_fineTune.coverage" NAME="VAE_mouse_withTimeLabel_fineTune Coverage Results" MODIFIED="1709006437674" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/project_mouse_Yijun/for_figure4_manySetting230223" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$start_exps_datasetWithCellNum_onModel.coverage" NAME="start_exps_datasetWithCellNum_onModel Coverage Results" MODIFIED="1689317164916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$science2022_kFoldOn_mouseAtlas.coverage" NAME="science2022_kFoldOn_mouseAtlas Coverage Results" MODIFIED="1725176462568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig3_mouse_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$predict_no_y.coverage" NAME="predict_no_y Coverage Results" MODIFIED="1673927974558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$CNNC0422.coverage" NAME="CNNC0422 Coverage Results" MODIFIED="1682422923906" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
-    <SUITE FILE_PATH="coverage/TemporalVAE$preprocess_humanEmbryo_CS8.coverage" NAME="preprocess_humanEmbryo_CS8 Coverage Results" MODIFIED="1723561603928" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig4_human_data" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$preprocess_humanEmbryo_CS8.coverage" NAME="preprocess_humanEmbryo_CS8 Coverage Results" MODIFIED="1724995596944" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig4_human_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_fromDandan_testOnRifDonor.coverage" NAME="VAE_fromDandan_testOnRifDonor Coverage Results" MODIFIED="1692367564616" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$0526_main_resnet18_only_image.coverage" NAME="0531-main-resnet18-only-image Coverage Results" MODIFIED="1685598290771" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$vae_humanEmbryo_adversarial_mulitDataset.coverage" NAME="vae_humanEmbryo_adversarial_mulitDataset Coverage Results" MODIFIED="1712896015008" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/project_mouse_Yijun" />
@@ -1453,6 +1625,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_fromDandan_testOnExternal_newAnnor07017.coverage" NAME="VAE_fromDandan_testOnExternal_newAnnor07017 Coverage Results" MODIFIED="1691043427423" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_humanEmbryo_PLOS.coverage" NAME="preprocess_humanEmbryo_PLOS Coverage Results" MODIFIED="1712315093780" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/preprocess_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$exp2_psupertime_toyDataset.coverage" NAME="exp2_psupertime_toyDataset Coverage Results" MODIFIED="1713258100539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/baseline_method" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo.coverage" NAME="TemporalVAE_science2022_ot_LR_PCA_RF_VAE_referenceAtlas_queryStereo Coverage Results" MODIFIED="1724993944349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig3_mouse_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$preprocess_generate_balance_tf_label.coverage" NAME="preprocess_generate_balance_tf_label Coverage Results" MODIFIED="1685006386187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/preprocess_generate_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_yhh_Experiment2.coverage" NAME="main-yhh-Experiment2 Coverage Results" MODIFIED="1679575225220" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_fromDandan_testOnOneDonor_02Major_newAnno.coverage" NAME="VAE_fromDandan_testOnOneDonor_02Major_newAnno Coverage Results" MODIFIED="1689562359174" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan" />
@@ -1510,7 +1683,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_MS_yhh_save_pairs_sc_data__1_.coverage" NAME="main-MS-yhh-save-pairs-sc-data (1) Coverage Results" MODIFIED="1679797403912" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$LR_PCA_RF_directlyPredictOn_mouseStereo.coverage" NAME="LR_PCA_RF_directlyPredictOn_mouseStereo Coverage Results" MODIFIED="1713360802401" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/project_mouse_Yijun/for_figure3_compareWithBaseLine" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$randomForest_atlas.coverage" NAME="randomForest_atlas Coverage Results" MODIFIED="1711152258168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/project_mouse_Yijun/for_figure3_compareWithBaseLine" />
-    <SUITE FILE_PATH="coverage/TemporalVAE$exp2_science2022_toyDataset.coverage" NAME="exp2_science2022_toyDataset Coverage Results" MODIFIED="1721825919548" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$exp2_science2022_toyDataset.coverage" NAME="exp2_science2022_toyDataset Coverage Results" MODIFIED="1724857464847" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig2_TemproalVAE_against_benchmark_methods" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$0519_main_resnet18_2class_mouse_neuron_motif.coverage" NAME="0519-main-resnet18-2class-mouse_neuron-motif Coverage Results" MODIFIED="1684473408975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$resnet18_pytorch.coverage" NAME="resnet18_pytorch Coverage Results" MODIFIED="1685540097466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/NN_model" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$plot_violin.coverage" NAME="plot_violin Coverage Results" MODIFIED="1710994992345" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/project_mouse_Yijun/for_figure4_manySetting230223" />
@@ -1530,6 +1703,7 @@
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$cifar10_test.coverage" NAME="cifar10_test Coverage Results" MODIFIED="1676874592170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master/utils" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$vae_humanEmbryo.coverage" NAME="vae_humanEmbryo Coverage Results" MODIFIED="1713843358304" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/project_mouse_Yijun" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_eQLT.coverage" NAME="main-eQLT Coverage Results" MODIFIED="1677730118306" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
+    <SUITE FILE_PATH="coverage/TemporalVAE$vae_humanEmbryo_CS8.coverage" NAME="vae_humanEmbryo_addCS8_queryOnCS7 Coverage Results" MODIFIED="1724493718874" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Fig4_human_data" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$main_resnet18_2class_ms_only_image_bulk10_withoutlog.coverage" NAME="main-resnet18-2class-ms-only-image+bulk10_withoutlog Coverage Results" MODIFIED="1683622453859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$0512_main_resnet18_3class_preprocess_human_erythriod_data_motif_image.coverage" NAME="0512-main-resnet18-3class-human_erythriod_data-motif+image Coverage Results" MODIFIED="1683862390202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CNNC-master" />
     <SUITE FILE_PATH="coverage/pairsRegulatePrediction$VAE_mouse_fineTune_Train_on_U_plus_S.coverage" NAME="VAE_mouse_fineTune_Train_on_X Coverage Results" MODIFIED="1702557685710" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/GPLVM_dandan/project_mouse_Yijun" />

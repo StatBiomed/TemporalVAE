@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：VAE_mouse_kFoldOn_mouseAtlas.py
+@File    ：VAE_kFoldOn_mouseAtlas.py
 @IDE     ：PyCharm 
 @Author  ：awa121
 @Date    ：2023/7/31 11:37
@@ -11,7 +11,7 @@ train on mouse_embryonic_development data,
 
 cd /mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE/
 source ~/.bashrc
-nohup python -u Fig3_mouse_data/VAE_mouse_kFoldOn_mouseAtlas.py --result_save_path 240611_mouseAtlas_test --kfold_test --train_whole_model >> logs/VAE_mouse_kFoldOn_mouseAtlas.log 2>&1 &
+nohup python -u Fig3_mouse_data/VAE_kFoldOn_mouseAtlas.py --result_save_path 240611_mouseAtlas_test --kfold_test --train_whole_model >> logs/VAE_mouse_kFoldOn_mouseAtlas.log 2>&1 &
 """
 
 import os

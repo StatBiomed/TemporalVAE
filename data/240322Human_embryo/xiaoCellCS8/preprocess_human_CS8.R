@@ -1,6 +1,6 @@
 rm(list = ls())
-file_name="/mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE/data/240714_human_CS8/cs8_human_embryo.rds"
-save_dir="/mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE/data/240714_human_CS8/"
+file_name="/mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE/data/240322Human_embryo/xiaoCellCS8/cs8_human_embryo.rds"
+save_dir="/mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE/data/240322Human_embryo/xiaoCellCS8/"
 
 print(save_dir)
 print(file_name)

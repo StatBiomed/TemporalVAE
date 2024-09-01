@@ -57,62 +57,60 @@ def main():
                                   ot_df.copy(),
                                   dataset, dataset_dic)
         # 2024-08-07 11:09:40 add
-        multi_corr_df = pd.DataFrame(columns=["method", "Spearman", "Pearson", "EMD", "MMD", "R-squared"])
-        pca_df=add_norCol_df(pca_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["PCA"] +
-                                                       list(corr(pca_df['time'], pca_df['pseudotime'], only_value=True)) +
-                                                       list(distribution_metric(pca_df['time'], pca_df['pseudotime']))
+        multi_corr_df = pd.DataFrame(columns=["method", "Spearman", "Pearson", "kendalltau"])
+        # multi_corr_df = pd.DataFrame(columns=["method", "Spearman", "Pearson", "kendalltau","EMD", "MMD", "R-squared"])
+        pca_df = add_norCol_df(pca_df)
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["PCA"]
+                                                       + list(corr(pca_df['time'], pca_df['pseudotime'], as_str=True))
+                                                       # + list(distribution_metric(pca_df['time'], pca_df['pseudotime']))
                                                        )
-        rf_df=add_norCol_df(rf_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["RF"] +
-                                                       list(corr(rf_df['time'], rf_df['pseudotime'], only_value=True)) +
-                                                       list(distribution_metric(rf_df['time'], rf_df['pseudotime']))
+        rf_df = add_norCol_df(rf_df)
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["RF"]
+                                                       + list(corr(rf_df['time'], rf_df['pseudotime'], as_str=True))
+                                                       # + list(distribution_metric(rf_df['time'], rf_df['pseudotime']))
                                                        )
-        lr_df=add_norCol_df(lr_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["LR"] +
-                                                       list(corr(lr_df['time'], lr_df['pseudotime'], only_value=True)) +
-                                                       list(distribution_metric(lr_df['time'], lr_df['pseudotime']))
+        lr_df = add_norCol_df(lr_df)
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["LR"]
+                                                       + list(corr(lr_df['time'], lr_df['pseudotime'], as_str=True))
+                                                       # + list(distribution_metric(lr_df['time'], lr_df['pseudotime']))
                                                        )
-        science_df=add_norCol_df(science_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["Science2022"] +
-                                                       list(corr(science_df['time'], science_df['pseudotime'], only_value=True)) +
-                                                       list(distribution_metric(science_df['time'], science_df['pseudotime']))
+        science_df = add_norCol_df(science_df)
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["Science2022"]
+                                                       + list(corr(science_df['time'], science_df['pseudotime'], as_str=True))
+                                                       # + list(distribution_metric(science_df['time'], science_df['pseudotime']))
                                                        )
-        seurat_df=add_norCol_df(seurat_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["Seurat"] +
-                                                       list(corr(seurat_df['time'], seurat_df['pseudotime'], only_value=True)) +
-                                                       list(distribution_metric(seurat_df['time'], seurat_df['pseudotime']))
+        seurat_df = add_norCol_df(seurat_df)
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["Seurat"]
+                                                       + list(corr(seurat_df['time'], seurat_df['pseudotime'], as_str=True))
+                                                       # + list(distribution_metric(seurat_df['time'], seurat_df['pseudotime']))
                                                        )
-        ot_df=add_norCol_df(ot_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["OT-Regressor"] +
-                                                       list(corr(ot_df['time'], ot_df['pseudotime'], only_value=True)) +
-                                                       list(distribution_metric(ot_df['time'], ot_df['pseudotime']))
+        ot_df = add_norCol_df(ot_df)
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["OT-Regressor"]
+                                                       + list(corr(ot_df['time'], ot_df['pseudotime'], as_str=True))
+                                                       # + list(distribution_metric(ot_df['time'], ot_df['pseudotime']))
                                                        )
-        psupertime_df=add_norCol_df(psupertime_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["Psupertime"] +
-                                                       list(corr(psupertime_df['time'], psupertime_df['pseudotime'], only_value=True)) +
-                                                       list(distribution_metric(psupertime_df['time'], psupertime_df['pseudotime']))
+        psupertime_df = add_norCol_df(psupertime_df)
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["Psupertime"]
+                                                       + list(corr(psupertime_df['time'], psupertime_df['pseudotime'], as_str=True))
+                                                       # + list(distribution_metric(psupertime_df['time'], psupertime_df['pseudotime']))
                                                        )
-        vae_df=add_norCol_df(vae_df)
+        vae_df = add_norCol_df(vae_df)
         vae_df['predicted_time'] = vae_df['pseudotime'].apply(denormalize, args=(min(vae_df["time"]),
                                                                                  max(vae_df["time"]),
                                                                                  min(vae_df["trans_label"]),
                                                                                  max(vae_df["trans_label"])))
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["TemporalVAE"] +
-                                                       list(corr(vae_df['time'], vae_df['predicted_time'], only_value=True)) +
-                                                       list(distribution_metric(vae_df['time'], vae_df['predicted_time']))
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["TemporalVAE"]
+                                                       + list(corr(vae_df['time'], vae_df['predicted_time'], as_str=True))
+                                                       # + list(distribution_metric(vae_df['time'], vae_df['predicted_time']))
                                                        )
         print(f"*** {dataset}")
         print(multi_corr_df)
-        multi_corr_df.set_index("method",inplace=True)
-        df=multi_corr_df.applymap(lambda x: f"&{np.round(x,3)}")
+        multi_corr_df.set_index("method", inplace=True)
+        df = multi_corr_df.applymap(lambda x: f"&{x}")
         with pd.option_context('display.max_rows', None, 'display.max_columns', None):
             print(df.to_string(index=True, header=True))
             print('\\\\')
     return
-
-
-# 创建一个函数来计算Spearman相关系数
 
 
 def calculate_corr(df, label_to_remove, corr_method, neg_bool=1):
@@ -324,13 +322,21 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
     plt.close()
 
 
-def corr(x1, x2, special_str="", only_value=False):
-    from scipy.stats import spearmanr, kendalltau
+def corr(x1, x2, special_str="", as_str=False):
+    from scipy.stats import spearmanr, kendalltau, pearsonr
     sp_correlation, sp_p_value = spearmanr(x1, x2)
     ke_correlation, ke_p_value = kendalltau(x1, x2)
-    if only_value:
-        return sp_correlation if sp_p_value < 0.05 else 0, ke_correlation if ke_p_value < 0.05 else 0
+    pe_correlation, pe_p_value = pearsonr(x1, x2)
+    if as_str:
+        # return sp_correlation if sp_p_value < 0.05 else 0, ke_correlation if ke_p_value < 0.05 else 0
+        return (f"{np.round(sp_correlation, 3)}; \\textit{{P}}={np.round(sp_p_value, 3)}",
+                f"{np.round(pe_correlation, 3)}; \\textit{{P}}={np.round(pe_p_value, 3)}",
+                f"{np.round(ke_correlation, 3)}; \\textit{{P}}={np.round(ke_p_value, 3)}")
+
+        # return str(np.round(sp_correlation,3) )+";\textit{P}="if sp_p_value < 0.05 else 0, ke_correlation if ke_p_value < 0.05 else 0
     sp = f"{special_str} spearman correlation score: {sp_correlation}, p-value: {sp_p_value}."
+    print(sp)
+    pe = f"{special_str} pearson correlation score: {pe_correlation}, p-value: {pe_p_value}."
     print(sp)
     ke = f"{special_str} kendalltau correlation score: {ke_correlation},p-value: {ke_p_value}."
     print(ke)

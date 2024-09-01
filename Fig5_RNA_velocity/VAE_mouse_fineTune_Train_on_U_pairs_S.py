@@ -126,12 +126,12 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
     if hvg_dic is None:
         trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df = predict_newData_preprocess_df(gene_dic, adata_train,
                                                                                                                 min_gene_num=0,
-                                                                                                                mouse_atlas_file=mouse_atlas_file,
+                                                                                                                reference_file=mouse_atlas_file,
                                                                                                                 )
     else:
         trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df, trainData_renormalized_hvg_df = predict_newData_preprocess_df(gene_dic, adata_train,
                                                                                                                                                min_gene_num=0,
-                                                                                                                                               mouse_atlas_file=mouse_atlas_file,
+                                                                                                                                               reference_file=mouse_atlas_file,
                                                                                                                                                hvg_dic=hvg_dic,
                                                                                                                                                )
     # remain_hvg_list = list(trainData_renormalized_hvg_df.columns)

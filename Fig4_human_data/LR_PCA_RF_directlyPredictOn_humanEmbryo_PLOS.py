@@ -15,7 +15,6 @@ if os.getcwd().split("/")[-1] != "TemporalVAE":
     os.chdir("..")
 sys.path.append(os.getcwd())
 
-
 print(os.getcwd())
 
 import anndata as ad
@@ -59,9 +58,8 @@ def main():
     adata_query.obs = cell_time_query_pd
     trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df = predict_newData_preprocess_df(gene_dic, adata_query,
                                                                                                             min_gene_num=0,
-                                                                                                            mouse_atlas_file=f"{data_golbal_path}/{baseline_data_path}/data_count_hvg.csv",
-                                                                                                            bool_change_geneID_to_geneShortName=False
-                                                                                                            )
+                                                                                                            reference_file=f"{data_golbal_path}/{baseline_data_path}/data_count_hvg.csv",
+                                                                                                            bool_change_geneID_to_geneShortName=False)
     query_adata = ad.AnnData(X=trainData_renormalized_df, obs=train_cell_info_df)
     # ---------------------------------------------preprocess on baseline data---------------------------------------------------------------------------
     atlas_sc_expression_df, cell_time_atlas = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path,
@@ -70,31 +68,33 @@ def main():
                                                                                             min_cell_num=50,
                                                                                             min_gene_num=100)
 
-    directly_predict_on_vae( query_adata, save_path, checkpoint_file, config)
+    directly_predict_on_vae(query_adata, save_path, checkpoint_file, config)
 
     train_LR_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path)
     train_PCA_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path)
     train_RF_model(atlas_sc_expression_df, cell_time_atlas, query_adata, save_path)
     plot_compare_corr_boxplot(save_path)
+
+
 def plot_compare_corr_boxplot(save_path):
     # ---------- pretrain a model (TemporalVAE, LR, PCA, RF) on mouse atlas data, directly predict on mouse stereo data -----------------------
     from utils.utils_Dandan_plot import plot_boxplot_from_dic
     # ---------- pretrain a model (TemporalVAE, LR, PCA, RF) on mouse atlas data, directly predict on mouse stereo data -----------------------
     file_name = f"{save_path}/temporalVAE_result_df.csv"
     data_pd = pd.read_csv(file_name)
-    VAE = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"],only_str=False)
+    VAE = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"], only_str=False)
 
     file_name = f"{save_path}/linearRegression_result_df.csv"
     data_pd = pd.read_csv(file_name)
-    LR = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"],only_str=False)
+    LR = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"], only_str=False)
 
     file_name = f"{save_path}/PCA_result_df.csv"
     data_pd = pd.read_csv(file_name)
-    PCA = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"],only_str=False)
+    PCA = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"], only_str=False)
 
     file_name = f"{save_path}/randomForest_result_df.csv"
     data_pd = pd.read_csv(file_name)
-    RF = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"],only_str=False)
+    RF = calculate_real_predict_corrlation_score(data_pd["time"], data_pd["pseudotime"], only_str=False)
     # 构建数据，确保按照VAE、LR、PCA的顺序
     data = {
         'Method': ['TemporalVAE', 'TemporalVAE', 'LR', 'LR', 'PCA', 'PCA', 'RF', 'RF'],
@@ -105,8 +105,10 @@ def plot_compare_corr_boxplot(save_path):
                   RF[1]['spearman'].correlation, RF[1]['pearson'].correlation]
     }
     plot_boxplot_from_dic(data)
+
+
 # ---------------------------------------- train LR model -----------------------------------------------------
-def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
+def directly_predict_on_vae(query_adata, save_path, checkpoint_file, config):
     method = "temporalVAE"
     import torch
     torch.set_float32_matmul_precision('high')
@@ -161,12 +163,12 @@ def directly_predict_on_vae( query_adata, save_path, checkpoint_file, config):
     query_adata.obs = pd.concat([query_adata.obs, pseudoTime_directly_predict_by_pretrained_model_df], axis=1)
 
     # color_dic = plot_violin_240223(query_adata.obs, save_path)
-    color_dic = plot_violin_240223(query_adata.obs, save_path, real_attr="time", pseudo_attr="predicted_time", special_file_name=method,color_map="turbo")
+    color_dic = plot_violin_240223(query_adata.obs, save_path, real_attr="time", pseudo_attr="predicted_time", special_file_name=method, color_map="turbo")
     # print(color_dic)
     color_dic = {f"day{str(key)}": value for key, value in color_dic.items()}
     from utils.utils_Dandan_plot import plot_umap_240223, plt_umap_byScanpy
     adata = ad.AnnData(mu_predict_by_pretrained_model, obs=query_adata.obs)
-    plt_umap_byScanpy(adata.copy(), ["time", "predicted_time","Stage",], save_path=save_path, mode=None, figure_size=(5, 4), color_map="turbo")  # color_map="viridis"
+    plt_umap_byScanpy(adata.copy(), ["time", "predicted_time", "Stage", ], save_path=save_path, mode=None, figure_size=(5, 4), color_map="turbo")  # color_map="viridis"
     # plot_umap_240223(mu_predict_by_pretrained_model, query_adata.obs, color_dic=color_dic, save_path=save_path, attr_str="day",color_map="turbo")
     # plot_umap_240223(mu_predict_by_pretrained_model, query_adata.obs, color_dic=color_dic, save_path=save_path, attr_str="time",color_map="turbo")
     # plot_umap_240223(mu_predict_by_pretrained_model, query_adata.obs, save_path=save_path, attr_str="Stage",)
