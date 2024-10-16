@@ -103,7 +103,7 @@ def main():
     _shape = filtered_adata_hvg.shape
     print(f"After filter by hvg gene: (cell, gene){_shape}")
     _new_shape = (0, 0)
-    min_gene_num = 200
+    min_gene_num = 200 # 2024-09-10 11:41:29 add
     min_cell_num = 50
     while _new_shape != _shape:  # make sure drop samples and genes
         _shape = filtered_adata_hvg.shape
@@ -125,8 +125,8 @@ def main():
     sc_expression_df.to_csv(f"{file_path}/data_count_hvg.csv", sep="\t")
 
     cell_info = filtered_adata_hvg.obs
-    cell_info["day"] = "day18"
-    cell_info["time"] = 18
+    cell_info["day"] = "day18.5"
+    cell_info["time"] = 18.5
     cell_info["cell_id"] = filtered_adata_hvg.obs.index
     cell_info["dataset_label"] = "Xiao"
     cell_info["cell_type"] = cell_info["clusters"]

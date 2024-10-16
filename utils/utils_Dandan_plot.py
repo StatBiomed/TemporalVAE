@@ -7,8 +7,9 @@
 @Date    ：2023/7/27 16:37 
 """
 
-
 import logging
+
+from numba.tests.test_np_functions import rot90
 
 _logger = logging.getLogger(__name__)
 import pandas as pd
@@ -16,6 +17,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import re
+import gc
+
 
 def plot_data_quality(adata):
     import scanpy as sc
@@ -45,6 +48,8 @@ def plot_data_quality(adata):
         sc.pl.scatter(adata, x="total_counts", y="n_genes_by_counts")
     except:
         pass
+
+
 def LHdonor_resort_key(item):
     match = re.match(r'LH(\d+)_([0-9PGT]+)', item)
     if match:
@@ -245,24 +250,24 @@ def plot_on_each_test_donor_violin(predict_donors_dic, cell_time, special_path_s
     plt.close()
 
 
-def plot_on_each_test_donor_violin_fromDF(cell_time_df, save_path, physical_str, x_str="time", special_file_name_str="", cmap_color="viridis"):
+def plot_on_each_test_donor_violin_fromDF(cell_time_df, save_path, y_attr, x_attr="time", special_file_name_str="", cmap_color="viridis"):
     # from utils_Dandan_plot import calculate_real_predict_corrlation_score
     import matplotlib.pyplot as plt
     import seaborn as sns
 
-    corr_stats = calculate_real_predict_corrlation_score(cell_time_df[physical_str], cell_time_df[x_str])
+    corr_stats = calculate_real_predict_corrlation_score(cell_time_df[y_attr], cell_time_df[x_attr])
     print(f"=== data correlation: \n{corr_stats}")
     boxPlot_df = cell_time_df.copy()
-    time_counts = boxPlot_df.groupby(x_str)[physical_str].count().reset_index()
+    time_counts = boxPlot_df.groupby(x_attr)[y_attr].count().reset_index()
 
     # plot violin
     sns.set_theme(style="whitegrid")
     plt.figure(figsize=(10, 7))
-    cmap = plt.get_cmap(cmap_color)(np.linspace(0, 1, len(time_counts[x_str])))
-    color_dict = dict(zip(time_counts[x_str], cmap))
-    sns.violinplot(x=x_str, y=physical_str, data=boxPlot_df, palette=cmap_color, bw=0.2, scale='width')
+    cmap = plt.get_cmap(cmap_color)(np.linspace(0, 1, len(time_counts[x_attr])))
+    color_dict = dict(zip(time_counts[x_attr], cmap))
+    sns.violinplot(x=x_attr, y=y_attr, data=boxPlot_df, palette=cmap_color, bw=0.2, scale='width')
 
-    corr_str = calculate_real_predict_corrlation_score(list(boxPlot_df[physical_str]), list(boxPlot_df[x_str]), only_str=True)
+    corr_str = calculate_real_predict_corrlation_score(list(boxPlot_df[y_attr]), list(boxPlot_df[x_attr]), only_str=True)
     plt.title(f"Violin Plot of k-fold test:{corr_str}.")
     plt.xlabel("Time")
     plt.ylabel("Pseudotime")
@@ -270,8 +275,8 @@ def plot_on_each_test_donor_violin_fromDF(cell_time_df, save_path, physical_str,
     #                               label=f"{time_counts[time_counts['time'] == time][physical_str].values[0]}",
     #                               markerfacecolor=color_dict[time], markersize=10) for time in time_counts[x_str]]
     legend_elements = [plt.Line2D([0], [0], marker='o', color='w',
-                                  label=f"{time_counts[time_counts['time'] == time][physical_str].values[0]}",
-                                  markerfacecolor=color_dict[time], markersize=10) for time in time_counts[x_str]]
+                                  label=f"{time_counts[time_counts['time'] == time][y_attr].values[0]}",
+                                  markerfacecolor=color_dict[time], markersize=10) for time in time_counts[x_attr]]
     plt.legend(handles=legend_elements, title="Cell Num", loc='best')
 
     plt.xticks()
@@ -1294,28 +1299,33 @@ def plot_time_change_gene_geneZero(gene, result_df, x_str, y_str, label_str, sav
     plt.close()
 
 
-def plot_detTandExp(gene_result_pd, special_path_str):
+def plot_detTandExp(gene_result_pd, special_path_str,
+                    y_str="mean",
+                    y_legend_str='△t: pseudo-time after perturb and without perturb.',
+                    special_filename_str="detT",
+                    save_path=None):
     # import matplotlib.pyplot as plt
     plt.figure(figsize=(10, 10))
     # 使用 matplotlib 画散点图
-    plt.scatter(gene_result_pd['total_raw_count'], gene_result_pd['mean'], s=15)
+    plt.scatter(gene_result_pd['total_raw_count'], gene_result_pd[y_str], s=15)
     # 为每个点添加标签
     for i, _g in enumerate(gene_result_pd['gene_short_name']):
-        plt.annotate(_g, (gene_result_pd.iloc[i]['total_raw_count'], gene_result_pd.iloc[i]['mean']), fontsize=8)
+        plt.annotate(_g, (gene_result_pd.iloc[i]['total_raw_count'], gene_result_pd.iloc[i][y_str]), fontsize=8)
     # 添加标签和标题
-    plt.xlabel('Total raw expression of genes.')
-    plt.ylabel('△t: pseudo-time after perturb and without perturb.')
-    plt.title('Scatter Plot of each gene.')
+    plt.xlabel('Total raw expression of genes.', fontsize=16)
+    plt.ylabel(y_legend_str, fontsize=16)
+    plt.title('Scatter Plot of each gene.', fontsize=16)
     # 添加水平线 y=0
     plt.axhline(y=0, color='red', linestyle='--', label='y=0')
 
     # 设置 x 轴范围
     plt.xlim(gene_result_pd['total_raw_count'].min() - 10, gene_result_pd['total_raw_count'].max() + 100)
     # 显示图形
-    save_path = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}{special_path_str}/"
-    save_file = f"{save_path}/gene_detTandExp.png"
+    if save_path is None:
+        save_path = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}{special_path_str}/"
+    save_file = f"{save_path}/gene_{special_filename_str}andExp.png"
     plt.savefig(save_file)
-    _logger.info("Time changes under perturb image save at {}".format(save_file))
+    print(f"Time changes under perturb image save at {save_path}")
 
     plt.show()
     plt.close()
@@ -1342,7 +1352,7 @@ def plot_detTandT_line(top_gene_list, plot_pd, special_path_str, gene_dic):
     save_path = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}{special_path_str}/"
     save_file = f"{save_path}/gene_detTandT_Line.png"
     plt.savefig(save_file)
-    _logger.info("Time changes under perturb image save at {}".format(save_file))
+    print(f"Time changes under perturb image save at {save_path}")
     plt.show()
     plt.close()
 
@@ -1423,9 +1433,6 @@ def plt_umap_byScanpy(adata, attr_list, save_path, mode=None, special_file_name_
         adata = sc.read_h5ad(f"{save_path}/{special_file_name_str}top10CellType_subcell_latentmu.h5ad")
     sc.settings.figdir = save_path
     sc.tl.umap(adata, min_dist=0.75)  # 2024-01-19 11:33:26 add min_dist=0.75
-    # sc.tl.umap(adata, min_dist=0.75)  # 2024-01-19 11:33:26 add min_dist=0.75
-    # sc.tl.umap(adata, min_dist=0.75)  # 2024-01-19 11:33:26 add min_dist=0.75
-    # sc.tl.umap(adata)
     if show_in_row:
         with plt.rc_context({'figure.figsize': figure_size}):
             sc.pl.umap(adata, color=attr_list, show=False, legend_fontsize=5.5, s=20, color_map=color_map)
@@ -1473,38 +1480,54 @@ def plot_psupertime_density(test_results, save_path, label_key="time", psupertim
     print(f"figure save at {save_path}/{method}_labelsOverPsupertime.png")
 
 
-def plot_violin_240223(cell_info_df, save_path, real_attr="time", pseudo_attr="physical_pseudotime_by_preTrained_mouseAtlas_model", special_file_name="", color_map="viridis"):
+def plot_violin_240223(cell_info_df, save_path, x_attr="time",
+                       y_attr="physical_pseudotime_by_preTrained_mouseAtlas_model",
+                       special_file_name="", color_map="viridis", special_legend_str=""):
     from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score
     import matplotlib.pyplot as plt
     import seaborn as sns
     import numpy as np
-    corr_stats = calculate_real_predict_corrlation_score(cell_info_df[pseudo_attr], cell_info_df[real_attr])
+    corr_stats, corr_dic = calculate_real_predict_corrlation_score(cell_info_df[y_attr],
+                                                                   cell_info_df[x_attr],
+                                                                   only_str=False)
     print(f"=== data correlation: \n{corr_stats}")
     boxPlot_df = cell_info_df.copy()
-    time_counts = boxPlot_df.groupby(real_attr)[pseudo_attr].count().reset_index()
+    time_counts = boxPlot_df.groupby(x_attr)[y_attr].count().reset_index()
 
     # plot violin
     sns.set_theme(style="whitegrid")
     plt.figure(figsize=(10, 7))
-    cmap = plt.get_cmap(color_map)(np.linspace(0, 1, len(time_counts[real_attr])))
-    color_dict = dict(zip(time_counts[real_attr], cmap))
-    sns.violinplot(x=real_attr, y=pseudo_attr, data=boxPlot_df, palette=color_map, bw=0.2, scale='width')
+    cmap = plt.get_cmap(color_map)(np.linspace(0, 1, len(time_counts[x_attr])))
+    color_dict = dict(zip(time_counts[x_attr], cmap))
+    sns.violinplot(x=x_attr, y=y_attr, data=boxPlot_df, palette=color_map, bw=0.2, scale='width')
 
-    corr_str = calculate_real_predict_corrlation_score(list(boxPlot_df[pseudo_attr]), list(boxPlot_df[real_attr]), only_str=True)
-    plt.title(f"{special_file_name + ': '}Violin Plot of k-fold test:{corr_str}.")
-    plt.xlabel("Time")
-    plt.ylabel("Pseudotime")
+    corr_str = calculate_real_predict_corrlation_score(list(boxPlot_df[y_attr]), list(boxPlot_df[x_attr]), only_str=True)
+
     legend_elements = [plt.Line2D([0], [0], marker='o', color='w',
-                                  label=f"{time_counts[time_counts[real_attr] == time][pseudo_attr].values[0]}",
-                                  markerfacecolor=color_dict[time], markersize=10) for time in time_counts[real_attr]]
-    plt.legend(handles=legend_elements, title="Cell Num", loc='best')
-
-    plt.xticks()
+                                  label=f"{time_counts[time_counts[x_attr] == time][y_attr].values[0]}",
+                                  markerfacecolor=color_dict[time], markersize=10) for time in time_counts[x_attr]]
+    plt.legend(handles=legend_elements, title="Cell Num", loc='lower right')
+    # plt.legend(handles=legend_elements, title="Cell Num", loc='best')
+    plt.text(0.15, 0.9,
+             f'{special_legend_str}Correlation between x and y\n'
+             f'Spearman: {np.round(corr_dic["spearman"][0], 3)}\n'
+             f'Pearson: {np.round(corr_dic["pearson"][0], 3)}\n'
+             f'Kendall’s τ: {np.round(corr_dic["kendalltau"][0], 3)}',
+             verticalalignment='center', horizontalalignment='center',
+             transform=plt.gca().transAxes,  # This makes the coordinates relative to the axes
+             color='black', fontsize=12,
+             bbox=dict(facecolor='white', alpha=0.5, edgecolor='black', boxstyle='round,pad=0.5'))
+    plt.title(f"{special_file_name + ': '}Violin Plot of k-fold test:{corr_str}.", fontsize=12)
+    plt.xlabel("Time", fontsize=12)
+    plt.ylabel("Pseudotime", fontsize=12)
+    plt.xticks(size=12)
+    plt.yticks(size=12)
     plt.tight_layout()
     plt.savefig(f"{save_path}/{special_file_name + '_'}violine.png", dpi=200)
 
     plt.show()
     plt.close()
+    print(f"figure save as {save_path}/{special_file_name + '_'}violine.png")
     return color_dict
 
 
@@ -1575,3 +1598,367 @@ def plot_boxplot_from_dic(data, legend_loc="lower right"):
     plt.show()
     plt.close()
     return
+
+
+def plt_latentDim(spliced_fine_tune_result_data, unspliced_fine_tune_result_data, save_result_path):
+    print("print latent dimension of spliced and unspliced data.")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    # 获取列数
+    num_cols = spliced_fine_tune_result_data.X.shape[1]
+
+    # 每行显示的子图数
+    cols_per_row = 5
+
+    # 计算需要的行数
+    num_rows = (num_cols + cols_per_row - 1) // cols_per_row
+
+    # 创建子图
+    fig, axs = plt.subplots(num_rows, cols_per_row, figsize=(20, num_rows * 4))
+    spliced_matrix = spliced_fine_tune_result_data.X
+    unspliced_matrix = unspliced_fine_tune_result_data.X
+    cell_type_list = spliced_fine_tune_result_data.obs["cell_type"]
+
+    unique_labels = np.unique(cell_type_list)
+    colors = plt.cm.rainbow(np.linspace(0, 1, len(unique_labels)))
+    label_to_color = dict(zip(unique_labels, colors))
+
+    for i in range(num_cols):
+        _data = {"s": spliced_matrix[:, i], "u": unspliced_matrix[:, i], "cell_type": cell_type_list}
+        _data = pd.DataFrame(_data)
+        row = i // cols_per_row
+        col = i % cols_per_row
+        for _label in unique_labels:
+            _data_subtype = _data[_data["cell_type"] == _label]
+            axs[row, col].scatter(_data_subtype["s"], _data_subtype["u"], c=label_to_color[_label], label=_label, alpha=0.3, s=3)
+            axs[row, col].set_title(f'Column {i + 1}')
+
+    # 隐藏多余的子图
+    for i in range(num_cols, num_rows * cols_per_row):
+        row = i // cols_per_row
+        col = i % cols_per_row
+        axs[row, col].axis('off')
+
+    plt.legend(markerscale=5)
+    plt.tight_layout()
+    plt.savefig(f"{save_result_path}/latent_dim.png", dpi=200)
+    plt.savefig(f"{save_result_path}/latent_dim.pdf", format='pdf')
+    plt.show()
+    plt.close()
+
+
+def plot_tyser_mapping_to_datasets_attrTimeGT(adata_all, save_path, attr,
+                                              query_timePoint='16.5',
+                                              legend_title="Cell stage",
+                                              mask_dataset_label="t",
+                                              reference_dataset_str='',
+                                              special_file_str=''):
+    import scanpy as sc
+    adata_all.obs["time"] = adata_all.obs["time"].astype("float")
+    time_values = adata_all.obs[attr].unique()
+    unique_times = sorted(set(time_values))
+
+    min_time = np.min(unique_times)
+    max_time = np.max(unique_times)
+    normalized_times = (unique_times - min_time) / (max_time - min_time)
+    turbo_cmap = plt.get_cmap('turbo')
+    colors = [turbo_cmap(t) for t in normalized_times]
+    # palette = sns.color_palette('turbo', len(time_values))
+    # 创建颜色字典，将每个类别映射到一个颜色
+    # color_dic = {str(time): color for time, color in zip(unique_times, palette)}
+    color_dic = {str(time): color for time, color in zip(unique_times, colors)}
+    if mask_dataset_label == "t":
+        color_dic[query_timePoint] = (0.9, 0.9, 0.9, 0.7)
+    elif mask_dataset_label == "l & m & p & z & xiao":
+        for _t in color_dic.keys():
+            if _t != query_timePoint:
+                color_dic[_t] = (0.9, 0.9, 0.9, 0.7)
+
+    adata_all.obs["time"] = adata_all.obs["time"].astype("str")
+    sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
+
+    sc.pl.umap(adata_all, color=attr, show=False,
+               s=25, palette=color_dic)
+    plt.gca().set_title('')
+    for spine in plt.gca().spines.values():
+        spine.set_edgecolor('#808b96')
+        spine.set_linewidth(0.5)  #
+    plt.xlabel(plt.gca().get_xlabel(), fontsize=11)
+    plt.ylabel(plt.gca().get_ylabel(), fontsize=11)
+    plt.legend(title=legend_title, fontsize=14, title_fontsize=14,
+               loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.gca().set_position([0, 0, 1, 1])
+    save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{attr}{special_file_str}.png"
+    plt.savefig(save_file_name, dpi=200, bbox_inches='tight')
+    plt.show()
+    plt.close()
+    print(f"figure save at {save_file_name}")
+
+
+def plot_tyser_mapping_to_4dataset_predictedTime(adata_all, save_path, label_dic,
+                                                 mask_dataset_label="t",
+                                                 plot_attr='predicted_time',
+                                                 reference_dataset_str="",
+                                                 mask_str="data_type",
+                                                 special_file_str="",
+                                                 mask_color_alpha=0.7,
+                                                 ):
+    min_t = min(label_dic.keys()) / 100
+    max_t = max(label_dic.keys()) / 100
+    import matplotlib.cm as matcm
+    from sklearn.preprocessing import MinMaxScaler
+    import matplotlib as mpl
+    scaler = MinMaxScaler()
+
+    # normalized_time = scaler.fit_transform(adata_all.obs[attr].values[:, np.newaxis]).ravel()
+    predict_time_list_add_min_max = np.concatenate((np.array([min_t, max_t]), adata_all.obs[plot_attr].values))
+    normalized_time = scaler.fit_transform(predict_time_list_add_min_max[:, np.newaxis]).ravel()
+
+    colors = matcm.turbo(normalized_time)[2:, ]
+    mask = adata_all.obs[mask_str] == mask_dataset_label
+
+    colors[mask] = (0.9, 0.9, 0.9, mask_color_alpha)
+
+    # adata_all.obs['colors']=colors
+    # sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
+    # sc.pl.umap(adata_all,  show=False, s=25)
+    # umap_coords = adata_all.obsm['X_umap']
+    # ax.scatter(umap_coords[:, 0], umap_coords[:, 1], c=colors, s=25)
+
+    plt.figure(figsize=(6.6, 6.6))
+    plt.scatter(
+        adata_all.obsm['X_umap'][:, 0],
+        adata_all.obsm['X_umap'][:, 1],
+        c=colors,  # 使用自定义颜色
+        s=5,  # 点的大小
+        # alpha=0.8  # 点的透明度
+    )
+    plt.gca().set_title('')
+    plt.xlabel('UMAP1')
+    plt.ylabel('UMAP2')
+    for spine in plt.gca().spines.values():
+        spine.set_edgecolor('#808b96')
+        spine.set_linewidth(0.5)
+    plt.xlabel(plt.gca().get_xlabel(), fontsize=11)  # 设置X轴字体大小
+    plt.ylabel(plt.gca().get_ylabel(), fontsize=11)
+    plt.gca().set_xticks([])
+    plt.gca().set_yticks([])
+    # 创建一个颜色条
+    cmap = plt.get_cmap('turbo')
+    norm = mpl.colors.Normalize(vmin=min_t, vmax=max_t)
+    scalar_mappable = mpl.cm.ScalarMappable(cmap=cmap, norm=norm)
+    scalar_mappable.set_array([])
+    cbar = plt.colorbar(scalar_mappable, pad=0.01, fraction=0.03, shrink=1, aspect=30, ax=plt.gca())
+
+    cbar.ax.invert_yaxis()
+    cbar.ax.tick_params(labelsize=14)
+    # cbar = plt.colorbar(scattering)
+
+    cbar.set_label(plot_attr.replace("_", " ").capitalize(), fontsize=16)
+    cbar.set_alpha(1)
+    cbar._draw_all()
+    # 移除网格线
+    ax = plt.gca()
+    ax.grid(False)  # 禁用网格线
+    save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{plot_attr}{special_file_str}.png"
+    plt.savefig(save_file_name, dpi=200, bbox_inches='tight')
+    # save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{attr}{special_file_str}.png"
+    plt.show()
+    plt.close()
+    print(f"figure save at {save_file_name}")
+
+
+def plot_tyser_mapping_to_datasets_attrCellType_maskTyser(adata_all, save_path, attr,
+                                                          masked_str, color_palette="hsv",
+                                                          legend_title="Cell type",
+                                                          reference_dataset_str="",
+                                                          special_file_str='_maskT'):
+    import scanpy as sc
+    unique_categories = adata_all.obs[attr].unique()
+    # too long change, add \n to the cell type name.
+    if 'Hemogenic Endothelial Progenitors_t' in unique_categories:
+        adata_all.obs[attr] = adata_all.obs[attr].replace('Hemogenic Endothelial Progenitors_t',
+                                                          'Hemogenic Endothelial\nProgenitors_t')
+        unique_categories = adata_all.obs[attr].unique()
+    category_counts = adata_all.obs[attr].value_counts()
+    if len(unique_categories) > 15:
+        print(f"more than 15 cell type, so trans cell type with less cells to Other cell type in image.")
+        top_categories = category_counts.nlargest(15).index
+        other_categories = category_counts.index.difference(top_categories)
+        adata_all.obs[attr] = adata_all.obs[attr].replace(other_categories, "Other cell type")
+    else:
+        top_categories = unique_categories
+        other_categories = []
+
+    palette = sns.color_palette(color_palette, len(top_categories))  # 可以选择不同的调色板
+    color_dic = {cat: color for cat, color in zip(top_categories, palette)}
+    color_dic[masked_str] = (0.9, 0.9, 0.9, 0.7)
+
+    if len(other_categories) > 0:
+        color_dic["Other cell type"] = "#d4efdf"
+        _color = color_dic.pop("Other cell type")
+        color_dic["Other cell type"] = _color
+    _color = color_dic.pop(masked_str)
+    color_dic[masked_str] = _color
+
+    sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
+
+    sc.pl.umap(adata_all, color=attr, show=False, s=25,
+               palette=color_dic)
+
+    plt.gca().set_title('')
+    for spine in plt.gca().spines.values():
+        spine.set_edgecolor('#808b96')
+        spine.set_linewidth(0.5)  #
+    plt.xlabel(plt.gca().get_xlabel(), fontsize=11)
+    plt.ylabel(plt.gca().get_ylabel(), fontsize=11)
+
+    handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color_dic[cat], markersize=8, label=cat)
+               for cat in color_dic]
+    plt.legend(handles=handles, title=legend_title, fontsize=14, title_fontsize=14,
+               loc='center left', bbox_to_anchor=(1, 0.5))
+    # plt.legend(title=legend_title, fontsize=13, title_fontsize=13,loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.gca().set_position([0, 0, 1, 1])
+
+    save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{attr}{special_file_str}.png"
+    plt.savefig(save_file_name, dpi=200, bbox_inches='tight')
+    plt.show()
+    plt.close()
+    print(f"figure save at {save_file_name}")
+
+
+def plot_tyser_mapping_to_datasets_attrDataset(adata_all, save_path, attr,
+                                               color_dic, legend_title,
+                                               masked_str='t',
+                                               reference_dataset_str="",
+                                               special_file_str=""):
+    import scanpy as sc
+    _color = color_dic.pop(masked_str)
+    color_dic[masked_str] = _color
+    sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
+    sc.pl.umap(adata_all, color=attr, show=False, s=25,
+               palette=color_dic)
+    plt.gca().set_title('')
+    for spine in plt.gca().spines.values():
+        spine.set_edgecolor('#808b96')  # 将边框颜色设置为红色
+        spine.set_linewidth(0.5)  # 设置边框线条宽度
+    plt.xlabel(plt.gca().get_xlabel(), fontsize=11)  # 设置X轴字体大小
+    plt.ylabel(plt.gca().get_ylabel(), fontsize=11)
+    handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color_dic[cat], markersize=8, label=cat)
+               for cat in color_dic]
+    plt.legend(handles=handles, title=legend_title, fontsize=14, title_fontsize=14, loc='upper left', bbox_to_anchor=(0, 1))
+    # plt.legend(title=legend_title, fontsize=13, title_fontsize=13,loc='center left', bbox_to_anchor=(1, 0.5))
+    plt.gca().set_position([0, 0, 1, 1])
+
+    save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{attr}{special_file_str}.png"
+    plt.savefig(save_file_name, dpi=200, bbox_inches='tight')
+    plt.show()
+    plt.close()
+    print(f"figure save at {save_file_name}")
+
+
+def plt_enrichmentResult(species, gene_set, env_gene_list, stage, save_path, top_term=5):
+    import gseapy
+    # gene_set=gseapy.get_library_name(organism=species)
+    env_gene_num = len(env_gene_list)
+    enr = gseapy.enrichr(gene_list=list(env_gene_list),  # or "./tests/data/gene_list.txt",
+                         gene_sets=gene_set,
+                         organism=species,  # don't forget to set organism to the one you desired! e.g. Yeast
+                         outdir=None,  # don't write to disk
+                         )  # enr.results.head(5)
+    ax = gseapy.dotplot(enr.results,
+                        column="Adjusted P-value",
+                        x='Gene_set',  # set group, so you could do a multi-sample/library comparsion
+                        size=10,
+                        top_term=top_term,
+                        figsize=(3, 5),
+                        title=f"{stage.capitalize()} stage: enrichment of Top{env_gene_num} genes.",
+                        xticklabels_rot=45,  # rotate xtick labels
+                        show_ring=True,  # set to False to revmove outer ring
+                        marker='o',
+                        ofname=f"{save_path}/{stage}_enrichment_{env_gene_num}Genes_{species}.png")
+    # ofname=f"{file_path}/{_s}_enrichment_{env_gene_num}Genes_{species}.png")
+    # plt.savefig(f"{save_path}/{stage}_enrichment_{env_gene_num}Genes_{species}.png", bbox_inches="tight", dpi=300)
+    # plt.gcf().subplots_adjust(left=0.05,top=0.91,bottom=0.09)
+    # plt.show()
+    plt.close()
+    print(f"{stage} top {env_gene_num} pertub gene: {env_gene_list}")
+    return enr
+
+
+def plt_violin_topGene_inWhole_stage(top_gene_dic, perturb_data_denor,
+                                     cell_info, perturb_show_gene_num, species,
+                                     save_path):
+    from collections import defaultdict
+    # Create a defaultdict to hold the combined keys
+    merged_dict = defaultdict(list)
+    # Populate the merged_dict
+    for key, genes in top_gene_dic.items():
+        for gene in genes:
+            merged_dict[gene].append(key)
+
+    # Create the final dictionary with concatenated keys
+    final_dict = {gene: '/'.join(keys) for gene, keys in merged_dict.items()}
+    print(final_dict)
+    # Plotting
+    time_point_num = len(np.unique(np.array(cell_info["time"])))
+    fig, axs = plt.subplots(len(final_dict), 1, figsize=(int(time_point_num / 2) + 1, 3 * len(final_dict)), sharey='row')
+
+    for ax, (gene, str) in zip(axs, final_dict.items()):
+        temp = {"det_time": np.array(perturb_data_denor[gene]) - np.array(cell_info["predicted_time_denor"]),
+                "real_time": np.array(cell_info["time"]),
+                "gene": gene,
+                }
+        temp = pd.DataFrame(temp, index=cell_info.index)
+        sns.violinplot(x="real_time", y="det_time", data=temp, palette="tab10", inner="box", linewidth=1, alpha=0.5, bw_method=0.2, scale='width', ax=ax)
+        sns.stripplot(data=temp, x="real_time", y="det_time", size=0.6, ax=ax)
+        ax.axhline(y=0, color='red', linestyle='--', label='△t=0')
+        # ax.scatter(cell_info["time"],np.array(perturb_data_denor[gene]) - np.array(cell_info["predicted_time_denor"]),label=gene)
+        ax.set_title(f"{gene} is Top{perturb_show_gene_num} sensitive in {str} stage", fontsize=16)
+        ax.set_xlabel('Time', fontsize=16)
+        ax.set_ylabel('△t', fontsize=16)
+        # Rotating x-axis labels
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+        ax.legend(fontsize=16)
+
+        # ax.legend(loc='upper right', fontsize=16)
+    sns.despine()
+    plt.tight_layout()
+    save_file_name = f"{save_path}/{species}_wholeStage_perturb_top{perturb_show_gene_num}Gene_xTime_yDetT.png"
+    plt.savefig(save_file_name, dpi=200)
+    print(f"figure save as {save_file_name}")
+    plt.show()
+    plt.close()
+
+
+def plt_perturb_xTime_yDetT(plot_pd, gene_list, save_path, stage):
+    plt.figure(figsize=(len(plot_pd["real_time"].unique()) * 2 + 2, 8))
+    sns.set(style="white", color_codes=True)
+    # 创建散点图
+    # plt.scatter(temp["trained_time"],temp["perturb_time"] ,s=2,c=colors[i],alpha=0.4)
+    sns.violinplot(x="real_time", y="det_time", hue="gene", data=plot_pd, palette="tab10", inner="box", linewidth=1, alpha=0.5, bw_method=0.2, scale='width')
+    # sns.boxenplot(x="real_time", y="det_time", hue="gene", data=plot_pd, palette="tab10", width=0.05)
+    # sns.scatterplot(x="real_time", y="det_time", data=plot_pd, hue="gene", palette="tab10",s=5, alpha=0.7, )
+
+    # sns.lmplot(x="real_time", y="det_time", data=plot_pd, hue="gene", palette="tab10",
+    #            order=2, ci=None, scatter_kws={"s": 5, "alpha": 0.7}, height=10, aspect=1.5)  # lmplot默认order参数是一阶的
+    plt.axhline(y=0, color='red', linestyle='--', label='△t=0')
+    # 添加标题和标签
+    plt.xticks(fontsize=14)
+    plt.yticks(fontsize=14)
+    plt.title(f'In {stage} stage: top {len(gene_list)} abs(△t) of genes', fontsize=16)
+    plt.xlabel('Biological time.', fontsize=16)
+    plt.ylabel('△t: pseudo-time with perturbation - without perturbation.', fontsize=16)
+    plt.legend(fontsize=16)
+    #
+    # _logger.info
+    # handles, labels = plt.gca().get_legend_handles_labels()
+    # plt.legend(handles, labels, title='Gene')
+    plt.tight_layout()
+    save_file_name = f"{save_path}/{stage}_perturb_top{len(gene_list)}Gene_xTime_yDetT.png"
+    plt.savefig(save_file_name, dpi=200)
+    print(f"Time changes under perturb image save as {save_file_name}")
+    plt.show()
+    plt.close()
+    gc.collect()

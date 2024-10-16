@@ -39,7 +39,7 @@ import gc
 def main():
     parser = argparse.ArgumentParser(description="CNN model for prediction of gene paris' regulatory relationship")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22
-                        default="/240901_science2022_kFoldOn_mouseAtlas/",
+                        default="/Fig3_science2022_LR_PCA_RF_kFoldOn_mouseAtlas_240901/",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
                         default="/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/",

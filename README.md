@@ -89,7 +89,7 @@ python -u Fig3_mouse_data/preprocess_data_mouse_embryo_stereo.py
 2. Reproduce the result of **Figure3.A&B** and save results in folder _results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809_
 
 ```bash
-python -u Fig3_mouse_data/VAE_kFoldOn_mouseAtlas.py 
+python -u Fig3_mouse_data/TemporalVAE_kFoldOn_mouseAtlas.py 
 --result_save_path=230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809
 --vae_param_file=supervise_vae_regressionclfdecoder_mouse_stereo
 --file_path=/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000 
@@ -118,7 +118,7 @@ python -u Fig4_human_data/preprocess_humanEmbryo_CS7_Tyser.py
 2. **Figure 4.A**: K-fold test on xiang19 dataset, please check _Fig4_human_data/vae_humanEmbryo_xiang19.ipynb_ or run code on console:
 
 ```bash
-python -u Fig4_human_data/vae_humanEmbryo_xiang19.py --file_path=/240322Human_embryo/xiang2019/hvg500/
+python -u Fig4_human_data/TemporalVAE_humanEmbryo_kFoldOn_xiang19.py --file_path=/240322Human_embryo/xiang2019/hvg500/
 ```
 
 3. **Figure 4.B**: Temporal trained on xiang19 dataset and predict on Lv19 dataset, please check _Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.ipynb_ or run code

@@ -32,7 +32,7 @@ Data can access on [GEO GSE87375](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi
 
 """
 
-from pypsupertime import Psupertime
+from Fig2_TemproalVAE_against_benchmark_methods.pypsupertime import Psupertime
 import anndata
 import pandas as pd
 import os
@@ -152,7 +152,7 @@ write.csv(new_data,file = "data_fromPsupertime/humanGermline_Y.csv", row.names =
 
 """
 
-from pypsupertime import Psupertime
+from Fig2_TemproalVAE_against_benchmark_methods.pypsupertime import Psupertime
 import anndata
 import pandas as pd
 import os

@@ -9,6 +9,8 @@
 pseudotime
 """
 import os
+import time
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import spearmanr, kendalltau
@@ -56,6 +58,7 @@ def main():
                                   seurat_df.copy(),
                                   ot_df.copy(),
                                   dataset, dataset_dic)
+
         # 2024-08-07 11:09:40 add
         multi_corr_df = pd.DataFrame(columns=["method", "Spearman", "Pearson", "kendalltau"])
         # multi_corr_df = pd.DataFrame(columns=["method", "Spearman", "Pearson", "kendalltau","EMD", "MMD", "R-squared"])
@@ -113,23 +116,20 @@ def main():
     return
 
 
-def calculate_corr(df, label_to_remove, corr_method, neg_bool=1):
+def corr_withRemoveDonor(df, label_to_remove, corr_method,):
     if label_to_remove != "No removal":
-        # 删除指定标签
         # df["time"] = df["time"].astype(int)  # take care here as psupertime and vae can have continues time as input
         df_filtered = df[df['time'] != label_to_remove]
-
     else:
         df_filtered = df.copy()
-    # 计算Spearman相关系数
     if corr_method == "spearmanr":
         try:
-            spearman_corr, _ = spearmanr(df_filtered['time'], df_filtered['pseudotime'])
+            corr, _ = spearmanr(df_filtered['time'], df_filtered['pseudotime'])
         except:
             print("error?")
     elif corr_method == "kendalltau":
-        spearman_corr, _ = kendalltau(df_filtered['time'], df_filtered['pseudotime'])
-    return abs(spearman_corr) * neg_bool
+        corr, _ = kendalltau(df_filtered['time'], df_filtered['pseudotime'])
+    return abs(corr)
 
 
 def get_method_result(method, dataset):  #
@@ -199,7 +199,12 @@ def plot_boxAndDot_on_allData(pca_df, randomForest_df, lr_df, psupertime_df, vae
     lr_df = add_norCol_df(lr_df)
     psupertime_df = add_norCol_df(psupertime_df)
     vae_df = add_norCol_df(vae_df)
-
+    # from utils.utils_DandanProject import denormalize
+    # vae_df['predicted_time']=vae_df['pseudotime'].apply(denormalize,args=(min(vae_df['time']),
+    #                                                                       max(vae_df['time']),
+    #                                                                       min(vae_df['trans_label']),
+    #                                                                       max(vae_df['trans_label']),
+    #                                                                       ))
     # 2024-08-06 14:07:12 add
     science_df = add_norCol_df(science_df)
     seurat_df = add_norCol_df(seurat_df)
@@ -218,7 +223,7 @@ def plot_boxAndDot_on_allData(pca_df, randomForest_df, lr_df, psupertime_df, vae
                       aspect=label_num * 0.4, height=3)
     g.map_dataframe(sns.boxplot, x='time', y='normalized', palette="Set3")
     g.map_dataframe(sns.stripplot, x='time', y='normalized', jitter=True, alpha=0.9, palette="Dark2", s=3)
-    g.set_axis_labels('Time', 'Pseudotime')
+    g.set_axis_labels('Time', 'Normalized pseudo-time')
     g.set_titles(col_template='{col_name}')
     g.add_legend()
 
@@ -229,9 +234,9 @@ def plot_boxAndDot_on_allData(pca_df, randomForest_df, lr_df, psupertime_df, vae
 
     # 设置字体大小
     plt.rc('axes', titlesize=16)
-    plt.rc('axes', labelsize=14)
-    plt.rc('xtick', labelsize=14)
-    plt.rc('ytick', labelsize=14)
+    plt.rc('axes', labelsize=16)
+    plt.rc('xtick', labelsize=16)
+    plt.rc('ytick', labelsize=16)
 
     plt.savefig(f"{os.getcwd()}/{dataset}_methods_boxAndDot_results.pdf")
     plt.savefig(f"{os.getcwd()}/{dataset}_methods_boxAndDot_results.png", dpi=200)
@@ -262,16 +267,16 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
 
     # 循环计算四个DataFrame的相关系数
     for label_to_remove in all_labels:
-        pca_spearman_correlations.append(calculate_corr(pca_df, label_to_remove, corr_method=corr_matric))
-        randomForest_spearman_correlations.append(calculate_corr(randomForest_df, label_to_remove, corr_method=corr_matric))
-        lr_spearman_correlations.append(calculate_corr(lr_df, label_to_remove, corr_method=corr_matric))
-        psupertime_spearman_correlations.append(calculate_corr(psupertime_df, label_to_remove, corr_method=corr_matric))
-        vae_spearman_correlations.append(calculate_corr(vae_df, label_to_remove, corr_method=corr_matric))
+        pca_spearman_correlations.append(corr_withRemoveDonor(pca_df, label_to_remove, corr_method=corr_matric))
+        randomForest_spearman_correlations.append(corr_withRemoveDonor(randomForest_df, label_to_remove, corr_method=corr_matric))
+        lr_spearman_correlations.append(corr_withRemoveDonor(lr_df, label_to_remove, corr_method=corr_matric))
+        psupertime_spearman_correlations.append(corr_withRemoveDonor(psupertime_df, label_to_remove, corr_method=corr_matric))
+        vae_spearman_correlations.append(corr_withRemoveDonor(vae_df, label_to_remove, corr_method=corr_matric))
 
         # 2024-08-06 13:17:12 add
-        science_spearman_correlations.append(calculate_corr(science_df, label_to_remove, corr_method=corr_matric))
-        seurat_spearman_correlations.append(calculate_corr(seurat_df, label_to_remove, corr_method=corr_matric))
-        ot_spearman_correlations.append(calculate_corr(ot_df, label_to_remove, corr_method=corr_matric))
+        science_spearman_correlations.append(corr_withRemoveDonor(science_df, label_to_remove, corr_method=corr_matric))
+        seurat_spearman_correlations.append(corr_withRemoveDonor(seurat_df, label_to_remove, corr_method=corr_matric))
+        ot_spearman_correlations.append(corr_withRemoveDonor(ot_df, label_to_remove, corr_method=corr_matric))
 
     # 创建标签位置
     x = np.arange(len(all_labels))
@@ -295,7 +300,7 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
     ax1.bar(x + 2 * width, vae_spearman_correlations, width, label='TemporalVAE', color="#9b5de5")
 
     corr_matric_dic = {"spearmanr": "Spearman"}
-    ax1.set_ylabel(f'{corr_matric_dic[corr_matric]} Correlation')
+    ax1.set_ylabel(f'{corr_matric_dic[corr_matric]} correlation')
     # 移除外围黑框
     # for spine in ax1.spines.values():
     #     spine.set_visible(False)
@@ -306,11 +311,11 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
 
     ax1.set_xlabel('Remove donor')
     plt.xticks(x, all_labels)
-    plt.legend(loc='lower right', fontsize=14)
+    plt.legend(loc='lower right', fontsize=16)
     plt.rc('axes', titlesize=16)
-    plt.rc('axes', labelsize=14)
-    plt.rc('xtick', labelsize=14)
-    plt.rc('ytick', labelsize=14)
+    plt.rc('axes', labelsize=16)
+    plt.rc('xtick', labelsize=16)
+    plt.rc('ytick', labelsize=16)
     # 调整子图布局
     plt.suptitle(f'{dataset_dic[dataset]}: Correlation for Each Deleted donor', fontsize=18)
     plt.tight_layout(rect=[0, 0, 1, 0.95])

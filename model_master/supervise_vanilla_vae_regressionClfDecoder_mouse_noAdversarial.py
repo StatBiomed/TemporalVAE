@@ -4,6 +4,7 @@ from torch import nn
 from torch.nn import functional as F
 from model_master.types_ import *
 
+
 # 2023-10-04 22:21:36 change model name from SuperviseVanillaVAE_regressionClfDecoder_mouse_mouse_toyDataset to SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial
 class SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial(BaseVAE):
 
@@ -61,26 +62,49 @@ class SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial(BaseVAE):
         self.decoder = nn.Sequential(*modules)
 
         # Build classifier, only for continue, so last layer use tanh
+        # hidden_dims.reverse()
+        # self.clf_input = nn.Linear(self.latent_dim, hidden_dims[1])
+        # self.clf_input = nn.Linear(self.latent_dim, hidden_dims[0])
+        # self.clf_decoder = nn.Sequential(nn.Sigmoid(),
+        #                                  nn.Linear(hidden_dims[1], hidden_dims[2]),
+        #                                  nn.LeakyReLU(),
+        #                                  nn.Linear(hidden_dims[2], hidden_dims[2]),
+        #                                  nn.LeakyReLU(),
+        #                                  nn.Linear(hidden_dims[2], hidden_dims[3]),  # 2023-09-21 17:06:34 add
+        #                                  nn.Tanh(),  # mark here 2024-09-02 22:49:47 remove, 2023-09-21 17:06:34 add,
+        #                                  nn.Linear(hidden_dims[3], 1))
+        # 0.692,0.75676, 0.548
+        # self.clf_input = nn.Linear(self.latent_dim, hidden_dims[0])
+        # self.clf_decoder = nn.Sequential(nn.Sigmoid(),
+        #                                  nn.Linear(hidden_dims[0], self.label_num * 5),
+        #                                  nn.LeakyReLU(),
+        #                                  nn.Linear(self.label_num * 5, self.label_num * 2),  # 2023-09-21 17:06:34 add
+        #                                  nn.Tanh(),  # mark here 2024-09-02 22:49:47 remove, 2023-09-21 17:06:34 add,
+        #                                  nn.Linear(self.label_num * 2, 1))
+
+        #before 2024-09-27 00:51:22 version as following
         self.clf_input = nn.Linear(self.latent_dim, hidden_dims[0])
         self.clf_decoder = nn.Sequential(nn.Linear(hidden_dims[0], hidden_dims[0]),
                                          nn.BatchNorm1d(hidden_dims[0]),
                                          nn.LeakyReLU(),
-                                         nn.Dropout(p=0.5),  # 2023-09-21 17:06:34 add
+                                         nn.Dropout(p=0.5),  # 2024-09-25 11:10:07 remove; 2023-09-21 17:06:34 add
                                          nn.Linear(hidden_dims[0], self.label_num * 2),
                                          nn.BatchNorm1d(self.label_num * 2),
                                          nn.Tanh(),
-                                         nn.Dropout(p=0.5),  # 2023-09-21 17:06:34 add
+                                         nn.Dropout(p=0.5),  # 2024-09-25 11:09:54 remove; 2023-09-21 17:06:34 add
                                          nn.Linear(self.label_num * 2, self.label_num * 2),  # 2023-09-21 17:06:34 add
                                          nn.BatchNorm1d(self.label_num * 2),  # 2023-09-21 17:06:34 add
-                                         nn.Tanh(),  # 2023-09-21 17:06:34 add
-                                         # nn.Dropout(p=0.5),  # 2023-09-21 17:06:34 add
+                                         # nn.Tanh(),# mark here 2024-09-02 22:49:47 remove, 2023-09-21 17:06:34 add,
+                                         # nn.Dropout(p=0.5)， #2023-09-21 17:06:34 add
                                          nn.Linear(self.label_num * 2, 1))
 
         # final_layer for decoder, as the gene expression is N(0,1), the last layer should be tanh
         self.final_layer = nn.Sequential(
             nn.Linear(hidden_dims[-1], hidden_dims[-1]),
-            nn.BatchNorm1d(hidden_dims[-1]),
-            nn.Tanh())
+            nn.BatchNorm1d(hidden_dims[-1]), #2024-09-25 19:48:29 remove
+            nn.Tanh(), # 2024-09-25 19:48:48 remove
+            # nn.Linear(hidden_dims[-1], hidden_dims[-1]), # 2024-09-28 09:52:02 add
+        )
 
     def encode(self, input: Tensor) -> List[Tensor]:
         """
@@ -169,7 +193,7 @@ class SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial(BaseVAE):
         label_reshape = torch.unsqueeze(label, dim=1).float()
         clf_loss = F.mse_loss(reclf, label_reshape)
         # clf_loss = clf_weight * F.cross_entropy(reclf, label)
-
+        # loss = kld_weight * kld_loss + clf_weight * clf_loss  # 2024-09-25 17:42:59 recons_loss weight change to 0 for test.
         loss = recons_loss + kld_weight * kld_loss + clf_weight * clf_loss
         return {'loss': loss, 'Reconstruction_loss': recons_loss.detach(), 'KLD': -kld_loss.detach(), "clf_loss": clf_loss}
 

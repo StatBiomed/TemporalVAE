@@ -85,7 +85,7 @@ class SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial_u_s_focusEnco
                                          nn.Dropout(p=0.5),  # 2023-09-21 17:06:34 add
                                          nn.Linear(self.label_num * 2, self.label_num * 2),  # 2023-09-21 17:06:34 add
                                          nn.BatchNorm1d(self.label_num * 2),  # 2023-09-21 17:06:34 add
-                                         nn.Tanh(),  # 2023-09-21 17:06:34 add
+                                         # nn.Tanh(),  #  mark here 2024-09-02 22:49:47 remove, 2023-09-21 17:06:34 add,
                                          # nn.Dropout(p=0.5),  # 2023-09-21 17:06:34 add
                                          nn.Linear(self.label_num * 2, 1))
 

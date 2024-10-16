@@ -7,6 +7,7 @@
 @Date    ：2023/6/10 18:49 
 """
 import logging
+import gc
 
 _logger = logging.getLogger(__name__)
 
@@ -745,6 +746,7 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
                                                   drop_out_cell_type=None,
                                                   min_cell_num=50, min_gene_num=100, keep_sub_type_with_cell_num=None,
                                                   external_file_name=None, external_cell_info_file=None,
+                                                  external_file_name2=None, external_cell_info_file2=None,
                                                   external_cellId_list=None,
                                                   downSample_on_testData_bool=False, test_donor=None,
                                                   downSample_location_type=None,
@@ -752,7 +754,8 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
                                                   plot_boxPlot_bool=False,
                                                   special_path_str="",
                                                   random_drop_cell_bool=False,
-                                                  normalized_cellTotalCount=1e6, data_raw_count_bool=True):
+                                                  normalized_cellTotalCount=1e6,
+                                                  data_raw_count_bool=True):
     """
     :param golbal_data_path:
     :param file_name:
@@ -809,6 +812,28 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
 
         adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
         _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
+    if external_file_name2 is not None:
+        try:
+            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter='\t')
+        except:
+            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter=',')
+        _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
+        _logger.info("here is important, we want to use same cell compare with no integration method.")
+        if external_cellId_list is not None:
+            _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
+            adata2 = adata2[:, external_cellId_list].copy()
+        # adata2=adata2.T.copy()
+        # sc.pp.filter_cells(adata2, min_genes=min_gene_num)
+        # adata2=adata2.T.copy()
+        # 2023-08-03 18:41:20 concat adata and adata2
+        # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
+        duplicate_columns = set(adata.var_names) & set(adata2.var_names)
+        # 删除adata2中的重复列
+        adata2 = adata2[:, ~adata2.var_names.isin(duplicate_columns)]
+        _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
+
+        adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
+        _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
 
     if gene_list is not None:
         overlap_gene = list(set(adata.obs_names) & set(gene_list))
@@ -819,6 +844,15 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
     cell_time = pd.read_csv(golbal_data_path + cell_info_file, sep="\t", index_col=0)
     if external_cell_info_file is not None:
         external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file, sep="\t", index_col=0)
+        _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
+
+        external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
+        _logger.info("drop out {} duplicate cell(with the same cell name)".format(len(duplicate_columns)))
+
+        cell_time = pd.concat([cell_time, external_cell_time])
+        _logger.info("merged sc cell info and external cell info dataframe with (cell, attr-num): {}".format(cell_time.shape))
+    if external_cell_info_file2 is not None:
+        external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file2, sep="\t", index_col=0)
         _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
 
         external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
@@ -980,23 +1014,26 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
     _logger.info("After filter, get cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
     gene_raw_total_count = pd.DataFrame(data=adata.X.sum(axis=0), index=adata.var_names, columns=["raw_total_count"])
 
+    # ---
+    sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount)
+    print(f"normalized sample to {normalized_cellTotalCount}")
     if data_raw_count_bool:
-        sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount)
         sc.pp.log1p(adata)
-        _logger.info(f"Finish normalize per cell to {normalized_cellTotalCount}, "
-                     f"so that every cell has the same total count after normalization.")
-        if plot_boxPlot_bool:
-            try:
-                plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
-                                                                   special_path_str, test_donor,
-                                                                   special_file_str=f"6NormalizeTo1e6AndLog")
-                plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
-                                                                  special_path_str, test_donor,
-                                                                  special_file_str=f"6NormalizeTo1e6AndLog")
-            except:
-                print("some error while plot before boxplot.")
+        print("Input data is raw count, do the log1p().")
     else:
-        print("Input data is normalized, skip the normalization.")
+        print("Input data is log-ed, skip the log-ed.")
+    _logger.info(f"Finish normalize per cell to {normalized_cellTotalCount}, "
+                 f"so that every cell has the same total count after normalization.")
+    if plot_boxPlot_bool:
+        try:
+            plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
+                                                               special_path_str, test_donor,
+                                                               special_file_str=f"6NormalizeTo1e6AndLog")
+            plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
+                                                              special_path_str, test_donor,
+                                                              special_file_str=f"6NormalizeTo1e6AndLog")
+        except:
+            print("some error while plot before boxplot.")
     sc_expression_df = pd.DataFrame(data=adata.X, columns=adata.var.index, index=adata.obs.index)
     # 2023-08-05 15:12:28 for debug
     # sc_expression_df = sc_expression_df.sample(n=6000, random_state=0)
@@ -1127,7 +1164,7 @@ def trans_time(capture_time, time_standard_type, capture_time_other=None, label_
 #     return item
 
 
-def identify_timeCorGene(sc_expression_df, y_time_nor_tensor, donor_index_tensor, runner, experiment, trained_total_dic,
+def identify_timeCorGene(sc_expression_df, cell_info, y_time_nor_tensor, donor_index_tensor, runner, experiment, trained_total_dic,
                          special_path_str,
                          config, parallel_bool=False, top_gene_num=15):
     """
@@ -1148,6 +1185,8 @@ def identify_timeCorGene(sc_expression_df, y_time_nor_tensor, donor_index_tensor
     :param config: 
     :return:
     """
+    save_file_path = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}{special_path_str}/"
+
     import multiprocessing
     from multiprocessing import Queue
     trained_result = trained_total_dic["total"]
@@ -1161,15 +1200,17 @@ def identify_timeCorGene(sc_expression_df, y_time_nor_tensor, donor_index_tensor
     # trained_latent_logVar = trained_result[0][2]
     # trained_recons = trained_result[0][4]
 
-    _ = "{}{}/".format(_logger.root.handlers[0].baseFilename.replace(".log", ""), special_path_str)
-    gene_raw_total_count_pd = pd.read_csv(f"{_}/preprocessed_gene_info.csv", header=0, index_col=0)
+    gene_raw_total_count_pd = pd.read_csv(f"{save_file_path}/preprocessed_gene_info.csv", header=0, index_col=0)
 
     gene_list = sc_expression_df.columns
-    gene_result_pd = pd.DataFrame(
-        columns=["gene", "gene_short_name", "spearman", "spearman_pval", "pearson", "pearson_pval", "kendalltau",
-                 "kendalltau_pval", "r2",
-                 "mean_abs", "mean",
-                 "median_abs", "median", "t_test", "total_raw_count"])
+    gene_result_pd = pd.DataFrame(columns=["gene", "gene_short_name",
+                                           "spearman", "spearman_pval",
+                                           "pearson", "pearson_pval",
+                                           "kendalltau",
+                                           "kendalltau_pval",
+                                           "r2",
+                                           "mean_abs", "mean", "median_abs", "median",
+                                           "t_test", "total_raw_count"])
     if gene_list[0].startswith("EN") and gene_list[1].startswith("EN"):
         gene_dic = geneId_geneName_dic()
     else:
@@ -1197,22 +1238,21 @@ def identify_timeCorGene(sc_expression_df, y_time_nor_tensor, donor_index_tensor
     #         gene_result_pd = pd.concat([gene_result_pd, _pd], axis=0)
 
     # else:
-    perturb_gene_predictedTime_dic = dict()
+    perturb_gene_predictedTime_pd = pd.DataFrame(index=sc_expression_df.index)
     for gene in gene_list:
-        _pd, _perturbTime = pertub_one_gene(gene, sc_expression_df.copy(), y_time_nor_tensor, donor_index_tensor,
+        _pd, _perturbTime = pertub_one_gene(gene, sc_expression_df, y_time_nor_tensor, donor_index_tensor,
                                             runner, experiment, trained_total_dic, trained_clf, gene_dic,
                                             gene_raw_total_count_pd.loc[gene]["raw_total_count"], special_path_str,
-                                            plot_geneTimeDetTime_bool=True)
+                                            plot_geneTimeDetTime_bool=False)
         gene_result_pd = pd.concat([gene_result_pd, _pd], axis=0)
-        perturb_gene_predictedTime_dic[gene] = _perturbTime
-
+        perturb_gene_predictedTime_pd[gene] = _perturbTime
     # save result
-    save_file_name = "{}{}/{}_timeCorGene_predTimeChange.csv".format(
-        _logger.root.handlers[0].baseFilename.replace(".log", ""),
-        special_path_str,
-        config['model_params']['name'])
-    gene_result_pd.to_csv(save_file_name)
-    _logger.info("Time cor gene save at: {}".format(save_file_name))
+    gene_result_pd.to_csv(f"{save_file_path}/{config['model_params']['name']}_timeCorGene_predTimeChange.csv")
+    perturb_gene_predictedTime_pd.to_csv(f"{save_file_path}/After_perturb_singleGene_eachSample_predcitedTime.csv")
+    cell_info["predicted_time"] = trained_clf
+    cell_info["normalized_time"] = y_time_nor_tensor
+    cell_info.to_csv(f"{save_file_path}/eachSample_info.csv")
+    _logger.info("Time cor gene save at: {}".format(save_file_path))
 
     # plot det t and total count on each gene
     plot_detTandExp(gene_result_pd.copy(), special_path_str)
@@ -1224,7 +1264,7 @@ def identify_timeCorGene(sc_expression_df, y_time_nor_tensor, donor_index_tensor
     _logger.info(f"plot t and detT of top mean change {top_gene_num} genes.")
     plot_pd = pd.DataFrame(columns=["perturb_time", "trained_time", "gene"])
     for i in range(len(top_gene_list)):
-        temp = {"det_time": np.array(perturb_gene_predictedTime_dic[top_gene_list[i]]) - np.array(trained_clf),
+        temp = {"det_time": np.array(perturb_gene_predictedTime_pd[top_gene_list[i]]) - np.array(trained_clf),
                 "trained_time": np.array(trained_clf),
                 "gene": gene_dic[top_gene_list[i]]}
         temp = pd.DataFrame(temp)
@@ -1253,10 +1293,10 @@ def pertub_one_gene(gene, sc_expression_df, y_time_nor_tensor, donor_index_tenso
     if gene not in sc_expression_df.columns:
         _logger.info("{} not in the gene list, pass".format(gene))
         return
-    _logger.info(f"calculate for gene {gene}.")
+    _logger.info(f"calculate for gene {gene}/{gene_dic[gene]}.")
     # set express to min value of this gene
     sc_expression_geneZero = sc_expression_df.copy(deep=True)
-    sc_expression_geneZero[gene] = sc_expression_geneZero[gene].min()  # sc_expression_geneZero[gene] = 0
+    sc_expression_geneZero[gene] = sc_expression_geneZero[gene].min()  # set to
     # make data with gene express min
     x_sc_geneZero = torch.tensor(sc_expression_geneZero.values, dtype=torch.get_default_dtype()).t()
     data_geneZero = [[x_sc_geneZero[:, i], y_time_nor_tensor[i], donor_index_tensor[i]] for i in
@@ -1324,6 +1364,7 @@ def pertub_one_gene(gene, sc_expression_df, y_time_nor_tensor, donor_index_tenso
                                        y_str='result_clf_geneZero',
                                        label_str='real_time', special_path_str=special_path_str,
                                        title_str=f"SpearmanCorr {round(stats_result['spearman'].statistic, 3)}")
+    gc.collect()
     return gene_result_pd, result_clf_geneZero
 
 
@@ -2069,9 +2110,9 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     # for classification model with discrete time cannot use sigmoid and logit time type
     y_time_nor_train, label_dic = trans_time(y_time_train, time_standard_type)
     _logger.info("label dictionary: {}".format(label_dic))
-    _logger.info(
-        "Normalize train y_time_train type: {}, with y_time_train lable: {}, shape: {}, \nAfter trans y_time_nor_train detail: {}"
-        .format(time_standard_type, np.unique(y_time_train), y_time_train.shape, np.unique(y_time_nor_train)))
+    _logger.info(f"Normalize train y_time_train type: {time_standard_type}, "
+                 f"with y_time_train lable: {np.unique(y_time_train)}, shape: {y_time_train.shape}, "
+                 f"\nAfter trans y_time_nor_train detail: {np.unique(y_time_nor_train)}")
 
     # ------------------------------------------- Set up VAE model and Start train process -------------------------------------------------
     _logger.info("Start training with epoch: {}. ".format(args.train_epoch_num))
@@ -2136,8 +2177,11 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     Path(f"{tb_logger.log_dir}/Samples").mkdir(exist_ok=True, parents=True)
     Path(f"{tb_logger.log_dir}/Reconstructions").mkdir(exist_ok=True, parents=True)
 
-    print(f"======= Training {config['model_params']['name']} =======")
-    runner.fit(experiment, data)
+    if checkpoint_file is None:
+        print(f"======= Training {config['model_params']['name']} =======")
+        runner.fit(experiment, data)
+    else:
+        _logger.info(f"ship training with checkpoint file {checkpoint_file}")
 
     # train data forward the model
     data_predict = SupervisedVAEDataset_onlyPredict(predict_data=train_data, predict_batch_size=len(train_data))
@@ -2205,10 +2249,10 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     return sc_expression_train, y_time_nor_train, donor_index_train, runner, experiment, MyVAEModel, train_clf_result, label_dic, train_latent_info_dic
 
 
-def read_model_parameters_fromCkpt(sc_expression_df, config_file, checkpoint_file, adversarial_bool=False, y_label=None, save_result_path=None,
-                                   cell_time_info=None, fine_tune_mode="withoutCellType", clf_weight=1,
-                                   sc_expression_df_add=None, plt_attr=None,
-                                   testData_dic=None, detT=0.1, batch_size=100000):
+def fineTuning_calRNAvelocity(sc_expression_df, config_file, checkpoint_file, adversarial_bool=False, y_label=None, save_result_path=None,
+                              cell_time_info=None, fine_tune_mode="withoutCellType", clf_weight=1,
+                              sc_expression_df_add=None, plt_attr=None,
+                              testData_dic=None, detT=0.1, batch_size=100000):
     """
     read parameters or weights of model from checkpoint and predict on sc expression dataframe
     return the predict result
@@ -3323,18 +3367,22 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
                                                                                            checkpoint_file=checkpoint_file)
             predict_donors_dic.update(predict_donor_dic)
     else:
+        kFold_result_recall_dic=dict()
         for fold in range(len(donor_list)):
+            gc.collect()
             if recall_predicted_mu:
                 predict_donor_dic, test_clf_result, label_dic, train_test_mu_result = one_fold_test(fold, donor_list,
-                                                                                              sc_expression_df,
-                                                                                              donor_dic, batch_dic,
-                                                                                              special_path_str, cell_time,
-                                                                                              time_standard_type,
-                                                                                              config, train_epoch_num,
-                                                                                              plot_trainingLossLine=True,
-                                                                                              plot_latentSpaceUmap=False,
-                                                                                              time_saved_asFloat=True, batch_size=batch_size, donor_str=donor_str,
-                                                                                              checkpoint_file=checkpoint_file, recall_predicted_mu=recall_predicted_mu)
+                                                                                                    sc_expression_df,
+                                                                                                    donor_dic, batch_dic,
+                                                                                                    special_path_str, cell_time,
+                                                                                                    time_standard_type,
+                                                                                                    config, train_epoch_num,
+                                                                                                    plot_trainingLossLine=True,
+                                                                                                    plot_latentSpaceUmap=False,
+                                                                                                    time_saved_asFloat=True, batch_size=batch_size, donor_str=donor_str,
+                                                                                                    checkpoint_file=checkpoint_file,
+                                                                                                    recall_predicted_mu=recall_predicted_mu)
+                kFold_result_recall_dic[donor_list[fold]] = [predict_donor_dic, test_clf_result, label_dic, train_test_mu_result]
 
             else:
                 predict_donor_dic, test_clf_result, label_dic = one_fold_test(fold, donor_list,
@@ -3346,7 +3394,8 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
                                                                               plot_trainingLossLine=True,
                                                                               plot_latentSpaceUmap=False,
                                                                               time_saved_asFloat=True, batch_size=batch_size, donor_str=donor_str,
-                                                                              checkpoint_file=checkpoint_file, recall_predicted_mu=recall_predicted_mu)
+                                                                              checkpoint_file=checkpoint_file,
+                                                                              recall_predicted_mu=recall_predicted_mu)
             predict_donors_dic.update(predict_donor_dic)
 
     predict_donors_df = pd.DataFrame(columns=["pseudotime"])
@@ -3357,11 +3406,18 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
     cell_time = pd.concat([cell_time, predict_donors_df], axis=1)
     cell_time.to_csv(f"{save_path}/k_fold_test_result.csv")
 
-    color_dic = plot_on_each_test_donor_violin_fromDF(cell_time.copy(), save_path, physical_str="predicted_time", x_str="time", cmap_color=cmap_color)
-
+    predict_donors_df['time'] = cell_time['time']
+    # calculate_real_predict_corrlation_score(predict_donors_df["predicted_time"],
+    #                                         predict_donors_df["time"],
+    #                                         only_str=False)
+    # color_dic = plot_on_each_test_donor_violin_fromDF(cell_time.copy(), save_path, y_attr="predicted_time", x_attr="time", cmap_color=cmap_color)
+    color_dic = plot_violin_240223(predict_donors_df.copy(), save_path,
+                                   x_attr="time",
+                                   y_attr="predicted_time",
+                                   special_file_name="kfold", color_map=cmap_color)
     _logger.info("Finish plot image and fold-test.")
     if recall_predicted_mu:
-        return predict_donors_dic, label_dic, train_test_mu_result
+        return predict_donors_dic, label_dic, kFold_result_recall_dic
     else:
         return predict_donors_dic, label_dic
 
@@ -3450,3 +3506,37 @@ def read_rds_file(file_name):
     with localconverter(ro.default_converter + pandas2ri.converter):
         df = pandas2ri.rpy2py(df_rds)
     return df
+
+
+def get_top_gene_perturb_data(cell_info, stage, perturb_data_denor,
+                              stage_attr="3stage",
+                              top_gene_num=5,
+                              top_metric="abs_mean"):
+    cell_df = cell_info[cell_info[stage_attr] == stage]
+    cell_name = cell_df.index
+    pert_data = perturb_data_denor.loc[cell_name]
+    if top_metric == "abs_mean":
+        abs_mean_df = pert_data.apply(lambda col: abs(np.array(col) - np.array(cell_df["predicted_time_denor"])).mean())
+        top_gene_list = abs_mean_df.nlargest(top_gene_num).index
+    elif top_metric == "vote_samples":
+        _temp = pert_data - np.array(cell_df["predicted_time_denor"])[:, np.newaxis]
+        _temp = abs(_temp)
+        top_columns_per_row = _temp.apply(lambda row: row.nlargest(top_gene_num).index.tolist(), axis=1)
+        all_top_columns = [col for sublist in top_columns_per_row for col in sublist]
+        column_counts = pd.Series(all_top_columns).value_counts()
+        top_gene_list = column_counts.head(top_gene_num)
+        print(f"{top_gene_list}")
+        top_gene_list = list(top_gene_list.keys())
+
+    print(f"Gene rank metric: {top_metric}.")
+    print(f"In {stage} stage {top_gene_num} genes: {top_gene_list}.")
+
+    plot_pd = pd.DataFrame(columns=["gene", "det_time", "real_time"])
+    for _g in top_gene_list:
+        temp = {"det_time": np.array(pert_data[_g]) - np.array(cell_df["predicted_time_denor"]),
+                "real_time": np.array(cell_df["time"]),
+                "gene": _g}
+        temp = pd.DataFrame(temp, index=cell_df.index)
+        temp = temp.sample(n=int(len(temp) / 10), random_state=42)
+        plot_pd = pd.concat([plot_pd, temp], axis=0)
+    return plot_pd, top_gene_list

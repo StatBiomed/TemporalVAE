@@ -77,8 +77,8 @@ def main():
     import numpy as np
     def extract_time(day_cat):
         # 处理特殊格式如 'D_14_21_t'
-        if day_cat=="D_14_21_t":
-            return 16.5
+        # if day_cat=="D_14_21_t":
+        #     return 16.5
         if '_' in day_cat:
             numbers = list(map(int, re.findall(r'\d+', day_cat)))
             if len(numbers) > 1:
@@ -110,6 +110,7 @@ def main():
     cell_info["donor"] = adata.obs["day_cat"]
     cell_info["cell_type"] = cell_info["lineage"]
     cell_info["title"] = cell_info.index
+    cell_info["species"]="human"
     cell_info = cell_info.loc[sc_expression_df.columns]
     cell_info.to_csv(f"{file_path}/cell_with_time.csv", sep="\t")
     gene_info = adata.var

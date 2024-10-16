@@ -19,7 +19,6 @@ sys.path.append(os.getcwd())
 
 from utils.utils_DandanProject import *
 
-from utils.utils_Dandan_plot import *
 import pandas as pd
 
 import argparse
@@ -29,7 +28,7 @@ def main():
     print("train (fine tune) on moment u concat s; and test on u and s, respectively.")
     parser = argparse.ArgumentParser(description="fine tune model")
     parser.add_argument('--special_path_str', type=str,  # 2023-07-13 17:40:22
-                        default="240510_Fig5_RNAvelocity/",
+                        default="Fig5_RNAvelocity_240901/",
                         help="results all save here")
     parser.add_argument('--fine_tune_mode', type=str,  # 2023-07-13 17:40:22
                         default="focusEncoder",
@@ -39,7 +38,7 @@ def main():
                         # default="240108mouse_embryogenesis/neuron",
                         help="sc file folder path.")
     parser.add_argument('--clf_weight', type=float,
-                        default=0.2,
+                        default=0.2,  # for hematopoiesis
                         # default=0.1, # for neruon
                         help="clf_weight.")
     parser.add_argument('--detT', type=float,
@@ -67,9 +66,15 @@ def main():
     # ----------------- read test adata -----------------
     adata_concated, adata, gene_dic, hvg_dic = read_mouse_embryogenesisData(sc_file_name)
 
-    cal_new_adata(adata_concated, adata, gene_dic, mouse_atlas_file, f"{save_result_path}/all/", config_file, checkpoint_file, fine_tune_mode=fine_tune_mode,
-                  clf_weight=clf_weight, hvg_dic=hvg_dic, detT=args.detT)
-
+    result_tuple = cal_new_adata(adata_concated,
+                                 gene_dic, mouse_atlas_file,
+                                 f"{save_result_path}/all/",
+                                 config_file, checkpoint_file,
+                                 fine_tune_mode=fine_tune_mode,
+                                 clf_weight=clf_weight, hvg_dic=hvg_dic, detT=args.detT)
+    v, fine_tune_result_adata, plt_attr, fine_tune_test_result_dic, original_result = result_tuple
+    plot_RNAvelocity(v, fine_tune_result_adata, save_result_path, plt_attr, fine_tune_test_result_dic, original_result)
+    print("finish all")
     return
 
 
@@ -117,23 +122,26 @@ def read_mouse_embryogenesisData(sc_file_name):
     return adata_concated, adata, gene_dic, hvg_dic
 
 
-def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_path, config_file, checkpoint_file, fine_tune_mode, clf_weight, hvg_dic=None, detT=0.1):
+def cal_new_adata(adata_train, gene_dic, mouse_atlas_file,
+                  save_result_path,
+                  config_file, checkpoint_file,
+                  fine_tune_mode, clf_weight, hvg_dic=None, detT=0.001):
     if not os.path.exists(f"{save_result_path}"):
         os.makedirs(save_result_path)
     print(f"make result save at {save_result_path}")
     # ----------------- get renormalized test data -----------------
     print(adata_train.obs_names[:5])
     if hvg_dic is None:
-        trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df = predict_newData_preprocess_df(gene_dic, adata_train,
+        trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df = predict_newData_preprocess_df(gene_dic,
+                                                                                                                adata_train,
                                                                                                                 min_gene_num=0,
-                                                                                                                reference_file=mouse_atlas_file,
-                                                                                                                )
+                                                                                                                reference_file=mouse_atlas_file)
     else:
-        trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df, trainData_renormalized_hvg_df = predict_newData_preprocess_df(gene_dic, adata_train,
+        trainData_renormalized_df, loss_gene_shortName_list, train_cell_info_df, trainData_renormalized_hvg_df = predict_newData_preprocess_df(gene_dic,
+                                                                                                                                               adata_train,
                                                                                                                                                min_gene_num=0,
                                                                                                                                                reference_file=mouse_atlas_file,
-                                                                                                                                               hvg_dic=hvg_dic,
-                                                                                                                                               )
+                                                                                                                                               hvg_dic=hvg_dic)
     # remain_hvg_list = list(trainData_renormalized_hvg_df.columns)
     # for spliced as test
     spliced_rownames = train_cell_info_df[train_cell_info_df["s_or_mrna"] == "spliced"].index
@@ -161,22 +169,36 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
     plt_attr = ["day", "physical_pseudotime_by_preTrained_mouseAtlas_model", "physical_pseudotime_by_finetune_model", "cell_type", "s_or_mrna", "sample"]
     # # 2023-12-13 12:34:12 finetuning on mrna data, and test on spliced data
     trainData_renormalized_hvg_df = trainData_renormalized_hvg_df if hvg_dic is not None else None
-    original_result, fine_tune_result_adata, fine_tune_test_result_dic, predict_detT, v = read_model_parameters_fromCkpt(trainData_renormalized_df, config_file, checkpoint_file,
-                                                                                                                         save_result_path=save_result_path,
-                                                                                                                         cell_time_info=train_cell_info_df,
-                                                                                                                         fine_tune_mode=fine_tune_mode,
-                                                                                                                         clf_weight=clf_weight,
-                                                                                                                         sc_expression_df_add=trainData_renormalized_hvg_df,
-                                                                                                                         plt_attr=plt_attr,
-                                                                                                                         testData_dic=testData_dic, detT=detT,
-                                                                                                                         batch_size=50000)
+    original_result, fine_tune_result_adata, fine_tune_test_result_dic, predict_detT, v = fineTuning_calRNAvelocity(trainData_renormalized_df,
+                                                                                                                    config_file, checkpoint_file,
+                                                                                                                    save_result_path=save_result_path,
+                                                                                                                    cell_time_info=train_cell_info_df,
+                                                                                                                    fine_tune_mode=fine_tune_mode,
+                                                                                                                    clf_weight=clf_weight,
+                                                                                                                    sc_expression_df_add=trainData_renormalized_hvg_df,
+                                                                                                                    plt_attr=plt_attr,
+                                                                                                                    testData_dic=testData_dic, detT=detT,
+                                                                                                                    batch_size=50000)
+    # save gene list
+    used_gene_pd = pd.DataFrame(data=trainData_renormalized_df.columns, columns=["used_gene_shortName"])
+    used_gene_pd.to_csv(f"{save_result_path}/used_geneShortName.csv")
+    loss_gene_mrna_shortName_pd = pd.DataFrame(data=loss_gene_shortName_list, columns=["miss_gene_shortName"])
+    loss_gene_mrna_shortName_pd.to_csv(f"{save_result_path}/miss_gene_shortName.csv")
+
+    original_result = original_result[1].cpu().numpy()
+    return (v, fine_tune_result_adata, plt_attr, fine_tune_test_result_dic, original_result)
+
+
+def color_plate_for_hematopoiesis_neuron(save_result_path):
     if "hematopoiesis" in save_result_path:
+        celltype_plate = None
         day_color_plate = {'day': {'E6.5': 'red', 'E6.75': 'yellow', 'E7': 'green', 'E7.25': 'blue', 'E7.5': 'tab:orange',
                                    'E7.75': 'tab:purple', 'E8': 'tab:gray', 'E8.25': 'tab:cyan', 'E8.5a': 'tab:brown',
                                    'E8.5b': 'cyan', 'E9.5': 'tab:red', 'E10.5': 'tab:olive', 'E11.5': 'tab:green',
                                    'E12.5': 'tab:blue', 'E13.5': 'tab:pink'},
                            'cell_type': "Set1",
                            'celltype': "Set1"}
+
     elif 'neuron' in save_result_path:
         celltype_plate = {"Intermediate progenitor cells": 'tab:orange',
                           "Inhibitory interneurons": 'tab:purple',
@@ -194,21 +216,31 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
                                    'E12.5': 'tab:blue', 'E13.5': 'tab:pink'},
                            'cell_type': celltype_plate,
                            'celltype': celltype_plate}
+    return day_color_plate, celltype_plate
 
+
+def plot_RNAvelocity(v, fine_tune_result_adata, save_result_path, plt_attr, fine_tune_test_result_dic, original_result):
     fine_tune_result_adata_spliced = fine_tune_result_adata[fine_tune_result_adata.obs["s_or_mrna"] == "spliced"].copy()
     fine_tune_result_adata_unspliced = fine_tune_result_adata[fine_tune_result_adata.obs["s_or_mrna"] == "unspliced"].copy()
-    result_adata_spliced = plt_umap_byScanpy(fine_tune_result_adata_spliced, attr_list=plt_attr, save_path=save_result_path,
+
+    day_color_plate, celltype_plate = color_plate_for_hematopoiesis_neuron(save_result_path)
+
+    result_adata_spliced = plt_umap_byScanpy(fine_tune_result_adata_spliced,
+                                             attr_list=plt_attr, save_path=save_result_path,
                                              show_in_row=False, figure_size=(7, 4.5),
                                              special_file_name_str="spliced_",
                                              palette_dic=day_color_plate)
-    result_adata_unspliced = plt_umap_byScanpy(fine_tune_result_adata_unspliced, attr_list=plt_attr, save_path=save_result_path,
+    result_adata_unspliced = plt_umap_byScanpy(fine_tune_result_adata_unspliced,
+                                               attr_list=plt_attr, save_path=save_result_path,
                                                show_in_row=False, figure_size=(7, 4.5),
                                                special_file_name_str="unspliced_",
                                                palette_dic=day_color_plate)
-    fine_tune_result_adata = plt_umap_byScanpy(fine_tune_result_adata, attr_list=plt_attr, save_path=save_result_path,
+    fine_tune_result_adata = plt_umap_byScanpy(fine_tune_result_adata, attr_list=plt_attr,
+                                               save_path=save_result_path,
                                                show_in_row=False, figure_size=(7, 4.5),
                                                special_file_name_str="splicedAndUnspliced",
                                                palette_dic=day_color_plate)
+
     # -------2024-01-16 23:07:03
     import scvelo as scv
     # adata_velocity = result_adata_spliced
@@ -222,8 +254,10 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
     adata_velocity.uns["umap"] = result_adata_spliced.uns["umap"]
     adata_velocity.obsm["X_umap"] = result_adata_spliced.obsm["X_umap"]
     # scv.tl.umap(adata_velocity, min_dist=0.75)
+
+    method_name="TemporalVAE"
     if "hematopoiesis" in save_result_path:
-        name = "hematopoiesis"
+        dataset_name = "hematopoiesis"
         scv.pl.velocity_embedding_stream(adata_velocity,
                                          color="celltype",
                                          legend_loc='on data',
@@ -233,9 +267,9 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
                                          linewidth=0.5, s=20,
                                          sort_order=False,
                                          legend_fontweight="normal",
-                                         title=f"{name} with cell types",
+                                         title=f"{dataset_name} with cell types",
                                          palette="Set1",
-                                         save=f"{save_result_path}/{name}_celltype.png", dpi=200
+                                         save=f"{save_result_path}/{method_name}_{dataset_name}_celltype.png", dpi=200
                                          )
         scv.pl.velocity_embedding_stream(adata_velocity,
                                          color="celltype",
@@ -246,9 +280,9 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
                                          linewidth=0.5, s=20,
                                          sort_order=False,
                                          legend_fontweight="normal",
-                                         title=f"{name} with cell types",
+                                         title=f"{dataset_name} with cell types",
                                          palette="Set1",
-                                         save=f"{save_result_path}/{name}_celltype_legend.png", dpi=200
+                                         save=f"{save_result_path}/{method_name}_{dataset_name}_celltype_legend.png", dpi=200
                                          )
         try:
             adata_velocity.obs['day'].cat.reorder_categories(["E8.5b", "E9.5", "E10.5", "E11.5", "E12.5", "E13.5"])
@@ -264,12 +298,12 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
                                          linewidth=0.5,
                                          legend_fontweight="normal",
                                          s=20,
-                                         title=f"{name} with day",
+                                         title=f"{dataset_name} with day",
                                          palette=day_color_plate["day"],
-                                         save=f"{save_result_path}/{name}_day.png", dpi=200
+                                         save=f"{save_result_path}/{method_name}_{dataset_name}_day.png", dpi=200
                                          )
     elif 'neuron' in save_result_path:
-        name = "neuron"
+        dataset_name = "neuron"
         scv.pl.velocity_embedding_stream(adata_velocity,
                                          color="celltype",
                                          legend_loc='on data',
@@ -278,9 +312,9 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
                                          legend_fontsize=8,
                                          linewidth=0.5,
                                          legend_fontweight="normal",
-                                         title=f"{name} with cell types",
+                                         title=f"{dataset_name} with cell types",
                                          palette=celltype_plate,
-                                         save=f"{save_result_path}/{name}_celltype.png", dpi=200
+                                         save=f"{save_result_path}/{method_name}_{dataset_name}_celltype.png", dpi=200
                                          )
         scv.pl.velocity_embedding_stream(adata_velocity,
                                          color="celltype",
@@ -290,9 +324,9 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
                                          legend_fontsize=8,
                                          linewidth=0.5,
                                          legend_fontweight="normal",
-                                         title=f"{name} with cell types",
+                                         title=f"{dataset_name} with cell types",
                                          palette=celltype_plate,
-                                         save=f"{save_result_path}/{name}_celltype_legend.png", dpi=200
+                                         save=f"{save_result_path}/{method_name}_{dataset_name}_celltype_legend.png", dpi=200
                                          )
         adata_velocity.obs['day'].cat.reorder_categories(["E9.5", "E10.5", "E11.5", "E12.5", "E13.5"])
 
@@ -304,14 +338,14 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
                                          legend_fontsize=8,
                                          linewidth=0.5,
                                          legend_fontweight="normal",
-                                         title=f"{name} with day",
+                                         title=f"{dataset_name} with day",
                                          palette=day_color_plate["day"],
-                                         save=f"{save_result_path}/{name}_day.png", dpi=200
+                                         save=f"{save_result_path}/{method_name}_{dataset_name}_day.png", dpi=200
                                          )
+    # ----- save results
     adata_velocity.write_h5ad(f"{save_result_path}/velocity_result.h5ad")
-    # -------
 
-    fine_tune_result_adata.layers["original_latent_mu_result"] = original_result[1].cpu().numpy()
+    fine_tune_result_adata.layers["original_latent_mu_result"] = original_result
     fine_tune_result_adata.layers["fine_tune_latent_mu_result"] = fine_tune_result_adata.X
     fine_tune_result_adata.write_h5ad(f"{save_result_path}/fine_tune_result.h5ad")
 
@@ -320,62 +354,8 @@ def cal_new_adata(adata_train, adata, gene_dic, mouse_atlas_file, save_result_pa
     unspliced_fine_tune_result_data = fine_tune_test_result_dic["unspliced"].copy()
     unspliced_fine_tune_result_data.write_h5ad(f"{save_result_path}/unspliced_latent_mu.h5ad")
 
-
+    from utils.utils_Dandan_plot import plt_latentDim
     plt_latentDim(spliced_fine_tune_result_data, unspliced_fine_tune_result_data, save_result_path)
-
-    # save gene list
-    used_gene_pd = pd.DataFrame(data=trainData_renormalized_df.columns, columns=["used_gene_shortName"])
-    used_gene_pd.to_csv(f"{save_result_path}/used_geneShortName.csv")
-    loss_gene_mrna_shortName_pd = pd.DataFrame(data=loss_gene_shortName_list, columns=["miss_gene_shortName"])
-    loss_gene_mrna_shortName_pd.to_csv(f"{save_result_path}/miss_gene_shortName.csv")
-    print("finish all")
-
-
-def plt_latentDim(spliced_fine_tune_result_data, unspliced_fine_tune_result_data, save_result_path):
-    import matplotlib.pyplot as plt
-    import numpy as np
-
-    # 获取列数
-    num_cols = spliced_fine_tune_result_data.X.shape[1]
-
-    # 每行显示的子图数
-    cols_per_row = 5
-
-    # 计算需要的行数
-    num_rows = (num_cols + cols_per_row - 1) // cols_per_row
-
-    # 创建子图
-    fig, axs = plt.subplots(num_rows, cols_per_row, figsize=(20, num_rows * 4))
-    spliced_matrix = spliced_fine_tune_result_data.X
-    unspliced_matrix = unspliced_fine_tune_result_data.X
-    cell_type_list = spliced_fine_tune_result_data.obs["cell_type"]
-
-    unique_labels = np.unique(cell_type_list)
-    colors = plt.cm.rainbow(np.linspace(0, 1, len(unique_labels)))
-    label_to_color = dict(zip(unique_labels, colors))
-
-    for i in range(num_cols):
-        _data = {"s": spliced_matrix[:, i], "u": unspliced_matrix[:, i], "cell_type": cell_type_list}
-        _data = pd.DataFrame(_data)
-        row = i // cols_per_row
-        col = i % cols_per_row
-        for _label in unique_labels:
-            _data_subtype = _data[_data["cell_type"] == _label]
-            axs[row, col].scatter(_data_subtype["s"], _data_subtype["u"], c=label_to_color[_label], label=_label, alpha=0.3, s=3)
-            axs[row, col].set_title(f'Column {i + 1}')
-
-    # 隐藏多余的子图
-    for i in range(num_cols, num_rows * cols_per_row):
-        row = i // cols_per_row
-        col = i % cols_per_row
-        axs[row, col].axis('off')
-
-    plt.legend(markerscale=5)
-    plt.tight_layout()
-    plt.savefig(f"{save_result_path}/latent_dim.png", dpi=200)
-    plt.savefig(f"{save_result_path}/latent_dim.pdf", format='pdf')
-    plt.show()
-    plt.close()
 
 
 if __name__ == '__main__':
