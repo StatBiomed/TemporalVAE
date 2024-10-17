@@ -1919,7 +1919,8 @@ def plt_violin_topGene_inWhole_stage(top_gene_dic, perturb_data_denor,
         ax.set_xlabel('Time', fontsize=16)
         ax.set_ylabel('△t', fontsize=16)
         # Rotating x-axis labels
-        ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=45,fontsize=16)
+        ax.set_yticklabels(ax.get_yticklabels(), fontsize=16)
         ax.legend(fontsize=16)
 
         # ax.legend(loc='upper right', fontsize=16)
