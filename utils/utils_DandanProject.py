@@ -1050,14 +1050,17 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
     cell_time = cell_time.loc[sc_expression_df.index]
     _logger.info("Get expression dataframe with shape (cell, gene): {}, and cell time info with shape: {}.".format(
         sc_expression_df.shape, cell_time.shape))
-    _save_path = "{}{}/".format(_logger.root.handlers[0].baseFilename.replace(".log", ""), special_path_str)
-    if not os.path.exists(_save_path):
-        os.makedirs(_save_path)
-    cell_time.to_csv(f"{_save_path}/preprocessed_cell_info.csv")
-    # gene_list = list(sc_expression_df.columns)
-    # np.savetxt(f"{_save_path}/preprocessed_gene_info.csv", gene_list, delimiter="\t", encoding='utf-8', fmt="%s")
+    try:
 
-    gene_raw_total_count.to_csv(f"{_save_path}/preprocessed_gene_info.csv")
+        _save_path = "{}{}/".format(_logger.root.handlers[0].baseFilename.replace(".log", ""), special_path_str)
+        if not os.path.exists(_save_path):
+            os.makedirs(_save_path)
+        cell_time.to_csv(f"{_save_path}/preprocessed_cell_info.csv")
+        gene_raw_total_count.to_csv(f"{_save_path}/preprocessed_gene_info.csv")
+        _logger.info(f"save preprocessed_cell_info.csv and preprocessed_gene_info.csv at {_save_path}")
+    except:
+        print("Not save preprocessed_cell_info.csv and preprocessed_gene_info.csv")
+        pass
     return sc_expression_df, cell_time
 
 
@@ -1255,7 +1258,8 @@ def identify_timeCorGene(sc_expression_df, cell_info, y_time_nor_tensor, donor_i
     _logger.info("Time cor gene save at: {}".format(save_file_path))
 
     # plot det t and total count on each gene
-    plot_detTandExp(gene_result_pd.copy(), special_path_str)
+    # plot_detTandExp(gene_result_pd.copy(), special_path_str=special_path_str)
+
     _logger.info(f"plot expression and detT of {len(sc_expression_df.columns)} genes.")
     # plot top 20 line
     gene_result_pd.reset_index(inplace=True)
@@ -3511,32 +3515,39 @@ def read_rds_file(file_name):
 def get_top_gene_perturb_data(cell_info, stage, perturb_data_denor,
                               stage_attr="3stage",
                               top_gene_num=5,
-                              top_metric="abs_mean"):
+                              top_metric="vote_samples"):
     cell_df = cell_info[cell_info[stage_attr] == stage]
     cell_name = cell_df.index
     pert_data = perturb_data_denor.loc[cell_name]
-    if top_metric == "abs_mean":
-        abs_mean_df = pert_data.apply(lambda col: abs(np.array(col) - np.array(cell_df["predicted_time_denor"])).mean())
-        top_gene_list = abs_mean_df.nlargest(top_gene_num).index
-    elif top_metric == "vote_samples":
-        _temp = pert_data - np.array(cell_df["predicted_time_denor"])[:, np.newaxis]
-        _temp = abs(_temp)
-        top_columns_per_row = _temp.apply(lambda row: row.nlargest(top_gene_num).index.tolist(), axis=1)
-        all_top_columns = [col for sublist in top_columns_per_row for col in sublist]
-        column_counts = pd.Series(all_top_columns).value_counts()
+    print(f"In {stage}, cell number is {pert_data.shape}")
+    # if top_metric == "abs_mean":
+    #     abs_mean_df = pert_data.apply(lambda col: abs(np.array(col) - np.array(cell_df["predicted_time_denor"])).mean())
+    #     top_gene_list = abs_mean_df.nlargest(top_gene_num).index
+    if top_metric == "vote_samples":
+        column_counts=voteScore_genePerturbation(cell_df, pert_data, top_gene_num, predictedTime_attr="predicted_time_denor")
         top_gene_list = column_counts.head(top_gene_num)
-        print(f"{top_gene_list}")
+        print(f"With {top_metric} strategy, select {top_gene_num} gene: {top_gene_list}")
         top_gene_list = list(top_gene_list.keys())
-
+    else:
+        print(f"Please check top metric, input is {top_metric}")
+        exit(1)
     print(f"Gene rank metric: {top_metric}.")
     print(f"In {stage} stage {top_gene_num} genes: {top_gene_list}.")
 
-    plot_pd = pd.DataFrame(columns=["gene", "det_time", "real_time"])
+    plt_gene_pd = pd.DataFrame(columns=["gene", "det_time", "real_time"])
     for _g in top_gene_list:
         temp = {"det_time": np.array(pert_data[_g]) - np.array(cell_df["predicted_time_denor"]),
                 "real_time": np.array(cell_df["time"]),
                 "gene": _g}
         temp = pd.DataFrame(temp, index=cell_df.index)
         temp = temp.sample(n=int(len(temp) / 10), random_state=42)
-        plot_pd = pd.concat([plot_pd, temp], axis=0)
-    return plot_pd, top_gene_list
+        plt_gene_pd = pd.concat([plt_gene_pd, temp], axis=0)
+    return plt_gene_pd, top_gene_list,pert_data
+
+def voteScore_genePerturbation(cell_df,perturb_df,top_gene_num,predictedTime_attr="predicted_time_denor"):
+    _temp = perturb_df - np.array(cell_df[predictedTime_attr])[:, np.newaxis]
+    _temp = abs(_temp)
+    top_columns_per_row = _temp.apply(lambda row: row.nlargest(top_gene_num).index.tolist(), axis=1)
+    all_top_columns = [col for sublist in top_columns_per_row for col in sublist]
+    column_counts = pd.Series(all_top_columns).value_counts()
+    return column_counts

@@ -133,11 +133,11 @@ python -u Fig4_human_data/vae_humanEmbryo_Melania.py --file_path=/240405_preimpl
 1. The data is from paper <Systematic reconstruction of the cellular trajectories of mammalian embryogenesis.>.
 2. 1 **Figure 5. C&E** is the data of hematopoiesis cells, please check _Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S_hematopoiesis.ipynb_ or run code on console:
 ```bash
-python -u Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py --sc_file_name=240108mouse_embryogenesis/hematopoiesis --clf_weight=0.2
+python -u Fig5_RNA_velocity/TemporalVAE_mouse_fineTune_Train_on_U_pairs_S.py --sc_file_name=240108mouse_embryogenesis/hematopoiesis --clf_weight=0.2
 ```
 2. 2 **Figure 5. D&F** is the data of neuron cells, please check _Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S_neuron.ipynb_ or run code on console:
 ```bash
-python -u Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S.py --sc_file_name=240108mouse_embryogenesis/neuron --clf_weight=0.1
+python -u Fig5_RNA_velocity/TemporalVAE_mouse_fineTune_Train_on_U_pairs_S.py --sc_file_name=240108mouse_embryogenesis/neuron --clf_weight=0.1
 ```
 3. The scVelo result in **Figure 5. E&F** is base on the _.ipynb_ code provided by the dataset's paper, please check _Fig5_RNA_velocity/scVelo_hematopoiesis.ipynb_ and _Fig5_RNA_velocity/scVelo_neuron.ipynb_
 

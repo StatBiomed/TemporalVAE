@@ -1299,33 +1299,97 @@ def plot_time_change_gene_geneZero(gene, result_df, x_str, y_str, label_str, sav
     plt.close()
 
 
-def plot_detTandExp(gene_result_pd, special_path_str,
-                    y_str="mean",
-                    y_legend_str='△t: pseudo-time after perturb and without perturb.',
+def plot_detTandExp(gene_result_pd,
+                    special_path_str="",
+                    stage_str="allStage",
+                    x_str="total_raw_count", x_legend_str='Total raw expression of genes.',
+                    y_str="mean", y_legend_str='Mean △t: pseudo-time after perturb and without perturb.',
                     special_filename_str="detT",
-                    save_path=None):
-    # import matplotlib.pyplot as plt
+                    plt_yOrxZero="y",
+                    save_path=None, scatter_strategy="linear",
+                    min_font_size=10, max_font_size=15, fontsize_threshold=10.2, ):
+    from sklearn.neighbors import NearestNeighbors
+    from adjustText import adjust_text
+    Q1_x = gene_result_pd[x_str].quantile(0.25)
+    Q3_x = gene_result_pd[x_str].quantile(0.75)
+    Q1_y = gene_result_pd[y_str].quantile(0.25)
+    Q3_y = gene_result_pd[y_str].quantile(0.75)
+    # 创建颜色标签
+    colors = []
+    for index, row in gene_result_pd.iterrows():
+        if Q1_x < row[x_str] < Q3_x or row[y_str] < Q3_y:
+            colors.append('#B4B4B4')
+        else:
+            colors.append('#1FA2FC')
+
     plt.figure(figsize=(10, 10))
-    # 使用 matplotlib 画散点图
-    plt.scatter(gene_result_pd['total_raw_count'], gene_result_pd[y_str], s=15)
+    plt.scatter(gene_result_pd[x_str], gene_result_pd[y_str], color=colors, s=15, alpha=0.7)
+
+    if scatter_strategy == "linear":
+        from sklearn.preprocessing import StandardScaler
+        scaler = StandardScaler()
+        scaled_data = scaler.fit_transform(gene_result_pd[[x_str, y_str]])
+        df_scaled = pd.DataFrame(scaled_data, columns=[x_str, y_str])
+        # Distance and map to the font size range through linear transformations
+        # calculate distence from node to nearest nodes
+        nbrs = NearestNeighbors(n_neighbors=5).fit(df_scaled[[x_str, y_str]])
+        distances, indices = nbrs.kneighbors(df_scaled[[x_str, y_str]])
+        distance_sums = distances[:, 1:].sum(axis=1)
+        scaled_font_sizes = min_font_size + (max_font_size - min_font_size) * (distance_sums - distance_sums.min()) / (distance_sums.max() - distance_sums.min())
+    # elif scatter_strategy =="baseY":
+
+    # elif scatter_strategy == "percentile":
+    #     scaled_font_sizes = min_font_size + (max_font_size - min_font_size) * (distance_sums - np.percentile(distance_sums, 25)) / (
+    #             np.percentile(distance_sums, 75) - np.percentile(distance_sums, 25))
+    #     scaled_font_sizes = np.clip(scaled_font_sizes, a_min=min_font_size, a_max=max_font_size)
+    #     fontsize_threshold = np.percentile(scaled_font_sizes, 75)
+    # elif scatter_strategy == "log":
+    #     log_distance_sums = np.log1p(distance_sums - distance_sums.min() + 1)
+    #     scaled_font_sizes = min_font_size + (max_font_size - min_font_size) * (log_distance_sums - log_distance_sums.min()) / (log_distance_sums.max() - log_distance_sums.min())
+    #     scaled_font_sizes = np.clip(scaled_font_sizes, a_min=min_font_size, a_max=max_font_size)
+    #     fontsize_threshold = 8.15
+    scaled_font_sizes = np.round(scaled_font_sizes, decimals=2)
     # 为每个点添加标签
+    texts = []
     for i, _g in enumerate(gene_result_pd['gene_short_name']):
-        plt.annotate(_g, (gene_result_pd.iloc[i]['total_raw_count'], gene_result_pd.iloc[i][y_str]), fontsize=8)
+        if scaled_font_sizes[i] < fontsize_threshold:
+            continue
+        loc_x = gene_result_pd.loc[_g][x_str]
+        loc_y = gene_result_pd.loc[_g][y_str]
+        # if loc_y < Q3_y:
+        #     continue
+        # if Q1_x < loc_x < Q3_x:
+        #     continue
+        texts.append(plt.text(loc_x, loc_y, f"{_g}", fontsize=scaled_font_sizes[i]))
+        # plt.annotate(_g, (gene_result_pd.loc[_g][x_str], gene_result_pd.loc[_g][y_str]), fontsize=scaled_font_sizes[i])
+        # plt.annotate(_g, (gene_result_pd.iloc[i][x_str], gene_result_pd.iloc[i][y_str]), fontsize=14)
     # 添加标签和标题
-    plt.xlabel('Total raw expression of genes.', fontsize=16)
+
+    adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red'))
+    plt.xlabel(x_legend_str, fontsize=16)
     plt.ylabel(y_legend_str, fontsize=16)
-    plt.title('Scatter Plot of each gene.', fontsize=16)
-    # 添加水平线 y=0
-    plt.axhline(y=0, color='red', linestyle='--', label='y=0')
+    if stage_str == "allStage":
+        plt.title(f'Scatter Plot of each gene.', fontsize=16)
+    else:
+        plt.title(f'Scatter Plot of each gene for {stage_str} time cluster.', fontsize=16)
+
+    # 添加水平线 x=0
+    if plt_yOrxZero == "y":
+        plt.axhline(y=0, color='#F63C4C', linestyle='--', label='y=0')
+    elif plt_yOrxZero == "x":
+        plt.axvline(x=0, color='#F63C4C', linestyle='--', label='x=0')
 
     # 设置 x 轴范围
-    plt.xlim(gene_result_pd['total_raw_count'].min() - 10, gene_result_pd['total_raw_count'].max() + 100)
+    # plt.xlim(gene_result_pd[x_str].min() - 10, gene_result_pd[x_str].max() + 100)
+    # 修改 x 轴刻度值的字体大小
+    plt.tick_params(axis='x', labelsize=14, rotation=45)  # 仅修改 x 轴
+    plt.tick_params(axis='y', labelsize=14)  # 仅修改 x 轴
     # 显示图形
     if save_path is None:
         save_path = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}{special_path_str}/"
-    save_file = f"{save_path}/gene_{special_filename_str}andExp.png"
-    plt.savefig(save_file)
-    print(f"Time changes under perturb image save at {save_path}")
+    save_file = f"{save_path}/{stage_str}_allGene_x{x_str.replace('_', '').capitalize()}_and_y{y_str.replace('_', '').capitalize()}_{special_filename_str}_scatter{scatter_strategy.capitalize()}.png"
+    plt.savefig(save_file, dpi=200)
+    print(f"Time changes under perturb image save as {save_file}")
 
     plt.show()
     plt.close()
@@ -1648,15 +1712,16 @@ def plt_latentDim(spliced_fine_tune_result_data, unspliced_fine_tune_result_data
     plt.close()
 
 
-def plot_tyser_mapping_to_datasets_attrTimeGT(adata_all, save_path, attr,
+def plot_tyser_mapping_to_datasets_attrTimeGT(adata_all, save_path, plot_attr,
                                               query_timePoint='16.5',
                                               legend_title="Cell stage",
                                               mask_dataset_label="t",
                                               reference_dataset_str='',
-                                              special_file_str=''):
+                                              special_file_str='',
+                                              mask_color_alpha=0.7):
     import scanpy as sc
     adata_all.obs["time"] = adata_all.obs["time"].astype("float")
-    time_values = adata_all.obs[attr].unique()
+    time_values = adata_all.obs[plot_attr].unique()
     unique_times = sorted(set(time_values))
 
     min_time = np.min(unique_times)
@@ -1669,16 +1734,16 @@ def plot_tyser_mapping_to_datasets_attrTimeGT(adata_all, save_path, attr,
     # color_dic = {str(time): color for time, color in zip(unique_times, palette)}
     color_dic = {str(time): color for time, color in zip(unique_times, colors)}
     if mask_dataset_label == "t":
-        color_dic[query_timePoint] = (0.9, 0.9, 0.9, 0.7)
+        color_dic[query_timePoint] = (0.9, 0.9, 0.9, mask_color_alpha)
     elif mask_dataset_label == "l & m & p & z & xiao":
         for _t in color_dic.keys():
             if _t != query_timePoint:
-                color_dic[_t] = (0.9, 0.9, 0.9, 0.7)
+                color_dic[_t] = (0.9, 0.9, 0.9, mask_color_alpha)
 
     adata_all.obs["time"] = adata_all.obs["time"].astype("str")
     sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
 
-    sc.pl.umap(adata_all, color=attr, show=False,
+    sc.pl.umap(adata_all, color=plot_attr, show=False,
                s=25, palette=color_dic)
     plt.gca().set_title('')
     for spine in plt.gca().spines.values():
@@ -1689,7 +1754,7 @@ def plot_tyser_mapping_to_datasets_attrTimeGT(adata_all, save_path, attr,
     plt.legend(title=legend_title, fontsize=14, title_fontsize=14,
                loc='center left', bbox_to_anchor=(1, 0.5))
     plt.gca().set_position([0, 0, 1, 1])
-    save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{attr}{special_file_str}.png"
+    save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{plot_attr}{special_file_str}.png"
     plt.savefig(save_file_name, dpi=200, bbox_inches='tight')
     plt.show()
     plt.close()
@@ -1703,7 +1768,7 @@ def plot_tyser_mapping_to_4dataset_predictedTime(adata_all, save_path, label_dic
                                                  mask_str="data_type",
                                                  special_file_str="",
                                                  mask_color_alpha=0.7,
-                                                 ):
+                                                 use_category_legend=False):
     min_t = min(label_dic.keys()) / 100
     max_t = max(label_dic.keys()) / 100
     import matplotlib.cm as matcm
@@ -1716,16 +1781,14 @@ def plot_tyser_mapping_to_4dataset_predictedTime(adata_all, save_path, label_dic
     normalized_time = scaler.fit_transform(predict_time_list_add_min_max[:, np.newaxis]).ravel()
 
     colors = matcm.turbo(normalized_time)[2:, ]
+    color_dic = dict(zip(adata_all.obs[plot_attr], colors))
+    for _k, _v in color_dic.items():
+        color_dic[_k] = tuple(_v)
     mask = adata_all.obs[mask_str] == mask_dataset_label
-
     colors[mask] = (0.9, 0.9, 0.9, mask_color_alpha)
 
-    # adata_all.obs['colors']=colors
-    # sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
-    # sc.pl.umap(adata_all,  show=False, s=25)
-    # umap_coords = adata_all.obsm['X_umap']
-    # ax.scatter(umap_coords[:, 0], umap_coords[:, 1], c=colors, s=25)
-
+    _mask = (colors[:, -1] != mask_color_alpha)
+    colored_unique_time = adata_all.obs.loc[_mask, 'time'].unique()
     plt.figure(figsize=(6.6, 6.6))
     plt.scatter(
         adata_all.obsm['X_umap'][:, 0],
@@ -1734,6 +1797,33 @@ def plot_tyser_mapping_to_4dataset_predictedTime(adata_all, save_path, label_dic
         s=5,  # 点的大小
         # alpha=0.8  # 点的透明度
     )
+    if use_category_legend:
+        for _key in sorted(colored_unique_time):
+            # for _key in sorted(color_dic.keys()):
+            _color = color_dic[_key]
+            plt.scatter([], [], c=[_color], s=50, label=_key)
+        plt.legend(title="Cell stage", fontsize=14, title_fontsize=14,
+                   loc='center left', bbox_to_anchor=(1, 0.5))
+        # color_dic=dict(zip(adata_all.obs[plot_attr],colors))
+        # unique_labels, indices = np.unique(colors, axis=0, return_inverse=True)
+
+        # for idx, unique_color in enumerate(unique_labels):
+        #     plt.scatter([], [], c=[unique_color], s=50, label=f'Category {idx}')  # 创建一个虚拟点用于图例
+        # 添加类别图例
+    else:
+        cmap = plt.get_cmap('turbo')
+        norm = mpl.colors.Normalize(vmin=min_t, vmax=max_t)
+        scalar_mappable = mpl.cm.ScalarMappable(cmap=cmap, norm=norm)
+        scalar_mappable.set_array([])
+        cbar = plt.colorbar(scalar_mappable, pad=0.01, fraction=0.03, shrink=1, aspect=30, ax=plt.gca())
+
+        cbar.ax.invert_yaxis()
+        cbar.ax.tick_params(labelsize=14)
+        # cbar = plt.colorbar(scattering)
+
+        cbar.set_label(plot_attr.replace("_", " ").capitalize(), fontsize=16)
+        cbar.set_alpha(1)
+        cbar._draw_all()
     plt.gca().set_title('')
     plt.xlabel('UMAP1')
     plt.ylabel('UMAP2')
@@ -1744,20 +1834,7 @@ def plot_tyser_mapping_to_4dataset_predictedTime(adata_all, save_path, label_dic
     plt.ylabel(plt.gca().get_ylabel(), fontsize=11)
     plt.gca().set_xticks([])
     plt.gca().set_yticks([])
-    # 创建一个颜色条
-    cmap = plt.get_cmap('turbo')
-    norm = mpl.colors.Normalize(vmin=min_t, vmax=max_t)
-    scalar_mappable = mpl.cm.ScalarMappable(cmap=cmap, norm=norm)
-    scalar_mappable.set_array([])
-    cbar = plt.colorbar(scalar_mappable, pad=0.01, fraction=0.03, shrink=1, aspect=30, ax=plt.gca())
 
-    cbar.ax.invert_yaxis()
-    cbar.ax.tick_params(labelsize=14)
-    # cbar = plt.colorbar(scattering)
-
-    cbar.set_label(plot_attr.replace("_", " ").capitalize(), fontsize=16)
-    cbar.set_alpha(1)
-    cbar._draw_all()
     # 移除网格线
     ax = plt.gca()
     ax.grid(False)  # 禁用网格线
@@ -1873,11 +1950,11 @@ def plt_enrichmentResult(species, gene_set, env_gene_list, stage, save_path, top
                         size=10,
                         top_term=top_term,
                         figsize=(3, 5),
-                        title=f"{stage.capitalize()} stage: enrichment of Top{env_gene_num} genes.",
+                        title=f"{stage.capitalize()} time cluster.",
                         xticklabels_rot=45,  # rotate xtick labels
                         show_ring=True,  # set to False to revmove outer ring
                         marker='o',
-                        ofname=f"{save_path}/{stage}_enrichment_{env_gene_num}Genes_{species}.png")
+                        ofname=f"{save_path}/{stage}_enrichment_{env_gene_num}Genes_{species}_Top{env_gene_num}Genes.png")
     # ofname=f"{file_path}/{_s}_enrichment_{env_gene_num}Genes_{species}.png")
     # plt.savefig(f"{save_path}/{stage}_enrichment_{env_gene_num}Genes_{species}.png", bbox_inches="tight", dpi=300)
     # plt.gcf().subplots_adjust(left=0.05,top=0.91,bottom=0.09)
@@ -1887,9 +1964,9 @@ def plt_enrichmentResult(species, gene_set, env_gene_list, stage, save_path, top
     return enr
 
 
-def plt_violin_topGene_inWhole_stage(top_gene_dic, perturb_data_denor,
-                                     cell_info, perturb_show_gene_num, species,
-                                     save_path):
+def plt_violinAndDot_topGene_inWhole_stage(top_gene_dic, perturb_data_denor,
+                                           cell_info, perturb_show_gene_num, species,
+                                           save_path):
     from collections import defaultdict
     # Create a defaultdict to hold the combined keys
     merged_dict = defaultdict(list)
@@ -1915,11 +1992,11 @@ def plt_violin_topGene_inWhole_stage(top_gene_dic, perturb_data_denor,
         sns.stripplot(data=temp, x="real_time", y="det_time", size=0.6, ax=ax)
         ax.axhline(y=0, color='red', linestyle='--', label='△t=0')
         # ax.scatter(cell_info["time"],np.array(perturb_data_denor[gene]) - np.array(cell_info["predicted_time_denor"]),label=gene)
-        ax.set_title(f"{gene} is Top{perturb_show_gene_num} sensitive in {str} stage", fontsize=16)
+        ax.set_title(f"{gene} is Top-{perturb_show_gene_num} temporal-sensitive in {str} stage", fontsize=16)
         ax.set_xlabel('Time', fontsize=16)
         ax.set_ylabel('△t', fontsize=16)
         # Rotating x-axis labels
-        ax.set_xticklabels(ax.get_xticklabels(), rotation=45,fontsize=16)
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=45, fontsize=16)
         ax.set_yticklabels(ax.get_yticklabels(), fontsize=16)
         ax.legend(fontsize=16)
 
@@ -1931,6 +2008,128 @@ def plt_violin_topGene_inWhole_stage(top_gene_dic, perturb_data_denor,
     print(f"figure save as {save_file_name}")
     plt.show()
     plt.close()
+
+
+def plt_lineChart_stageGeneDic_inStages(top_gene_dic, perturb_data_denor,
+                                        cell_info, perturb_show_gene_num, species, stage_timePoint_dic,
+                                        save_path, cal_detT_str="mean",
+                                        plt_stage="whole", plt_timePoint="whole",
+                                        special_filename_head_str="", special_filename_tail_str="",
+                                        figsize_hight_weight=3.5):
+    print(top_gene_dic)
+    # Plotting
+    # time_point_list = np.unique(np.array(cell_info["time"]))
+    # print(time_point_list)
+    if plt_stage == "whole":
+        figsize_length, figsize_hight = int(len(np.unique(np.array(cell_info["time"]))) / 3) + 8, figsize_hight_weight * len(top_gene_dic)
+    else:  # plt_stage is early, middle, late
+        top_gene_dic = {plt_stage: top_gene_dic[plt_stage]}
+        if plt_timePoint == "whole":
+            figsize_length, figsize_hight = int(len(np.unique(np.array(cell_info["time"]))) / 3) + 8, figsize_hight_weight
+        else:
+            cell_info = cell_info[cell_info["time"].isin(stage_timePoint_dic[plt_timePoint])]
+            perturb_data_denor = perturb_data_denor.loc[cell_info.index]
+            figsize_length, figsize_hight = 10, 6
+    time_point_list = np.unique(np.array(cell_info["time"]))
+    print(time_point_list)
+    fig, axs = plt.subplots(len(top_gene_dic), 1,
+                            figsize=(figsize_length, figsize_hight),
+                            sharey='row', sharex=True,
+                            )
+
+    if len(top_gene_dic) == 1:
+        axs = [axs]
+    for ax, (stage, gene_list) in zip(axs, top_gene_dic.items()):
+        # print(type(ax))
+        for gene in gene_list:
+            temp = {"det_time": np.array(perturb_data_denor[gene]) - np.array(cell_info["predicted_time_denor"]),
+                    "real_time": np.array(cell_info["time"]),
+                    "gene": gene, }
+            temp = pd.DataFrame(temp, index=cell_info.index)
+            if cal_detT_str == "mean":
+                average_det_time = temp.groupby("real_time")["det_time"].mean()
+            elif cal_detT_str == "median":
+                average_det_time = temp.groupby("real_time")["det_time"].median()
+            #  Series trans to DataFrame
+            average_det_time_df = average_det_time.reset_index()
+            average_det_time_df.columns = ['real_time', 'average_det_time']  #
+            sns.lineplot(x='real_time', y='average_det_time', data=average_det_time_df, marker='o', ax=ax, label=gene)
+        ax.axhline(y=0, color='red', linestyle='--', label='△t=0')
+        ax.set_title(f"Temporal-sensitive genes in {stage} time cluster.", fontsize=16)
+
+        ax.set_ylabel(f'{cal_detT_str.capitalize()} △t', fontsize=16)
+        ax.set_yticklabels(ax.get_yticklabels(), fontsize=16)
+        ax.legend(loc='upper right',fontsize=16)
+    for i, ax in enumerate(axs):
+        ax.grid(True, which='both', axis='x', linestyle='--', linewidth=0.5)  # 启用 X 轴的网格线
+        if plt_timePoint == "whole":
+            if species == "human":
+                ax.axvline(x=7, color='#9370DB', linestyle='--', linewidth=2, label='x = 7')
+                ax.axvline(x=14, color='#9370DB', linestyle='--', linewidth=2, label='x = 14')
+
+            elif species == "mouse":
+                ax.axvline(x=10.25, color='#9370DB', linestyle='--', linewidth=2, label='x = 10.25')
+                ax.axvline(x=14, color='#9370DB', linestyle='--', linewidth=2, label='x = 14')
+        if i < len(axs) - 1:  # 如果不是最后一个子图
+            ax.tick_params(labelbottom=False)  # 隐藏除最下面子图外的X轴刻度标签
+        else:
+            ax.tick_params(labelbottom=True)  # 确保最后一个子图显示X轴刻度标签
+            ax.set_xlabel('Biological time', fontsize=16)
+
+            if plt_timePoint == "whole":
+                ax.set_xticklabels(ax.get_xticks(), rotation=45, fontsize=16)
+                highlight_ticks_dic = {"human": [7.0, 14.0], "mouse": [14.0, 10.25]}
+                for tick in highlight_ticks_dic[species]:
+                    ax.text(tick, ax.get_ylim()[0], f'x={tick}', color='#9370DB', verticalalignment='bottom', fontsize=16,
+                            bbox=dict(boxstyle="square,pad=0.", ec="none", alpha=0.4, facecolor='#ADD8E6'))
+            else:
+                ax.set_xticks(time_point_list)
+                ax.set_xticklabels(time_point_list, rotation=45, fontsize=16)  # 确保使用正确的刻度和格式
+    # sns.despine()
+    plt.tight_layout()
+    save_file_name = f"{save_path}/{special_filename_head_str}{plt_stage}Stage_perturb_top{perturb_show_gene_num}Gene_xTime_y{cal_detT_str.capitalize()}DetT_line_{species}{special_filename_tail_str}.png"
+    plt.savefig(save_file_name, dpi=200)
+    print(f"figure save as {save_file_name}")
+    plt.show()
+    plt.close()
+
+
+def plt_venn_fromDict(enr_top_gene_dic2, save_path, perturb_show_gene_num, species):
+    from matplotlib_venn import venn3, venn3_circles
+    # 创建一个Venn图
+    plt.figure(figsize=(6, 6))
+    venn_diagram = venn3([set(enr_top_gene_dic2["early"]), set(enr_top_gene_dic2["middle"]), set(enr_top_gene_dic2["late"])],
+                         ('Early', 'Middle', 'Late'),
+                         set_colors=("#D6A2E8", "#3498DB", "#FFC93C"), alpha=0.9, )
+    # 设置字体大小
+    for text in venn_diagram.set_labels:
+        if text:  # 防止在空标签上设置属性
+            text.set_fontsize(16)  # 更改集合名字体大小
+
+    for text in venn_diagram.subset_labels:
+        if text:
+            text.set_fontsize(14)  # 更改集合内元素计数的字体大小
+    # venn3_circles([set(enr_top_gene_dic2["early"]), set(enr_top_gene_dic2["middle"]), set(enr_top_gene_dic2["late"])],
+    #               linestyle="dashed", linewidth=2)
+    # 查找所有三个组的交集
+    intersection = set(enr_top_gene_dic2["early"]) & set(enr_top_gene_dic2["middle"]) & set(enr_top_gene_dic2["late"])
+    print(f"Top50 in each time cluster intersection: {intersection}")
+    # if intersection:
+    #     # 在图的中心添加交集元素的名称
+    #     plt.text(venn_diagram.get_label_by_id('111').get_position()[0],
+    #              venn_diagram.get_label_by_id('111').get_position()[1],
+    #              '\n'.join(intersection),
+    #              ha='center', va='center', fontsize=8, color='black')
+
+    # 显示图表
+    plt.title("Venn Diagram of cell time clusters.", fontsize=16)
+    plt.tight_layout()
+    save_file_name = f"{save_path}/3Stage_perturb_top{perturb_show_gene_num}Gene_{species}_venn.png"
+    plt.savefig(save_file_name, dpi=200)
+    print(f"figure save as {save_file_name}")
+    plt.show()
+    plt.close()
+    return intersection
 
 
 def plt_perturb_xTime_yDetT(plot_pd, gene_list, save_path, stage):
@@ -1963,3 +2162,93 @@ def plt_perturb_xTime_yDetT(plot_pd, gene_list, save_path, stage):
     plt.show()
     plt.close()
     gc.collect()
+
+
+def plt_allGene_dot_voteNum_meanDetT_Exp(cell_info, perturb_data_denor, pertrub_gene_df, file_path, top_gene_num=10, stage_str="allStage",
+                                         x_str="mean",
+                                         species="mouse"):  # x_str: "mean" or "median"
+    cell_df = cell_info.loc[perturb_data_denor.index]
+
+    # abs_mean_df = pert_data.apply(lambda col: abs(np.array(col) - np.array(cell_df["predicted_time_denor"])).mean())
+    from utils.utils_DandanProject import voteScore_genePerturbation
+    column_counts = voteScore_genePerturbation(cell_df, perturb_data_denor, top_gene_num, predictedTime_attr="predicted_time_denor")
+
+    pertrub_gene_df[f"top{top_gene_num}VoteNum"] = pertrub_gene_df['gene_short_name'].map(column_counts).fillna(0).astype(int)
+    pertrub_gene_df[f"top{top_gene_num}VoteNum_proportion"] = pertrub_gene_df[f"top{top_gene_num}VoteNum"] / (len(cell_df))
+    pertrub_gene_df["mean"] = perturb_data_denor.apply(lambda col: np.mean((np.array(col) - np.array(cell_df["predicted_time_denor"]))))
+    pertrub_gene_df["median"] = perturb_data_denor.apply(lambda col: np.median(np.array(col) - np.array(cell_df["predicted_time_denor"])))
+
+    # plot_detTandExp(pertrub_gene_df.copy(),
+    #                 y_str=f"top{top_gene_num}VoteNum", y_legend_str=f'Total Votes for Top {top_gene_num} Genes per Sample',
+    #                 x_str=x_str, x_legend_str=f'{x_str.capitalize()} △t: with - without perturbation.',
+    #                 special_filename_str=f"voteTop{top_gene_num}", save_path=file_path, stage_str=stage_str,
+    #                 plt_yOrxZero="x",
+    #                 scatter_strategy="linear",
+    #                 )
+    plot_detTandExp(pertrub_gene_df.copy(),
+                    y_str=f"top{top_gene_num}VoteNum_proportion", y_legend_str=f'Vote proportion',
+                    x_str=x_str, x_legend_str=f'{x_str.capitalize()} △t: with - without perturbation.',
+                    special_filename_str=f"voteTop{top_gene_num}", save_path=file_path, stage_str=stage_str,
+                    plt_yOrxZero="x",
+                    scatter_strategy="linear",
+                    )
+
+    # plot_detTandExp(pertrub_cor_data.copy(),
+    #                 x_str="total_raw_count", x_legend_str='Total raw expression of genes.',
+    #                 y_str=f"top{top_gene_num}VoteNum", y_legend_str=f'Total Votes for Top {top_gene_num} Genes per Sample',
+    #                 special_filename_str=f"voteTop{top_gene_num}", save_path=file_path,stage_str=stage_str,
+    #                 )
+    # plot_detTandExp(pertrub_cor_data.copy(),
+    #                 x_str="total_raw_count", x_legend_str='Total raw expression of genes.',
+    #                 y_str="median", y_legend_str=f'Median △t: pseudo-time after perturb and without perturb.',
+    #                 special_filename_str=f"medianDetT", save_path=file_path,stage_str=stage_str,
+    #                 )
+    # plot_detTandExp(pertrub_cor_data.copy(),
+    #                 x_str="total_raw_count", x_legend_str='Total raw expression of genes.',
+    #                 y_str="mean", y_legend_str=f'Mean △t: pseudo-time after perturb and without perturb.',
+    #                 special_filename_str=f"meanDetT", save_path=file_path,stage_str=stage_str,
+    #                 )
+
+
+def plt_muiltViolin_forGenes_xRawCount(adata_df, intersection, cell_info,
+                                       save_path, perturb_show_gene_num,
+                                       species, special_filename_str=""):
+    # 从 anndata 中提取基因表达数据
+    expr_matrix = adata_df[list(intersection)]
+    # 确保 cell_anno 的索引与 expr_matrix 对应
+    expr_matrix['cell_id'] = expr_matrix.index
+    cell_info["cell_id"]=cell_info.index
+    cell_info2 = cell_info[cell_info['cell_id'].isin(expr_matrix['cell_id'])]
+
+    # 合并表达数据和细胞注释
+    full_data = pd.merge(expr_matrix, cell_info2, on='cell_id')
+
+    # 选择一个颜色调色板
+    palette = sns.color_palette("hsv", len(full_data['time'].unique()))
+
+    # 绘制 violin plot
+    unique_time_points = full_data['time'].nunique()
+    fig, axes = plt.subplots(nrows=len(intersection), figsize=(unique_time_points / 2, len(intersection) / 1.5),
+                             # constrained_layout=True
+                             )
+    print(unique_time_points / 2, len(intersection) / 1.5)
+    for i, gene in enumerate(intersection):
+        vplot = sns.violinplot(x='time', y=gene, data=full_data, palette=palette, inner=None, ax=axes[i])
+        axes[i].set_ylabel(gene, rotation=0, horizontalalignment='right', labelpad=2)
+        # axes[i].set_xlabel('Time')
+        axes[i].spines['top'].set_visible(False)
+        axes[i].spines['right'].set_visible(False)
+        if i < len(intersection) - 1:
+            axes[i].tick_params(labelbottom=False)  # 隐藏非最后一个图的 x 轴标签
+            axes[i].set_xlabel('')
+        else:
+
+            axes[i].tick_params(labelbottom=True)
+            axes[i].set_xlabel('Biogical time')
+            axes[i].set_xticklabels(vplot.get_xticklabels(), rotation=45)
+    plt.tight_layout()
+    save_file_name = f"{save_path}/geneExpression_top{perturb_show_gene_num}Gene_{species}_violin{special_filename_str}.png"
+    plt.savefig(save_file_name, dpi=200)
+    print(f"figure save as {save_file_name}")
+    plt.show()
+    plt.close()

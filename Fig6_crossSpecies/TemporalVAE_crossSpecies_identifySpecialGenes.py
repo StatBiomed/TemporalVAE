@@ -1,12 +1,13 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：TemporalVAE_crossSpecies_referenceMelania_queryOnCyno.py
+@File    ：TemporalVAE_crossSpecies_identifySpecialGenes.py
 @IDE     ：PyCharm 
 @Author  ：awa121
-@Date    ：2024/9/19 08:29 
+@Date    ：2024/10/17 16:11 
 """
 # -*-coding:utf-8 -*-
+
 
 import os
 import sys
@@ -234,19 +235,6 @@ def main():
             _logger.info(Counter(adata_all.obs["species"]))
             # --- plot on Predict Time
             plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
-                                                         mask_dataset_label=query_str, plot_attr='time', mask_str="species",
-                                                         reference_dataset_str=reference_dataset_str,
-                                                         special_file_str=f"_mask{query_str}_colorHuman",
-                                                         mask_color_alpha=0,
-                                                         use_category_legend=True
-                                                         )
-            plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
-                                                         mask_dataset_label='human', plot_attr='time', mask_str="species",
-                                                         reference_dataset_str=reference_dataset_str,
-                                                         special_file_str=f"_maskHuman_color{query_str}",
-                                                         use_category_legend=True
-                                                         )
-            plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
                                                          mask_dataset_label=query_str, plot_attr='predicted_time', mask_str="species",
                                                          reference_dataset_str=reference_dataset_str,
                                                          special_file_str=f"_mask{query_str}_colorHuman",
@@ -257,7 +245,17 @@ def main():
                                                          reference_dataset_str=reference_dataset_str,
                                                          special_file_str=f"_maskHuman_color{query_str}",
                                                          )
-
+            plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
+                                                         mask_dataset_label=query_str, plot_attr='time', mask_str="species",
+                                                         reference_dataset_str=reference_dataset_str,
+                                                         special_file_str=f"_mask{query_str}_colorHuman",
+                                                         mask_color_alpha=0
+                                                         )
+            plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
+                                                         mask_dataset_label='human', plot_attr='time', mask_str="species",
+                                                         reference_dataset_str=reference_dataset_str,
+                                                         special_file_str=f"_maskHuman_color{query_str}"
+                                                         )
 
             import gc
             gc.collect()

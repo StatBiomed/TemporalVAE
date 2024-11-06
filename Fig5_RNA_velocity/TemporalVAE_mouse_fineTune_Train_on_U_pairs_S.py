@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE
-@File    ：VAE_mouse_fineTune_Train_on_U_pairs_S.py
+@File    ：TemporalVAE_mouse_fineTune_Train_on_U_pairs_S.py
 @IDE     ：PyCharm 
 @Author  ：awa121
 @Date    ：2024/1/8 15:25 
@@ -34,12 +34,12 @@ def main():
                         default="focusEncoder",
                         help="fine_tune_mode")
     parser.add_argument('--sc_file_name', type=str,
-                        default="240108mouse_embryogenesis/hematopoiesis",
-                        # default="240108mouse_embryogenesis/neuron",
+                        # default="240108mouse_embryogenesis/hematopoiesis",
+                        default="240108mouse_embryogenesis/neuron",
                         help="sc file folder path.")
     parser.add_argument('--clf_weight', type=float,
-                        default=0.2,  # for hematopoiesis
-                        # default=0.1, # for neruon
+                        # default=0.2,  # for hematopoiesis
+                        default=0.1, # for neuron
                         help="clf_weight.")
     parser.add_argument('--detT', type=float,
                         default=0.001,

@@ -268,13 +268,13 @@ def main():
                                                    legend_title="Dataset", special_file_str="_maskl&m&p&z&xiao")
 
         # --- plot on time categorical
-        plot_tyser_mapping_to_datasets_attrTimeGT(adata_all.copy(), save_file_name, attr='time',
+        plot_tyser_mapping_to_datasets_attrTimeGT(adata_all.copy(), save_file_name, plot_attr='time',
                                                   query_timePoint='17.5',
                                                   legend_title="Cell stage",
                                                   mask_dataset_label="t",
                                                   reference_dataset_str=reference_dataset_str,
                                                   special_file_str='_maskT')
-        plot_tyser_mapping_to_datasets_attrTimeGT(adata_all.copy(), save_file_name, attr='time',
+        plot_tyser_mapping_to_datasets_attrTimeGT(adata_all.copy(), save_file_name, plot_attr='time',
                                                   query_timePoint='17.5',
                                                   legend_title="Cell stage",
                                                   mask_dataset_label="l & m & p & z & xiao",
