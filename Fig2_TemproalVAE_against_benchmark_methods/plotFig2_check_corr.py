@@ -78,7 +78,7 @@ def main():
                                                        # + list(distribution_metric(lr_df['time'], lr_df['pseudotime']))
                                                        )
         science_df = add_norCol_df(science_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["Science2022"]
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["Calderon22"]#Science2022
                                                        + list(corr(science_df['time'], science_df['pseudotime'], as_str=True))
                                                        # + list(distribution_metric(science_df['time'], science_df['pseudotime']))
                                                        )
@@ -212,7 +212,7 @@ def plot_boxAndDot_on_allData(pca_df, randomForest_df, lr_df, psupertime_df, vae
 
     # df_concat = pd.concat([pca_df, randomForest_df, lr_df, psupertime_df, vae_df], keys=['PCA', 'RF', 'LR', 'Psupertime', 'TemporalVAE'])
     #  2024-08-06 14:09:35 add
-    df_concat = pd.concat([science_df, seurat_df, ot_df, psupertime_df, vae_df], keys=['Science2022', 'Seurat', "OT-Regressor", 'Psupertime', 'TemporalVAE'])
+    df_concat = pd.concat([science_df, seurat_df, ot_df, psupertime_df, vae_df], keys=['Calderon22', 'Seurat', "OT-Regressor", 'Psupertime', 'TemporalVAE'])
     label_num = len(np.unique(pca_df["time"]))
     # 设置Seaborn的样式
 
@@ -293,7 +293,7 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
     # ax1.bar(x - 2 * width, pca_spearman_correlations, width, label='PCA', color="#00f5d4")
     # ax1.bar(x - 1 * width, randomForest_spearman_correlations, width, label='RF', color="#00bbf9")
     # ax1.bar(x, lr_spearman_correlations, width, label='LR', color="#fee440")
-    ax1.bar(x - 2 * width, science_spearman_correlations, width, label='Science2022', color="#00f5d4")
+    ax1.bar(x - 2 * width, science_spearman_correlations, width, label='Calderon22', color="#00f5d4")
     ax1.bar(x - 1 * width, seurat_spearman_correlations, width, label='Seurat', color="#00bbf9")
     ax1.bar(x, ot_spearman_correlations, width, label='OT-Regressor', color="#fee440")
     ax1.bar(x + 1 * width, psupertime_spearman_correlations, width, label='Psupertime', color="#f15bb5")
