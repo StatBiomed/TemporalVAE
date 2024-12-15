@@ -1,0 +1,21 @@
+# Single-cell sequencing analysis
+anndata>=0.6
+scanpy
+
+# Data analysis
+numpy>=1.18.0
+scipy>=1.4.1
+pandas>=0.23.0
+
+# Plotting
+matplotlib>=3.1.2
+seaborn>=0.10.0
+
+# Inference
+torch
+scikit-learn>=0.23
+umap-learn>=0.5.3
+nnwrapper>=0.0.1
+
+# Others
+tqdm
