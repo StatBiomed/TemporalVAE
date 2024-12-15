@@ -1,3 +1,5 @@
+# Please keep minimal dependency!!!
+
 # Single-cell sequencing analysis
 anndata>=0.6
 scanpy
@@ -13,9 +15,9 @@ seaborn>=0.10.0
 
 # Inference
 torch
-scikit-learn>=0.23
+nnlite>=0.0.3
 umap-learn>=0.5.3
-nnwrapper>=0.0.1
+scikit-learn>=0.23
 
 # Others
 tqdm

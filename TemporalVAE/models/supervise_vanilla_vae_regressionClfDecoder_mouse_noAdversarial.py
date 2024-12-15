@@ -1,12 +1,15 @@
 import torch
-from model_master import BaseVAE
+# from base import BaseVAE
 from torch import nn
 from torch.nn import functional as F
-from model_master.types_ import *
+# from model_master.types_ import *
+from typing import List, Callable, Union, Any, TypeVar, Tuple
+Tensor = TypeVar('torch.tensor')
+# from torch import tensor as Tensor
 
 
 # 2023-10-04 22:21:36 change model name from SuperviseVanillaVAE_regressionClfDecoder_mouse_mouse_toyDataset to SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial
-class SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial(BaseVAE):
+class SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial(nn.Module):
 
     def __init__(self,
                  in_channels: int,
@@ -158,12 +161,13 @@ class SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial(BaseVAE):
         return eps * std + mu
 
     def forward(self, input: Tensor, **kwargs) -> List[Tensor]:
-        labels = kwargs["labels"]
+        #labels = kwargs["labels"]
         mu, log_var = self.encode(input)
         z = self.reparameterize(mu, log_var)
         recons = self.decode(z)
         reclf = self.clf_decode(z)
-        return [recons, input, mu, log_var, reclf, labels]
+        # return [recons, input, mu, log_var, reclf, labels]    
+        return recons, recons * 0, z, mu, log_var, reclf
 
     def loss_function(self,
                       *args,

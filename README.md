@@ -2,7 +2,9 @@
 Temporal mapping of single cells from time-series atlas
 
 ## Reproducibility
-For reproducibility of the manuscript's analyses, the scripts for generating figures are available at [TemporalVAE-reproducibility](./TemporalVAE-reproducibility) folder/submodule.
+For reproducibility of the manuscript's analyses, the scripts for generating figures are available at 
+[TemporalVAE-reproducibility](https://github.com/StatBiomed/TemporalVAE-reproducibility) 
+folder/submodule.
 
 
 ## Installation
@@ -19,7 +21,8 @@ pip install -U git+https://github.com/StatBiomed/TemporalVAE
 
 ## Quick Usage
 
-More examples can be found at [examples](./examples) folder. 
+More examples can be found at [examples](./examples) folder, including
+[TemporalVAE_demo.ipynb](./examples/TemporalVAE_demo.ipynb)
 
 
 Here is a quick start (TO IMPLEMENT):

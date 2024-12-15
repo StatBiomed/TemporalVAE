@@ -1,2 +1,5 @@
 
-from .supervise_vanilla_vae_regressionClfDecoder_mouse_noAdversarial import *
+from .supervise_vanilla_vae_regressionClfDecoder_mouse_noAdversarial import \
+SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial as TVAE_Origin
+
+from .tvae_trial import TVAE_base
