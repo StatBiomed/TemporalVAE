@@ -7,10 +7,9 @@
 out
 gen
 
-data
+#data
 a-backup
 logs
 results
-demo
-
-data/240322Human_embryo/
+data
+paper
