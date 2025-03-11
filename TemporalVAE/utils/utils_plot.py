@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：utils_Dandan_plot.py
+@File    ：utils_plot.py
 @IDE     ：PyCharm 
 @Author  ：awa121
 @Date    ：2023/7/27 16:37 

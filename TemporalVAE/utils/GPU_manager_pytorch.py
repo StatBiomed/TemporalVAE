@@ -52,8 +52,11 @@ def auto_select_gpu_and_cpu(free_thre=5, max_attempts=100000000):
     Automatically select the gpu device with the max available memory space
     :return: the device id
     """
-    if not torch.cuda.is_available():
-        raise MyCustomError("No aviable cuda")
+    try:
+        if not torch.cuda.is_available():
+            raise MyCustomError("No aviable cuda")
+    except:
+        return "cpu"
     attempts = 0
     while attempts < max_attempts:
         global GPU_DEVICE_ID

@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE
-@File    ：utils_DandanProject.py
+@File    ：utils_project.py
 @IDE     ：PyCharm 
 @Author  ：awa121
 @Date    ：2023/6/10 18:49 
@@ -24,7 +24,7 @@ import pandas as pd
 import numpy as np
 import scanpy as sc
 
-from .utils_Dandan_plot import *
+from .utils_plot import *
 
 
 def read_saved_temp_result_json(file_name):
@@ -141,7 +141,7 @@ def predict_on_one_donor(gplvm, cell_time, sc_expression_train, sc_expression_te
     # for _gene in sc_expression_test:
     #     if np.var(sc_expression_test[_gene].values) == 0:
     #         sc_expression_test = sc_expression_test.drop(_gene, axis=1)
-    from utils_DandanProject import cosSim
+    from utils_project import cosSim
     sample_y_data_df = pd.DataFrame(columns=sc_expression_train.columns)
     # sample_y_data_df_attr_time =pd.DataFrame(columns=sc_expression_train.columns)
     for key in sample_y_data.keys():
@@ -608,7 +608,7 @@ def predict_on_one_donor(gplvm, cell_time, sc_expression_train, sc_expression_te
     # for _gene in sc_expression_test:
     #     if np.var(sc_expression_test[_gene].values) == 0:
     #         sc_expression_test = sc_expression_test.drop(_gene, axis=1)
-    from utils_DandanProject import cosSim
+    from utils_project import cosSim
     sample_y_data_df = pd.DataFrame(columns=sc_expression_train.columns)
     # sample_y_data_df_attr_time =pd.DataFrame(columns=sc_expression_train.columns)
     for key in sample_y_data.keys():
