@@ -1547,7 +1547,7 @@ def plot_psupertime_density(test_results, save_path, label_key="time", psupertim
 def plot_violin_240223(cell_info_df, save_path, x_attr="time",
                        y_attr="physical_pseudotime_by_preTrained_mouseAtlas_model",
                        special_file_name="", color_map="viridis", special_legend_str=""):
-    from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score
+    # from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score
     import matplotlib.pyplot as plt
     import seaborn as sns
     import numpy as np
@@ -2170,7 +2170,7 @@ def plt_allGene_dot_voteNum_meanDetT_Exp(cell_info, perturb_data_denor, pertrub_
     cell_df = cell_info.loc[perturb_data_denor.index]
 
     # abs_mean_df = pert_data.apply(lambda col: abs(np.array(col) - np.array(cell_df["predicted_time_denor"])).mean())
-    from utils.utils_DandanProject import voteScore_genePerturbation
+    from utils_project import voteScore_genePerturbation
     column_counts = voteScore_genePerturbation(cell_df, perturb_data_denor, top_gene_num, predictedTime_attr="predicted_time_denor")
 
     pertrub_gene_df[f"top{top_gene_num}VoteNum"] = pertrub_gene_df['gene_short_name'].map(column_counts).fillna(0).astype(int)

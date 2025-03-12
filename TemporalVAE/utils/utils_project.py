@@ -2040,7 +2040,7 @@ def one_fold_test_adversarialTrain(fold, donor_list, sc_expression_df, donor_dic
 def onlyTrain_model(sc_expression_df, donor_dic,
                     special_path_str,
                     cell_time,
-                    time_standard_type, config, args, device=None, batch_dim=0, plot_latentSpaceUmap=True,
+                    time_standard_type, config, train_epoch_num,  plot_latentSpaceUmap=True,
                     time_saved_asFloat=False,
                     batch_size=None, max_attempts=10000000, adversarial_bool=False, batch_dic=None,
                     donor_str="donor", time_str="time", checkpoint_file=None, min_max_val=None,
@@ -2119,7 +2119,7 @@ def onlyTrain_model(sc_expression_df, donor_dic,
                  f"\nAfter trans y_time_nor_train detail: {np.unique(y_time_nor_train)}")
 
     # ------------------------------------------- Set up VAE model and Start train process -------------------------------------------------
-    _logger.info("Start training with epoch: {}. ".format(args.train_epoch_num))
+    _logger.info("Start training with epoch: {}. ".format(train_epoch_num))
 
     # if (int(config['model_params']['in_channels']) == 0) :
     config['model_params']['in_channels'] = x_sc_train.shape[0]
@@ -2175,7 +2175,7 @@ def onlyTrain_model(sc_expression_df, donor_dic,
                      ],
                      # check_val_every_n_epoch=1, val_check_interval=1,
                      devices=[int(device.split(":")[-1])],
-                     accelerator="gpu", max_epochs=args.train_epoch_num
+                     accelerator="gpu", max_epochs=train_epoch_num
                      )
 
     Path(f"{tb_logger.log_dir}/Samples").mkdir(exist_ok=True, parents=True)
