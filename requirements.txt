@@ -3,8 +3,8 @@
 
 # Single-cell sequencing analysis
 anndata>=0.6
-scanpy
-
+scanpy==1.10.3
+umap-learn==0.5.4
 # Data analysis
 numpy>=1.18.0
 scipy>=1.4.1
@@ -15,11 +15,11 @@ matplotlib>=3.1.2
 seaborn>=0.10.0
 
 # Inference
-torch
+torch== 2.0.1
 nnlite>=0.0.3
 umap-learn>=0.5.3
 scikit-learn>=0.23
 
 # Others
-tqdm
+tqdm==4.64.1
 
