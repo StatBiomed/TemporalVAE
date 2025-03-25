@@ -47,7 +47,7 @@ def main():
                         default="test/Fig7_TemporalVAE_identify_keyGenes_humanMelania_240902/",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
-                        default="/240405_preimplantation_Melania/",
+                        default="/240405_preimplantation_Melania/Melania_5datasets/",
                         help="sc file folder path.")
     # ------------------ preprocess sc data setting ------------------
     parser.add_argument('--min_gene_num', type=int,

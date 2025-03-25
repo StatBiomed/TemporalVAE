@@ -18,7 +18,7 @@ import h5py
 
 def main():
     select_hvg_bool = False  # 2024-04-03 17:51:44 add here
-    file_path = "../data/240405_preimplantation_Melania/"
+    file_path = "../data//240405_preimplantation_Melania/Melania_5datasets/"
     adata = sc.read_h5ad(f"{file_path}/adata_human_preimplantation_for_degong.h5")
     non_nan_attr_list = []
     for _f in list(adata.obs.columns):
@@ -48,8 +48,8 @@ def main():
     # adata_raw_pd=adata_raw_pd.loc[p_cell_names]
     # adata_raw_pd=adata_raw_pd[hvg_genes]
     #
-    # p_raw_count=pd.read_csv(f"{file_path}/P_raw_count.txt",sep="\t",index_col=0)
-    # p_raw_count=p_raw_count.loc[hvg_genes].T
+    # P_raw_count=pd.read_csv(f"{file_path}/P_raw_count.txt",sep="\t",index_col=0)
+    # P_raw_count=P_raw_count.loc[hvg_genes].T
     #
     # recover_log=pd.DataFrame(data=np.expm1(adata_raw_pd))
     # ------------ print and plot for show the structure of dataset

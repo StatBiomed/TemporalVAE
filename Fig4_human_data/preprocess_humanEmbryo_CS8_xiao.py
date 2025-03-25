@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：preprocess_humanEmbryo_CS8.py
+@File    ：preprocess_humanEmbryo_CS8_xiao.py
 @IDE     ：PyCharm 
 @Author  ：awa121
 @Date    ：2024/8/5 23:10
@@ -25,11 +25,10 @@ from utils.utils_DandanProject import series_matrix2csv
 from utils.utils_Dandan_plot import draw_venn,plot_data_quality
 
 
-def main():
-    select_hvg_bool = False  # 2024-04-03 17:51:44 add here
+def main(select_hvg_bool = False):
     hvg_num = 1000
-    file_path = "data/240322Human_embryo/xiaoCellCS8/"
-    human_hvg_gene_list=pd.read_csv("data/240405_preimplantation_Melania/gene_info.csv",
+    file_path = "data/240405_preimplantation_Melania/xiaoCellCS8/"
+    human_hvg_gene_list=pd.read_csv("data//240405_preimplantation_Melania/Melania_5datasets/gene_info.csv",
                                     sep='\t',index_col=0)
     human_hvg_gene_list=list(human_hvg_gene_list.index)
 
@@ -116,7 +115,10 @@ def main():
     print("the original sc expression anndata should be gene as row, cell as column")
     plot_data_quality(adata)
     # filtered_adata_hvg.var.index.name = str(filtered_adata_hvg.var.index.name)
-    filtered_adata_hvg.write_h5ad(f"{file_path}/raw_count_hvg{hvg_num}.h5ad")
+    if select_hvg_bool:
+        filtered_adata_hvg.write_h5ad(f"{file_path}/raw_count_hvg{hvg_num}.h5ad")
+    else:
+        filtered_adata_hvg.write_h5ad(f"{file_path}/raw_count.h5ad")
 
     sc_expression_df = pd.DataFrame(data=filtered_adata_hvg.X.T,
                                     columns=filtered_adata_hvg.obs.index,

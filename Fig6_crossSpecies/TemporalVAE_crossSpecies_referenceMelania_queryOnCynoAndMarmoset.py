@@ -37,10 +37,10 @@ import numpy as np
 def main():
     parser = argparse.ArgumentParser(description="TemporalVAE")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22
-                        default="/Fig6_referenceHumanMelania_queryOnCyno&Marmoset_240903/",
+                        default="/Fig6_referenceHumanMelania_queryOnCyno&Marmoset_240903_test/",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
-                        default="/240405_preimplantation_Melania/",
+                        default="/240405_preimplantation_Melania/Melania_5datasets/",
                         help="sc file folder path.")
     parser.add_argument('--query_file_path', type=str,
                         default="/240910_marmoset_nature2022/Cyno_rawCounts",  # inVivo is "marmoset"
@@ -117,19 +117,23 @@ def main():
     #     data_raw_count_bool = False
     # else:
     #     data_raw_count_bool = True
-    query_data_file_csv = f"{args.query_file_path}/data_count_hvg.csv"
-    query_cell_info_file_csv = f"{args.query_file_path}/cell_with_time.csv"
-    query_data_file_csv2 = f"{args.query_file_path2}/data_count_hvg.csv"
-    query_cell_info_file_csv2 = f"{args.query_file_path2}/cell_with_time.csv"
+    # query_data_file_csv = f"{args.query_file_path}/data_count_hvg.csv"
+    # query_cell_info_file_csv = f"{args.query_file_path}/cell_with_time.csv"
+    # query_data_file_csv2 = f"{args.query_file_path2}/data_count_hvg.csv"
+    # query_cell_info_file_csv2 = f"{args.query_file_path2}/cell_with_time.csv"
+    query_data_file_csv_list = [f"{args.query_file_path}/data_count_hvg.csv",
+                                f"{args.query_file_path2}/data_count_hvg.csv"]
+    query_cell_info_file_csv_list = [f"{args.query_file_path}/cell_with_time.csv",
+                                     f"{args.query_file_path2}/cell_with_time.csv"]
     sc_expression_df, cell_time = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path,
                                                                                 sc_data_file_csv,
                                                                                 cell_info_file_csv,
                                                                                 # donor_attr=donor_attr,
                                                                                 # drop_out_donor=drop_out_donor,
-                                                                                external_file_name=query_data_file_csv,
-                                                                                external_cell_info_file=query_cell_info_file_csv,
-                                                                                external_file_name2=query_data_file_csv2,
-                                                                                external_cell_info_file2=query_cell_info_file_csv2,
+                                                                                external_file_name=query_data_file_csv_list,
+                                                                                external_cell_info_file=query_cell_info_file_csv_list,
+                                                                                # external_file_name2=query_data_file_csv2,
+                                                                                # external_cell_info_file2=query_cell_info_file_csv2,
                                                                                 min_cell_num=args.min_cell_num,
                                                                                 min_gene_num=args.min_gene_num,
                                                                                 data_raw_count_bool=True)  # 2024-04-20 15:38:58

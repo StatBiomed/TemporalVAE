@@ -129,7 +129,7 @@ python -u Fig4_human_data/TemporalVAE_humanEmbryo_kFoldOn_xiang19.py --file_path
 4. **Figure 4C&D**: train on 4 in vitro dataset and predict on one in vivo dataset, please check _Fig4_human_data/vae_humanEmbryo_Melania.ipynb_ or run code on console:
 
 ```bash
-python -u Fig4_human_data/vae_humanEmbryo_Melania.py --file_path=/240405_preimplantation_Melania/
+python -u Fig4_human_data/vae_humanEmbryo_Melania.py --file_path=/240405_preimplantation_Melania/Melania_5datasets/
 ```
 
 ### Figure 5:

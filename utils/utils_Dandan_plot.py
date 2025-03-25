@@ -1547,7 +1547,7 @@ def plot_psupertime_density(test_results, save_path, label_key="time", psupertim
 def plot_violin_240223(cell_info_df, save_path, x_attr="time",
                        y_attr="physical_pseudotime_by_preTrained_mouseAtlas_model",
                        special_file_name="", color_map="viridis", special_legend_str=""):
-    from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score
+    # from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score
     import matplotlib.pyplot as plt
     import seaborn as sns
     import numpy as np
@@ -1733,9 +1733,9 @@ def plot_tyser_mapping_to_datasets_attrTimeGT(adata_all, save_path, plot_attr,
     # 创建颜色字典，将每个类别映射到一个颜色
     # color_dic = {str(time): color for time, color in zip(unique_times, palette)}
     color_dic = {str(time): color for time, color in zip(unique_times, colors)}
-    if mask_dataset_label == "t":
+    if mask_dataset_label in ["t", "T"]:
         color_dic[query_timePoint] = (0.9, 0.9, 0.9, mask_color_alpha)
-    elif mask_dataset_label == "l & m & p & z & xiao":
+    elif mask_dataset_label in ["l & m & p & z & xiao", "L & M & P & Z & X & C"]:
         for _t in color_dic.keys():
             if _t != query_timePoint:
                 color_dic[_t] = (0.9, 0.9, 0.9, mask_color_alpha)
@@ -2059,7 +2059,7 @@ def plt_lineChart_stageGeneDic_inStages(top_gene_dic, perturb_data_denor,
 
         ax.set_ylabel(f'{cal_detT_str.capitalize()} △t', fontsize=16)
         ax.set_yticklabels(ax.get_yticklabels(), fontsize=16)
-        ax.legend(loc='upper right',fontsize=16)
+        ax.legend(loc='upper right', fontsize=16)
     for i, ax in enumerate(axs):
         ax.grid(True, which='both', axis='x', linestyle='--', linewidth=0.5)  # 启用 X 轴的网格线
         if plt_timePoint == "whole":
@@ -2217,7 +2217,7 @@ def plt_muiltViolin_forGenes_xRawCount(adata_df, intersection, cell_info,
     expr_matrix = adata_df[list(intersection)]
     # 确保 cell_anno 的索引与 expr_matrix 对应
     expr_matrix['cell_id'] = expr_matrix.index
-    cell_info["cell_id"]=cell_info.index
+    cell_info["cell_id"] = cell_info.index
     cell_info2 = cell_info[cell_info['cell_id'].isin(expr_matrix['cell_id'])]
 
     # 合并表达数据和细胞注释

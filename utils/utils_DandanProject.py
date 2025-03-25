@@ -741,13 +741,14 @@ def downSample_matrix(matrix, target_location="row", reduce_multiple=10):
         return downsampled_matrix
 
 
-def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, cell_info_file,  # 2024-02-23 12:56:15 remove KNN_smooth_type
+# 2024-02-23 12:56:15 remove KNN_smooth_type
+def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, cell_info_file,
                                                   drop_out_donor=None, donor_attr="donor", gene_list=None,
                                                   drop_out_cell_type=None,
                                                   min_cell_num=50, min_gene_num=100, keep_sub_type_with_cell_num=None,
                                                   external_file_name=None, external_cell_info_file=None,
-                                                  external_file_name2=None, external_cell_info_file2=None,
-                                                  external_cellId_list=None,
+                                                  # external_file_name2=None, external_cell_info_file2=None,
+                                                  # external_cellId_list=None,
                                                   downSample_on_testData_bool=False, test_donor=None,
                                                   downSample_location_type=None,
                                                   augmentation_on_trainData_bool=False,
@@ -757,7 +758,7 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
                                                   normalized_cellTotalCount=1e6,
                                                   data_raw_count_bool=True):
     """
-    :param golbal_data_path:
+    :param global_data_path:
     :param file_name:
     :param cell_info_file:
     :param drop_out_donor:
@@ -784,83 +785,66 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
     # drop should before perprocess sc data
     # from .utils_Dandan_plot import plot_boxPlot_nonExpGene_percentage_whilePreprocess
     _logger.info("the original sc expression anndata should be gene as row, cell as column")
-    try:
-        adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter='\t')
-    except:
-        adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter=',')
-    _logger.info("read the original sc expression anndata with shape (gene, cell): {}".format(adata.shape))
+    if file_name.split(".")[-1] in ["h5", "h5ad"]:
+        _logger.info("input data is .h5 or .h5ad file, where cell as column and gene as row.")
+        adata = anndata.read_h5ad(f"{global_data_path}/{file_name}")
+        cell_time = adata.obs
+        _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
 
+    elif file_name.split(".")[-1] == "csv":
+        _logger.info("input data is .csv file, where gene as row, cell as column.")
+        try:
+            adata = anndata.read_csv("{}/{}".format(global_data_path, file_name), delimiter='\t')
+        except:
+            adata = anndata.read_csv("{}/{}".format(global_data_path, file_name), delimiter=',')
+        _logger.info("read the original sc expression anndata with shape (gene, cell): {}".format(adata.shape))
+        adata = adata.T
+        cell_time = pd.read_csv(global_data_path + cell_info_file, sep="\t", index_col=0)
+        adata.obs = cell_time
+    # read external file,
     if external_file_name is not None:
-        try:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter='\t')
-        except:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter=',')
-        _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
-        _logger.info("here is important, we want to use same cell compare with no integration method.")
-        if external_cellId_list is not None:
-            _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
-            adata2 = adata2[:, external_cellId_list].copy()
-        # adata2=adata2.T.copy()
-        # sc.pp.filter_cells(adata2, min_genes=min_gene_num)
-        # adata2=adata2.T.copy()
-        # 2023-08-03 18:41:20 concat adata and adata2
-        # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
-        duplicate_columns = set(adata.var_names) & set(adata2.var_names)
-        # 删除adata2中的重复列
-        adata2 = adata2[:, ~adata2.var_names.isin(duplicate_columns)]
-        _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
+        external_file_name = [external_file_name] if isinstance(external_file_name, str) else external_file_name
 
-        adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
-        _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
-    if external_file_name2 is not None:
-        try:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter='\t')
-        except:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter=',')
-        _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
-        _logger.info("here is important, we want to use same cell compare with no integration method.")
-        if external_cellId_list is not None:
-            _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
-            adata2 = adata2[:, external_cellId_list].copy()
-        # adata2=adata2.T.copy()
-        # sc.pp.filter_cells(adata2, min_genes=min_gene_num)
-        # adata2=adata2.T.copy()
-        # 2023-08-03 18:41:20 concat adata and adata2
-        # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
-        duplicate_columns = set(adata.var_names) & set(adata2.var_names)
-        # 删除adata2中的重复列
-        adata2 = adata2[:, ~adata2.var_names.isin(duplicate_columns)]
-        _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
+        for i in range(len(external_file_name)):
+            if external_file_name[i].split(".")[-1] in ["h5", "h5ad"]:
+                _logger.info("External file name {} is .h5 or h5ad type".format(external_file_name[i]))
+                adata2 = anndata.read_h5ad("{}/{}".format(global_data_path, external_file_name[i]))
+            elif external_file_name[i].split(".")[-1] == "csv":
+                _logger.info("External file name {} is .csv type".format(external_file_name[i]))
+                try:
+                    adata2 = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter='\t')
+                except:
+                    adata2 = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter=',')
+                _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
+                _logger.info("here is important, we want to use same cell compare with no integration method.")
+                adata2 = adata2.T
+                # read cell info file
+                external_cell_time = pd.read_csv(global_data_path + external_cell_info_file[i], sep="\t", index_col=0)
+                external_cell_time = external_cell_time.reindex(adata2.obs_names)
+                adata2.obs = external_cell_time
 
-        adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
-        _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
+        # if external_cellId_list is not None:
+        #     _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
+        #     adata2 = adata2[external_cellId_list]
+            # identify and remove duplicate cell
+            duplicate_columns = set(adata.obs_names) & set(adata2.obs_names)
+            adata2 = adata2[~adata2.obs_names.isin(duplicate_columns)]
+            _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
 
+            col_gene_list = [_gene for _gene in adata.var_names if _gene in adata2.var_names]
+            adata = adata[:, col_gene_list]
+            adata2 = adata2[:, col_gene_list]
+            adata = anndata.concat([adata, adata2], axis=0,join='outer')
+            _logger.info("merged sc data and external test dataset with shape (cell, gene): {}".format(adata.shape))
+
+    cell_time = adata.obs
+    _logger.info(f"cell annotation includes {cell_time.columns}")
+    # -------------
     if gene_list is not None:
-        overlap_gene = list(set(adata.obs_names) & set(gene_list))
-        adata = adata[overlap_gene].copy()
+        overlap_gene = list(set(adata.var_names) & set(gene_list))
+        adata = adata[:, overlap_gene].copy()
         _logger.info("with gene list require, adata filted with {} genes.".format(len(overlap_gene)))
-    adata = adata.T  # 基因和cell转置矩阵
     _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
-    cell_time = pd.read_csv(golbal_data_path + cell_info_file, sep="\t", index_col=0)
-    if external_cell_info_file is not None:
-        external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file, sep="\t", index_col=0)
-        _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
-
-        external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
-        _logger.info("drop out {} duplicate cell(with the same cell name)".format(len(duplicate_columns)))
-
-        cell_time = pd.concat([cell_time, external_cell_time])
-        _logger.info("merged sc cell info and external cell info dataframe with (cell, attr-num): {}".format(cell_time.shape))
-    if external_cell_info_file2 is not None:
-        external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file2, sep="\t", index_col=0)
-        _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
-
-        external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
-        _logger.info("drop out {} duplicate cell(with the same cell name)".format(len(duplicate_columns)))
-
-        cell_time = pd.concat([cell_time, external_cell_time])
-        _logger.info("merged sc cell info and external cell info dataframe with (cell, attr-num): {}".format(cell_time.shape))
-
     if drop_out_donor is not None:
         drop_out_cell = list(
             set(cell_time.loc[cell_time[donor_attr].isin(list(drop_out_donor))].index) & set(adata.obs.index))
@@ -3371,7 +3355,7 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
                                                                                            checkpoint_file=checkpoint_file)
             predict_donors_dic.update(predict_donor_dic)
     else:
-        kFold_result_recall_dic=dict()
+        kFold_result_recall_dic = dict()
         for fold in range(len(donor_list)):
             gc.collect()
             if recall_predicted_mu:
@@ -3524,7 +3508,7 @@ def get_top_gene_perturb_data(cell_info, stage, perturb_data_denor,
     #     abs_mean_df = pert_data.apply(lambda col: abs(np.array(col) - np.array(cell_df["predicted_time_denor"])).mean())
     #     top_gene_list = abs_mean_df.nlargest(top_gene_num).index
     if top_metric == "vote_samples":
-        column_counts=voteScore_genePerturbation(cell_df, pert_data, top_gene_num, predictedTime_attr="predicted_time_denor")
+        column_counts = voteScore_genePerturbation(cell_df, pert_data, top_gene_num, predictedTime_attr="predicted_time_denor")
         top_gene_list = column_counts.head(top_gene_num)
         print(f"With {top_metric} strategy, select {top_gene_num} gene: {top_gene_list}")
         top_gene_list = list(top_gene_list.keys())
@@ -3542,9 +3526,10 @@ def get_top_gene_perturb_data(cell_info, stage, perturb_data_denor,
         temp = pd.DataFrame(temp, index=cell_df.index)
         temp = temp.sample(n=int(len(temp) / 10), random_state=42)
         plt_gene_pd = pd.concat([plt_gene_pd, temp], axis=0)
-    return plt_gene_pd, top_gene_list,pert_data
+    return plt_gene_pd, top_gene_list, pert_data
 
-def voteScore_genePerturbation(cell_df,perturb_df,top_gene_num,predictedTime_attr="predicted_time_denor"):
+
+def voteScore_genePerturbation(cell_df, perturb_df, top_gene_num, predictedTime_attr="predicted_time_denor"):
     _temp = perturb_df - np.array(cell_df[predictedTime_attr])[:, np.newaxis]
     _temp = abs(_temp)
     top_columns_per_row = _temp.apply(lambda row: row.nlargest(top_gene_num).index.tolist(), axis=1)

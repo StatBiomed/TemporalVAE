@@ -179,8 +179,8 @@ def calculate(species,
                                            perturb_show_gene_num, species, special_filename_str="_perturbTopGenes")
     elif species=="human":
         sc_expression_df, cell_time = preprocessData_and_dropout_some_donor_or_gene('data/',
-                                                                                    '/240405_preimplantation_Melania///data_count_hvg.csv',
-                                                                                    '/240405_preimplantation_Melania///cell_with_time.csv',
+                                                                                    '/240405_preimplantation_Melania/Melania_5datasets//data_count_hvg.csv',
+                                                                                    '/240405_preimplantation_Melania/Melania_5datasets//cell_with_time.csv',
                                                                                     min_cell_num=50,
                                                                                     min_gene_num=50,
                                                                                     data_raw_count_bool=False)
