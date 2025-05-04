@@ -23,7 +23,7 @@ import scanpy as sc
 
 def main():
     hvg_num = 500
-    file_path = "data/240322Human_embryo/xiang2019/"
+    file_path = "data/human_embryo_preimplantation/Xiang2019/"
     raw_count = f"{file_path}/GSE136447_555sample_gene_count_matrix.txt"
     raw_count = pd.read_csv(raw_count, sep="\t", header=0, index_col=0)
 
@@ -37,7 +37,8 @@ def main():
     cell_info['cell_id'] = cell_info['title'].apply(lambda x: x.replace('Embryo_', ""))
     # cell_info["development_day"] = cell_info.index.map(extract_number)
     # cell_info["time"]=cell_info["development_day"]
-    cell_info["time"] = cell_info["characteristics_ch1"].apply(lambda x: eval(x.replace(" ", "").replace('age:embryoinvitroday', "")))
+    # necessary change D13.5 to D14, although their annotation is 13.5 in dataset, they are marked as D14 in the Paper.
+    cell_info["time"] = cell_info["characteristics_ch1"].apply(lambda x: eval(x.replace(" ", "").replace('age:embryoinvitroday', "").replace("13.5","14")))
     cell_info["day"] = cell_info["time"].apply(lambda x: "day" + str(x))
     cell_info["cell_type"] = cell_info["characteristics_ch1_2"].apply(lambda x: x.replace(" ", "").replace('celltype:', ""))
     cell_info["Stage"] = cell_info["cell_type"]

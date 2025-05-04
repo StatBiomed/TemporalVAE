@@ -38,14 +38,15 @@ import numpy as np
 import pandas as pd
 import scanpy as sc
 
-
 def main():
     parser = argparse.ArgumentParser(description="CNN model for prediction of gene paris' regulatory relationship")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22
-                        default="Fig4_TemporalVAE_kFoldOn_humanEmbryo_xiang2019_240901",
+                        default="Fig4_TemporalVAE_kFoldOn_humanEmbryo_xiang2019_250428",
+                        # default="Fig4_TemporalVAE_kFoldOn_humanEmbryo_xiang2019_240901",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
-                        default="/240322Human_embryo/xiang2019/hvg500/",
+                        default="/human_embryo_preimplantation/integration_8dataset/",
+                        # default="/human_embryo_preimplantation/Xiang2019/hvg500/",
                         help="sc file folder path.")
     # ------------------ preprocess sc data setting ------------------
     parser.add_argument('--min_gene_num', type=int,
@@ -56,7 +57,7 @@ def main():
                         help="filter gene with min cell num, default 50")
     # ------------------ model training setting ------------------
     parser.add_argument('--train_epoch_num', type=int,
-                        default="70",  # orginal is 70
+                        default="50",  # orginal is 70
                         help="Train epoch num")
     parser.add_argument('--batch_size', type=int,
                         default=100000,
@@ -96,8 +97,17 @@ def main():
     # KNN_smooth_type = args.KNN_smooth_type
 
     time_standard_type = args.time_standard_type
-    sc_data_file_csv = data_path + "/data_count_hvg.csv"
-    cell_info_file_csv = data_path + "/cell_with_time.csv"
+    temp_adata = ad.read_h5ad(f"data/{data_path}/rawCount_Z&C&Xiao&M&P&Liu&Tyser&Xiang.h5ad")
+    temp_adata=temp_adata[temp_adata.obs['dataset_label']=="Xiang"]
+    temp_adata_raw_count=pd.DataFrame(data=temp_adata.X.T,
+                                    columns=temp_adata.obs.index,
+                                    index=temp_adata.var_names)
+    temp_adata_raw_count.to_csv(f"data/{data_path}/Xiang_rawCount.csv", sep="\t")
+    temp_adata.obs.to_csv(f"data/{data_path}/Xiang_cellAnnotation.csv", sep="\t")
+    sc_data_file_csv = f"{data_path}/Xiang_rawCount.csv"
+    cell_info_file_csv = f"{data_path}/Xiang_cellAnnotation.csv"
+    # sc_data_file_csv = data_path + "/data_count_hvg.csv"
+    # cell_info_file_csv = data_path + "/cell_with_time.csv"
 
     _path = '{}/{}/'.format(result_save_path, data_path)
     if not os.path.exists(_path):
@@ -114,7 +124,9 @@ def main():
     _logger.info("Auto select run on {}".format(device))
     _logger.info("load vae model parameters from file: {}".format(yaml_path + args.vae_param_file + ".yaml"))
     # ------------ Preprocess data, with hvg gene from preprocess_data_mouse_embryonic_development.py------------------------
-    sc_expression_df, cell_time = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path, sc_data_file_csv, cell_info_file_csv,
+    sc_expression_df, cell_time = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path,
+                                                                                sc_data_file_csv,
+                                                                                cell_info_file_csv,
                                                                                 # donor_attr=donor_attr, drop_out_donor=drop_out_donor,
                                                                                 min_cell_num=args.min_cell_num,
                                                                                 min_gene_num=args.min_gene_num,
@@ -164,7 +176,7 @@ def main():
     ## # # ----------------------------------TASK 1: K-FOLD TEST--------------------------------------
     if args.kfold_test:
         predict_donors_dic, label_dic = task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic, special_path_str, cell_time, time_standard_type,
-                                                       config, args.train_epoch_num, _logger, donor_str="day", batch_size=args.batch_size, cmap_color="turbo")
+                                                       config, args.train_epoch_num, _logger, donor_str="day", batch_size=args.batch_size, cmap_color="viridis")
 
         _logger.info("Finish fold-test.")
 

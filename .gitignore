@@ -13,5 +13,10 @@ logs
 results
 data
 paper
+Fig4_human_data/backup_strategy
 
+# special file
+.gitignore
 environment_all.yml
+start_exps.py
+

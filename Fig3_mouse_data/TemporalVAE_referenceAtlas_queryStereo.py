@@ -126,10 +126,10 @@ def directly_predict_on_vae(query_adata, save_path, checkpoint_file, config):
 
     # predict batch size will not influence the training
     from model_master.dataset import SupervisedVAEDataset_onlyPredict
-    from model_master.experiment import VAEXperiment
+    from model_master.experiment_temporalVAE import temporalVAEExperiment
     data_predict = SupervisedVAEDataset_onlyPredict(predict_data=data_x, predict_batch_size=len(data_x))
 
-    experiment = VAEXperiment(MyVAEModel, config['exp_params'])
+    experiment = temporalVAEExperiment(MyVAEModel, config['exp_params'])
     # z=experiment.predict_step(data_predict,1)
     train_result = runner.predict(experiment, data_predict)
     pseudoTime_directly_predict_by_pretrained_model = train_result[0][0]

@@ -1,12 +1,12 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：kFold_check_corr.py
+@File    ：plotSupplementary_ablation.py
 @IDE     ：PyCharm 
 @Author  ：awa121
-@Date    ：2023/9/26 16:27
+@Date    ：2025-04-15 13:51:06
 
-pseudotime
+ablation exps for Temporal and Ablated-TemporalVAE (VAE get low-dim data representation and then use LR to predict pseudo-time)
 """
 import os
 import time
@@ -31,74 +31,20 @@ def main():
     # dataset_list = ["acinarHVG", "humanGermline", "embryoBeta"]
 
     for dataset in dataset_list:
-        pca_df = get_method_result("pca", dataset)
-        rf_df = get_method_result("randomForest", dataset)
-        lr_df = get_method_result("LR", dataset)
-        psupertime_df = get_method_result("psupertime", dataset)
         temporalVAE_df = get_method_result("temporalVAE", dataset)
-        # add 2024-08-05 23:14:33
-        science_df = get_method_result("science2022", dataset)
-        seurat_df = get_method_result("seurat", dataset)
-        ot_df = get_method_result("ot", dataset)
-        # 初始化标签列表
-        all_labels = ['No removal'] + list(np.sort(np.unique(pca_df["time"])))
-        plot_kFold_corr(pca_df.copy(),
-                        rf_df.copy(),
-                        lr_df.copy(),
-                        psupertime_df.copy(),
-                        temporalVAE_df.copy(),
-                        science_df.copy(),
-                        seurat_df.copy(),
-                        ot_df.copy(),
+        vaeLR_df = get_method_result("vae", dataset)
+        all_labels = ['No removal'] + list(np.sort(np.unique(vaeLR_df["time"])))
+        plot_kFold_corr(temporalVAE_df.copy(),
+                        vaeLR_df.copy(),
                         dataset, all_labels, dataset_dic)
-        plot_boxAndDot_on_allData(pca_df.copy(),
-                                  rf_df.copy(),
-                                  lr_df.copy(),
-                                  psupertime_df.copy(),
-                                  temporalVAE_df.copy(),
-                                  science_df.copy(),
-                                  seurat_df.copy(),
-                                  ot_df.copy(),
+        plot_boxAndDot_on_allData(temporalVAE_df.copy(),
+                        vaeLR_df.copy(),
                                   dataset, dataset_dic)
 
         # 2024-08-07 11:09:40 add
         multi_corr_df = pd.DataFrame(columns=["method", "Spearman", "Pearson", "kendalltau"])
         # multi_corr_df = pd.DataFrame(columns=["method", "Spearman", "Pearson", "kendalltau","EMD", "MMD", "R-squared"])
-        pca_df = add_norCol_df(pca_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["PCA"]
-                                                       + list(corr(pca_df['time'], pca_df['pseudotime'], as_str=True))
-                                                       # + list(distribution_metric(pca_df['time'], pca_df['pseudotime']))
-                                                       )
-        rf_df = add_norCol_df(rf_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["RF"]
-                                                       + list(corr(rf_df['time'], rf_df['pseudotime'], as_str=True))
-                                                       # + list(distribution_metric(rf_df['time'], rf_df['pseudotime']))
-                                                       )
-        lr_df = add_norCol_df(lr_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["LR"]
-                                                       + list(corr(lr_df['time'], lr_df['pseudotime'], as_str=True))
-                                                       # + list(distribution_metric(lr_df['time'], lr_df['pseudotime']))
-                                                       )
-        science_df = add_norCol_df(science_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["Calderon22"]#Science2022
-                                                       + list(corr(science_df['time'], science_df['pseudotime'], as_str=True))
-                                                       # + list(distribution_metric(science_df['time'], science_df['pseudotime']))
-                                                       )
-        seurat_df = add_norCol_df(seurat_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["Seurat"]
-                                                       + list(corr(seurat_df['time'], seurat_df['pseudotime'], as_str=True))
-                                                       # + list(distribution_metric(seurat_df['time'], seurat_df['pseudotime']))
-                                                       )
-        ot_df = add_norCol_df(ot_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["OT-Regressor"]
-                                                       + list(corr(ot_df['time'], ot_df['pseudotime'], as_str=True))
-                                                       # + list(distribution_metric(ot_df['time'], ot_df['pseudotime']))
-                                                       )
-        psupertime_df = add_norCol_df(psupertime_df)
-        multi_corr_df.loc[len(multi_corr_df.index)] = (["Psupertime"]
-                                                       + list(corr(psupertime_df['time'], psupertime_df['pseudotime'], as_str=True))
-                                                       # + list(distribution_metric(psupertime_df['time'], psupertime_df['pseudotime']))
-                                                       )
+
         temporalVAE_df = add_norCol_df(temporalVAE_df)
         temporalVAE_df['predicted_time'] = temporalVAE_df['pseudotime'].apply(denormalize, args=(min(temporalVAE_df["time"]),
                                                                                  max(temporalVAE_df["time"]),
@@ -106,6 +52,15 @@ def main():
                                                                                  max(temporalVAE_df["trans_label"])))
         multi_corr_df.loc[len(multi_corr_df.index)] = (["TemporalVAE"]
                                                        + list(corr(temporalVAE_df['time'], temporalVAE_df['predicted_time'], as_str=True))
+                                                       # + list(distribution_metric(temporalVAE_df['time'], temporalVAE_df['predicted_time']))
+                                                       )
+        vaeLR_df = add_norCol_df(vaeLR_df)
+        vaeLR_df['predicted_time'] = vaeLR_df['pseudotime'].apply(denormalize, args=(min(vaeLR_df["time"]),
+                                                                                 max(vaeLR_df["time"]),
+                                                                                 min(vaeLR_df["trans_label"]),
+                                                                                 max(vaeLR_df["trans_label"])))
+        multi_corr_df.loc[len(multi_corr_df.index)] = (["Ablated-TemporalVAE"]
+                                                       + list(corr(vaeLR_df['time'], vaeLR_df['predicted_time'], as_str=True))
                                                        # + list(distribution_metric(temporalVAE_df['time'], temporalVAE_df['predicted_time']))
                                                        )
         print(f"*** {dataset}")
@@ -188,34 +143,17 @@ def add_norCol_df(dfa: pd.DataFrame):
     return df
 
 
-def plot_boxAndDot_on_allData(pca_df, randomForest_df, lr_df, psupertime_df, temporalVAE_df,
-                              science_df,
-                              seurat_df,
-                              ot_df,
+def plot_boxAndDot_on_allData(temporalVAE_df,vae_df,
                               dataset, dataset_dic):
     # 初始化相关系数列表
     # 合并四个DataFrame以便使用FacetGrid
     # plt.figure(figsize=(10, 8))
-    pca_df = add_norCol_df(pca_df)
-    randomForest_df = add_norCol_df(randomForest_df)
-    lr_df = add_norCol_df(lr_df)
-    psupertime_df = add_norCol_df(psupertime_df)
+    vae_df = add_norCol_df(vae_df)
     temporalVAE_df = add_norCol_df(temporalVAE_df)
-    # from utils.utils_DandanProject import denormalize
-    # vae_df['predicted_time']=vae_df['pseudotime'].apply(denormalize,args=(min(vae_df['time']),
-    #                                                                       max(vae_df['time']),
-    #                                                                       min(vae_df['trans_label']),
-    #                                                                       max(vae_df['trans_label']),
-    #                                                                       ))
-    # 2024-08-06 14:07:12 add
-    science_df = add_norCol_df(science_df)
-    seurat_df = add_norCol_df(seurat_df)
-    ot_df = add_norCol_df(ot_df)
 
-    # df_concat = pd.concat([pca_df, randomForest_df, lr_df, psupertime_df, vae_df], keys=['PCA', 'RF', 'LR', 'Psupertime', 'TemporalVAE'])
     #  2024-08-06 14:09:35 add
-    df_concat = pd.concat([science_df, seurat_df, ot_df, psupertime_df, temporalVAE_df], keys=['Calderon22', 'Seurat', "OT-Regressor", 'Psupertime', 'TemporalVAE'])
-    label_num = len(np.unique(pca_df["time"]))
+    df_concat = pd.concat([vae_df, temporalVAE_df], keys=['Ablated-TemporalVAE', 'TemporalVAE'])
+    label_num = len(np.unique(temporalVAE_df["time"]))
     # 设置Seaborn的样式
 
     sns.set(style="whitegrid")
@@ -240,45 +178,27 @@ def plot_boxAndDot_on_allData(pca_df, randomForest_df, lr_df, psupertime_df, tem
     plt.rc('xtick', labelsize=16)
     plt.rc('ytick', labelsize=16)
 
-    plt.savefig(f"{os.getcwd()}/{dataset}_methods_boxAndDot_results.pdf")
-    plt.savefig(f"{os.getcwd()}/{dataset}_methods_boxAndDot_results.png", dpi=200)
+    plt.savefig(f"{os.getcwd()}/{dataset}_temporalVAEvsVAE_boxAndDot_results.png", dpi=200)
 
     # 显示图形
     plt.show()
     plt.close()
 
 
-def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
-                    science_df,
-                    seurat_df,
-                    ot_df,
+def plot_kFold_corr(temporalVAE_df,vae_df,
                     dataset, all_labels, dataset_dic,
                     corr_matric="spearmanr"):
     plt.close()
     # init
-    pca_spearman_correlations = []
-    randomForest_spearman_correlations = []
-    lr_spearman_correlations = []
-    psupertime_spearman_correlations = []
+    temporalVAE_spearman_correlations = []
     vae_spearman_correlations = []
 
-    # 2024-08-06 13:17:02 add
-    science_spearman_correlations = []
-    seurat_spearman_correlations = []
-    ot_spearman_correlations = []
+
 
     # 循环计算四个DataFrame的相关系数
     for label_to_remove in all_labels:
-        pca_spearman_correlations.append(corr_withRemoveDonor(pca_df, label_to_remove, corr_method=corr_matric))
-        randomForest_spearman_correlations.append(corr_withRemoveDonor(randomForest_df, label_to_remove, corr_method=corr_matric))
-        lr_spearman_correlations.append(corr_withRemoveDonor(lr_df, label_to_remove, corr_method=corr_matric))
-        psupertime_spearman_correlations.append(corr_withRemoveDonor(psupertime_df, label_to_remove, corr_method=corr_matric))
         vae_spearman_correlations.append(corr_withRemoveDonor(vae_df, label_to_remove, corr_method=corr_matric))
-
-        # 2024-08-06 13:17:12 add
-        science_spearman_correlations.append(corr_withRemoveDonor(science_df, label_to_remove, corr_method=corr_matric))
-        seurat_spearman_correlations.append(corr_withRemoveDonor(seurat_df, label_to_remove, corr_method=corr_matric))
-        ot_spearman_correlations.append(corr_withRemoveDonor(ot_df, label_to_remove, corr_method=corr_matric))
+        temporalVAE_spearman_correlations.append(corr_withRemoveDonor(temporalVAE_df, label_to_remove, corr_method=corr_matric))
 
     # 创建标签位置
     x = np.arange(len(all_labels))
@@ -295,11 +215,8 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
     # ax1.bar(x - 2 * width, pca_spearman_correlations, width, label='PCA', color="#00f5d4")
     # ax1.bar(x - 1 * width, randomForest_spearman_correlations, width, label='RF', color="#00bbf9")
     # ax1.bar(x, lr_spearman_correlations, width, label='LR', color="#fee440")
-    ax1.bar(x - 2 * width, science_spearman_correlations, width, label='Calderon22', color="#00f5d4")
-    ax1.bar(x - 1 * width, seurat_spearman_correlations, width, label='Seurat', color="#00bbf9")
-    ax1.bar(x, ot_spearman_correlations, width, label='OT-Regressor', color="#fee440")
-    ax1.bar(x + 1 * width, psupertime_spearman_correlations, width, label='Psupertime', color="#f15bb5")
-    ax1.bar(x + 2 * width, vae_spearman_correlations, width, label='TemporalVAE', color="#9b5de5")
+    ax1.bar(x-width, vae_spearman_correlations, width, label='Ablated-TemporalVAE', color="#7cbf2a")
+    ax1.bar(x, temporalVAE_spearman_correlations, width, label='TemporalVAE', color="#9b5de5")
 
     corr_matric_dic = {"spearmanr": "Spearman"}
     ax1.set_ylabel(f'{corr_matric_dic[corr_matric]} correlation')
@@ -321,8 +238,7 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
     # 调整子图布局
     plt.suptitle(f'{dataset_dic[dataset]}: Correlation for Each Deleted donor', fontsize=18)
     plt.tight_layout(rect=[0, 0, 1, 0.95])
-    plt.savefig(f"{os.getcwd()}/{dataset}_methods_results.pdf")
-    plt.savefig(f"{os.getcwd()}/{dataset}_methods_results.png", dpi=200)
+    plt.savefig(f"{os.getcwd()}/{dataset}_temporalVAEvsVAE_results.png", dpi=200)
     print(f"figure save at {os.getcwd()}")
     # 显示图形
     plt.show()

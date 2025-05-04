@@ -70,7 +70,7 @@ def main():
 
     Cyno_rawCounts_adata.write_h5ad(f"{save_path}/RawCounts.h5ad")
 
-    human_gene = pd.read_csv("data//240405_preimplantation_Melania/Melania_5datasets/gene_info.csv", sep="\t", index_col=0)
+    human_gene = pd.read_csv("data//human_embryo_preimplantation/Melania_5datasets/gene_info.csv", sep="\t", index_col=0)
     print(f"Intersection Genes in marmoset and Melania is "
           f"{len(set(human_gene.index) & set(Cyno_rawCounts_adata.var_names))}")  # 1556 genes
     sc_expression_df = pd.DataFrame(data=Cyno_rawCounts_adata.X.T,

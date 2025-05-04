@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：preprocess_humanEmbryo_PLOS.py
+@File    ：preprocess_humanEmbryo_LV19.py
 @IDE     ：PyCharm 
 @Author  ：awa121
 @Date    ：2024/3/3 21:06 
@@ -24,7 +24,7 @@ from utils.utils_Dandan_plot import draw_venn
 
 def main():
     select_hvg_bool = False  # 2024-04-03 17:51:44 add here
-    file_path = "data/240322Human_embryo/PLOS2019/"
+    file_path = "data/human_embryo_preimplantation/Lv2019/"
     count_data = pd.read_csv(f"{file_path}/data_count.csv", index_col=0, sep="\t")
     _cell_temp = pd.read_csv(f"{file_path}/sample.csv", index_col=0, sep=",")
     _cell_temp2 = pd.read_csv(f"{file_path}/SraRunTable.txt", index_col=0, sep=",")
@@ -96,7 +96,7 @@ def main():
     cell_info["day"] = filtered_adata_hvg.obs["development_day"]
     cell_info["time"] = cell_info['day'].str.replace(r'[A-Za-z]', '', regex=True)
     cell_info["cell_id"] = filtered_adata_hvg.obs.index
-    cell_info["dataset_label"]="PLOS"
+    cell_info["dataset_label"]="Lv"
     cell_info["cell_type"]=cell_info["Stage"]
     cell_info["title"]=cell_info.index
     cell_info = cell_info.loc[sc_expression_df.columns]

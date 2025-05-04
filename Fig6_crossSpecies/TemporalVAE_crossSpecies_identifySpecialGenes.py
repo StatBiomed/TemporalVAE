@@ -41,7 +41,7 @@ def main():
                         default="/Fig6_referenceHumanMelania_queryOnCyno&Marmoset_240903_test/",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
-                        default="/240405_preimplantation_Melania/Melania_5datasets/",
+                        default="/human_embryo_preimplantation/Melania_5datasets/",
                         help="sc file folder path.")
     parser.add_argument('--query_file_path', type=str,
                         default="/240910_marmoset_nature2022/Cyno_rawCounts",  # inVivo is "marmoset"

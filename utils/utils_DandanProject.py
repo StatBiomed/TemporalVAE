@@ -1116,7 +1116,10 @@ def trans_time(capture_time, time_standard_type, capture_time_other=None, label_
         else:
             min_val = np.min(unique_time)
             max_val = np.max(unique_time)
+        full_range = np.arange(min_val, max_val + 50, 50)  # +50 确保包含1850
 
+        # 合并原列表和完整序列，去重并排序
+        unique_time = sorted(list(set(unique_time.tolist() + full_range.tolist())))
         # 最小-最大归一化
         normalized_data = (unique_time - min_val) * (new_max - new_min) / (max_val - min_val) + new_min
         # normalized_data = (unique_time - min_val) / (max_val - min_val) * 2 - 1
@@ -1512,7 +1515,7 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
     :param plot_latentSpaceUmap:
     :return:
     """
-    from model_master.experiment import VAEXperiment
+    from model_master.experiment_temporalVAE import temporalVAEExperiment
     from model_master.dataset import SupervisedVAEDataset
     from model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
@@ -1615,7 +1618,7 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
                                     test_batch_size=batch_size, predict_batch_size=batch_size,
                                     label_dic=label_dic)
     # data.setup("train")
-    experiment = VAEXperiment(MyVAEModel, config['exp_params'])
+    experiment = temporalVAEExperiment(MyVAEModel, config['exp_params'])
 
     # 创建一个 LearningRateMonitor 回调实例
     lr_monitor = LearningRateMonitor()
@@ -2048,7 +2051,7 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     :return:
     """
     from model_master.experiment_adversarial import VAEXperiment_adversarial
-    from model_master.experiment import VAEXperiment
+    from model_master.experiment_temporalVAE import temporalVAEExperiment
     from model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
     from pytorch_lightning.loggers import TensorBoardLogger
@@ -2120,11 +2123,11 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     if checkpoint_file is not None:  # 2024-03-17 20:15:39 add
         _logger.info(f"use checkpoint file: {checkpoint_file}")
         checkpoint = torch.load(checkpoint_file, map_location='cpu')
-        # 去掉每层名字前面的 "model."
+        # remove "model." before layer name
         state_dict = checkpoint['state_dict']
         new_state_dict = {}
         for key, value in state_dict.items():
-            # 去掉前缀 "model."
+            # remove "model."
             if key.startswith('model.'):
                 key = key[6:]
             new_state_dict[key] = value
@@ -2143,7 +2146,7 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     if adversarial_bool:
         experiment = VAEXperiment_adversarial(MyVAEModel, config['exp_params'])
     else:
-        experiment = VAEXperiment(MyVAEModel, config['exp_params'])
+        experiment = temporalVAEExperiment(MyVAEModel, config['exp_params'])
     # 创建一个 LearningRateMonitor 回调实例
     lr_monitor = LearningRateMonitor()
     # add 2023-09-07 20:34:57 add memory check
@@ -2252,7 +2255,7 @@ def fineTuning_calRNAvelocity(sc_expression_df, config_file, checkpoint_file, ad
     import yaml
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from model_master.experiment import VAEXperiment
+    from model_master.experiment_temporalVAE import temporalVAEExperiment
     from model_master.experiment_adversarial import VAEXperiment_adversarial
     from model_master.dataset import SupervisedVAEDataset_onlyPredict
     # make data with gene express min
@@ -2293,7 +2296,7 @@ def fineTuning_calRNAvelocity(sc_expression_df, config_file, checkpoint_file, ad
     if adversarial_bool:
         experiment = VAEXperiment_adversarial(MyVAEModel, config['exp_params'])
     else:
-        experiment = VAEXperiment(MyVAEModel, config['exp_params'])
+        experiment = temporalVAEExperiment(MyVAEModel, config['exp_params'])
     # z=experiment.predict_step(data_predict,1)
     train_result = runner.predict(experiment, data_predict)
     if len(train_result) > 1:

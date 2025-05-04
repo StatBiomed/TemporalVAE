@@ -1,12 +1,13 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE 
-@File    ：exp2_temporalVAE_toyDataset.py
+@File    ：exp2_VAEwithLR_toyDataset.py
 @IDE     ：PyCharm 
 @Author  ：awa121
-@Date    ：2023/9/21 12:18 
+@Date    ：2025-04-13 08:31:37
 
 use dataset mentioned in psupertime manuscript
+method is standard VAE to get low-dim representation and LR to predict
 
 """
 import os
@@ -24,7 +25,7 @@ import anndata
 import pandas as pd
 
 import numpy as np
-from model_master.experiment_temporalVAE import temporalVAEExperiment
+from model_master.experiment_standardVAE import VAEExperiment
 from model_master.dataset import SupervisedVAEDataset, SupervisedVAEDataset_onlyPredict
 from model_master import vae_models
 
@@ -39,14 +40,14 @@ from plotFig2_check_corr import preprocess_parameters, corr
 
 
 def main():
-    dataset_list = ["embryoBeta","humanGermline", "acinarHVG",  ]
+    dataset_list = ["embryoBeta", "humanGermline", "acinarHVG", ]
     for dataset in dataset_list:
         method_calculate(dataset)
 
 
 def method_calculate(dataset):
     adata, data_x_df, data_y_df = preprocess_parameters(dataset)
-    method = "temporalVAE"
+    method = "vae"
 
     time_standard_type = "embryoneg5to5"  #
     print(f"time standard type: {time_standard_type}")
@@ -58,13 +59,13 @@ def method_calculate(dataset):
     train_epoch_num = 60  # 2024-04-16 18:19:48
     # train_epoch_num = 150
     import yaml
-    with open("../vae_model_configs/supervise_vae_regressionclfdecoder_exp2_toyDataset.yaml", 'r') as file:
+    with open("../vae_model_configs/supervise_vae_exp2_toyDataset.yaml", 'r') as file:
         try:
             config = yaml.safe_load(file)
         except yaml.YAMLError as exc:
             print(exc)
 
-    logger_file = f'{os.getcwd()}/exp2_temporalVAE_toyDataset.log'
+    logger_file = f'{os.getcwd()}/exp2_vae_with LR_toyDataset.log'
     LogHelper.setup(log_path=logger_file, level='INFO')
     _logger = logging.getLogger(__name__)
     print("Finished setting up the logger at: {}.".format(logger_file))
@@ -105,8 +106,7 @@ def corr(x1, x2):
 
 
 def process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config, save_path, train_epoch_num):
-    # _logger = logging.getLogger(__name__)
-    # time.sleep(random.randint(5, 20))
+    # 2025-04-13 09:54:08 change to fit standard VAE model
     print("the {}/{} fold train, use donor-{} as test set".format(fold + 1, len(donor_list), donor_list[fold]))
 
     train_adata = adata[adata.obs["time"] != donor_list[fold]].copy()
@@ -118,7 +118,7 @@ def process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config,
 
     # ----------------------------------------split Train and Test dataset-----------------------------------------------------
     print("the {}/{} fold train, use donor-{} as test set".format(fold + 1, len(donor_list), donor_list[fold]))
-    subFold_save_file_path = "{}/temporalVAE_results/{}/".format(save_path,
+    subFold_save_file_path = "{}/vae_results/{}/".format(save_path,
                                                          donor_list[fold])
 
     if not os.path.exists(subFold_save_file_path):
@@ -143,7 +143,7 @@ def process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config,
     print("Normalize test y_time_nor_train type: {}, with y_time_nor_train lable: {}, shape: {}, \ndetail: {}"
           .format(time_standard_type, np.unique(y_time_test), y_time_test.shape, np.unique(y_time_nor_test)))
 
-    # ------------------------------------------- Set up temporalVAE model and Start train process -------------------------------------------------
+    # ------------------------------------------- Set up VAE model and Start train process -------------------------------------------------
     print("Start training with epoch: {}. ".format(train_epoch_num))
 
     # if int(config['model_params']['in_channels']) == 0:
@@ -168,7 +168,7 @@ def process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config,
                                 label_dic=label_dic)
 
     # data.setup("train")
-    experiment = temporalVAEExperiment(MyVAEModel, config['exp_params'])
+    experiment = VAEExperiment(MyVAEModel, config['exp_params'])
 
     # 创建一个 LearningRateMonitor 回调实例
     lr_monitor = LearningRateMonitor()
@@ -201,33 +201,20 @@ def process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config,
     # predict on train data
     data_predict = SupervisedVAEDataset_onlyPredict(predict_data=train_data, predict_batch_size=len(train_data))
     train_result = runner.predict(experiment, data_predict)
-    train_clf_result, train_latent_mu_result, train_latent_log_var_result = train_result[0][0], train_result[0][1], \
-        train_result[0][2]
+    train_latent_mu_result, train_latent_log_var_result = train_result[0][0], train_result[0][1]
     # predict on test data
     data_test = SupervisedVAEDataset_onlyPredict(predict_data=test_data, predict_batch_size=len(test_data))
     test_result = runner.predict(experiment, data_test)
-    test_clf_result, test_latent_mu_result, test_latent_log_var_result = test_result[0][0], test_result[0][1], \
-        test_result[0][2]
-    if (np.isnan(np.squeeze(test_clf_result)).any()):
-        print("The Array contain NaN values")
-    else:
-        print("The Array does not contain NaN values")
-    print("predicted time of test donor is continuous.")
+    test_latent_mu_result, test_latent_log_var_result = test_result[0][0], test_result[0][1]
 
-    _result_df = pd.DataFrame({'time': donor_list[fold],  # First column with a constant value of 1
-                               'pseudotime': np.squeeze(test_clf_result, axis=1)})
-    # _result_df['pseudotime'] = _result_df['pseudotime_normalized'].apply(denormalize, args=(min(label_dic.keys()), max(label_dic.keys()), min(label_dic.values()), max(label_dic.values())))
-    _result_df["trans_label"] = _result_df["time"].map(label_dic)
-    print("Plot training loss line for check.")
+    train_mu_adata = anndata.AnnData(X=train_latent_mu_result.cpu().numpy(), obs=train_adata.obs)
+    test_mu_adata = anndata.AnnData(X=test_latent_mu_result.cpu().numpy(), obs=test_adata.obs)
+    LR_model = LR(train_x=train_mu_adata.X, train_y=train_mu_adata.obs["time"])
 
-    from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
-    tags = EventAccumulator(tb_logger.log_dir).Reload().Tags()['scalars']
-    print("All tags in logger: {}".format(tags))
-    # Retrieve and print the metric results
-    plot_tag_list = list(set(["train_clf_loss_epoch", "val_clf_loss", "test_clf_loss_epoch"]) & set(tags))
-    print(f"plot tags {plot_tag_list}")
-    plot_training_loss_for_tags(tb_logger, plot_tag_list, special_str=donor_list[fold], title=donor_list[fold])
+    test_y_predicted = LR_model.predict(test_mu_adata.X)
 
+    test_result_df = pd.DataFrame(test_adata.obs["time"])
+    test_result_df["pseudotime"] = test_y_predicted
     # ---------------------------------------------- save sub model parameters for check  --------------------------------------------------
     print("encoder and decoder structure: {}".format({"encoder": MyVAEModel.encoder, "decoder": MyVAEModel.decoder}))
     print("clf-decoder structure: {}".format({"encoder": MyVAEModel.clf_decoder}))
@@ -240,7 +227,17 @@ def process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config,
     del experiment
     # 清除CUDA缓存
     torch.cuda.empty_cache()
-    return _result_df
+    return test_result_df
+
+
+def LR(train_x, train_y):
+    from sklearn.linear_model import LinearRegression
+    # 初始化线性回归模型
+    model = LinearRegression()
+    # 训练模型
+    model.fit(train_x, train_y)
+
+    return model
 
 
 if __name__ == '__main__':

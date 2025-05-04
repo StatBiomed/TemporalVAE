@@ -8,12 +8,12 @@ import numpy as np
 
 
 
-class VAEXperiment(pl.LightningModule):
+class VAEExperiment(pl.LightningModule):
 
     def __init__(self,
                  vae_model: BaseVAE,
                  params: dict) -> None:
-        super(VAEXperiment, self).__init__()
+        super(VAEExperiment, self).__init__()
         # self.training_step_outputs = []
         self.model = vae_model
         self.params = params
@@ -66,11 +66,11 @@ class VAEXperiment(pl.LightningModule):
                                              batch_weight=self.params["batch_weight"],  # 2023-09-21 16:53:02
                                              optimizer_idx=optimizer_idx,
                                              batch_idx=batch_idx)
-        if results[0].shape[1] != results[1].shape[1]:  # 2023-06-29 18:27:01 for noCLF decoder vae
-            reclf = results[0][:, :5].cpu().numpy()
-        else:  # 2023-06-29 18:27:22 for CLF decoder vae
-            reclf = results[4].cpu().numpy()
-        np.savetxt(self.logger.log_dir + "/test_on_test_cell.txt", reclf, delimiter="\t", encoding='utf-8', fmt="%s")
+        # if results[0].shape[1] != results[1].shape[1]:  # 2023-06-29 18:27:01 for noCLF decoder vae
+        #     reclf = results[0][:, :5].cpu().numpy()
+        # else:  # 2023-06-29 18:27:22 for CLF decoder vae
+        #     reclf = results[4].cpu().numpy()
+        # np.savetxt(self.logger.log_dir + "/test_on_test_cell.txt", reclf, delimiter="\t", encoding='utf-8', fmt="%s")
         self.log_dict({f"test_{key}": val.item() for key, val in test_loss.items()}, sync_dist=True, on_step=True, on_epoch=True,
                       prog_bar=True, logger=True)
 
@@ -86,19 +86,19 @@ class VAEXperiment(pl.LightningModule):
                                              batch_weight=self.params["batch_weight"],  # 2023-09-21 16:53:02
                                              optimizer_idx=optimizer_idx,
                                              batch_idx=batch_idx)
-        if results[0].shape[1] != results[1].shape[1]:  # 2023-06-29 18:27:01 for noCLF decoder vae
-            recons=results[0][:,5:].cpu().numpy() #2023-10-15 16:03:40
-            reclf = results[0][:, :5].cpu().numpy()
-            mu = results[2]
-            log_var = results[3]
-        else:  # 2023-06-29 18:27:22 for CLF decoder vae
-            recons=results[0].cpu().numpy()
-            reclf = results[4].cpu().numpy()
-            mu = results[2]
-            log_var = results[3]
-        np.savetxt(self.logger.log_dir + "/prediction_on_test_cell.txt", reclf, delimiter="\t", encoding='utf-8', fmt="%s")
+        # if results[0].shape[1] != results[1].shape[1]:  # 2023-06-29 18:27:01 for noCLF decoder vae
+        #     recons=results[0][:,5:].cpu().numpy() #2023-10-15 16:03:40
+        #     reclf = results[0][:, :5].cpu().numpy()
+        #     mu = results[2]
+        #     log_var = results[3]
+        # else:  # 2023-06-29 18:27:22 for CLF decoder vae
+        recons=results[0].cpu().numpy()
+        # reclf = results[4].cpu().numpy()
+        mu = results[2]
+        log_var = results[3]
+        # np.savetxt(self.logger.log_dir + "/prediction_on_test_cell.txt", reclf, delimiter="\t", encoding='utf-8', fmt="%s")
         # self.log_dict({f"predict_{key}": val.item() for key, val in test_loss.items()}, sync_dist=True, on_step=True, on_epoch=True, prog_bar=True, logger=True)
-        return reclf, mu, log_var, test_loss,recons
+        return  mu, log_var, test_loss,recons
 
     def validation_step(self, batch, batch_idx, optimizer_idx=0):
         real_img, labels, donor_index = batch

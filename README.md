@@ -114,14 +114,14 @@ python -u Fig3_mouse_data/TemporalVAE_kFoldOn_mouseAtlas.py
 
 ```bash
 python -u Fig4_human_data/preprocess_humanEmbryo_xiang2019data.py
-python -u Fig4_human_data/preprocess_humanEmbryo_PLOS.py
+python -u Fig4_human_data/preprocess_humanEmbryo_LV19.py
 python -u Fig4_human_data/preprocess_humanEmbryo_CS7_Tyser.py
 ```
 
 2. **Figure 4.A**: K-fold test on xiang19 dataset, please check _Fig4_human_data/vae_humanEmbryo_xiang19.ipynb_ or run code on console:
 
 ```bash
-python -u Fig4_human_data/TemporalVAE_humanEmbryo_kFoldOn_xiang19.py --file_path=/240322Human_embryo/xiang2019/hvg500/
+python -u Fig4_human_data/TemporalVAE_humanEmbryo_kFoldOn_xiang19.py --file_path=/human_embryo_preimplantation/Xiang2019/hvg500/
 ```
 
 3. **Figure 4.B**: Temporal trained on xiang19 dataset and predict on Lv19 dataset, please check _Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.ipynb_ or run code
@@ -129,7 +129,7 @@ python -u Fig4_human_data/TemporalVAE_humanEmbryo_kFoldOn_xiang19.py --file_path
 4. **Figure 4C&D**: train on 4 in vitro dataset and predict on one in vivo dataset, please check _Fig4_human_data/vae_humanEmbryo_Melania.ipynb_ or run code on console:
 
 ```bash
-python -u Fig4_human_data/vae_humanEmbryo_Melania.py --file_path=/240405_preimplantation_Melania/Melania_5datasets/
+python -u Fig4_human_data/vae_humanEmbryo_Melania.py --file_path=/human_embryo_preimplantation/Melania_5datasets/
 ```
 
 ### Figure 5:
