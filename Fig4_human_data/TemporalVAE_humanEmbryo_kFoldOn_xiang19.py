@@ -97,7 +97,7 @@ def main():
     # KNN_smooth_type = args.KNN_smooth_type
 
     time_standard_type = args.time_standard_type
-    temp_adata = ad.read_h5ad(f"data/{data_path}/rawCount_Z&C&Xiao&M&P&Liu&Tyser&Xiang.h5ad")
+    temp_adata = ad.read_h5ad(f"data/{data_path}/rawCount_Z_C_Xiao_M_P_Liu_Tyser_Xiang.h5ad")
     temp_adata=temp_adata[temp_adata.obs['dataset_label']=="Xiang"]
     temp_adata_raw_count=pd.DataFrame(data=temp_adata.X.T,
                                     columns=temp_adata.obs.index,

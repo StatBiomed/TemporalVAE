@@ -87,7 +87,7 @@ def main():
     latent_dim = config['model_params']['latent_dim']
 
     time_standard_type = args.time_standard_type
-    sc_data_file_csv = args.file_path + 'rawCount_Z&C&Xiao&M&P&Liu&Tyser&Xiang.h5ad'
+    sc_data_file_csv = args.file_path + 'rawCount_Z_C_Xiao_M_P_Liu_Tyser_Xiang.h5ad'
     _path = '{}/{}/'.format(result_save_path, args.file_path)
     if not os.path.exists(_path):
         os.makedirs(_path)

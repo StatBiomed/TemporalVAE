@@ -42,11 +42,11 @@ def main():
     # 2025-04-20 16:54:49 add p annotation, so remove some p cell
     # {'Z': 5911, 'C': 5082, 'Xiao': 4938, 'M': 4820, 'P': 1529, 'T': 1195, 'L': 989, 'Xiang': 555}
     # 2025-04-21 20:49:25
-    temp=sc.read_h5ad(f"data/human_embryo_preimplantation/integration_8dataset/rawCount_Z&C&Xiao&M&P&Liu&Tyser&Xiang.h5ad")
-    temp.obs.to_csv("data/human_embryo_preimplantation/integration_8dataset/annotation_Z&C&Xiao&M&P&Liu&Tyser&Xiang.csv")
-    for dataset in ['C', 'Xiao', 'T', 'L', 'Z', 'M', 'P', 'Xiang']:
-        _ad=temp[temp.obs['dataset_label']==dataset]
-        print(dataset,Counter(_ad.obs["cell_type"]))
+    # temp=sc.read_h5ad(f"data/human_embryo_preimplantation/integration_8dataset/rawCount_Z_C_Xiao_M_P_Liu_Tyser_Xiang.h5ad")
+    # temp.obs.to_csv("data/human_embryo_preimplantation/integration_8dataset/annotation_Z_C_Xiao_M_P_Liu_Tyser_Xiang.csv")
+    # for dataset in ['C', 'Xiao', 'T', 'L', 'Z', 'M', 'P', 'Xiang']:
+    #     _ad=temp[temp.obs['dataset_label']==dataset]
+    #     print(dataset,Counter(_ad.obs["cell_type"]))
     adata_Melania = read_trans_Melania(file_path="data/human_embryo_preimplantation/Melania_5datasets")
     geneList_Melania=adata_Melania.var_names
     # new ones
@@ -110,7 +110,7 @@ def main():
           f"\tCell Type detail: {Counter(adata_mulitDatasets_Final.obs['cell_type'])}.")
 
     # save integration results
-    adata_mulitDatasets_Final.write_h5ad(f"data/human_embryo_preimplantation/integration_8dataset/rawCount_Z&C&Xiao&M&P&Liu&Tyser&Xiang.h5ad")
+    adata_mulitDatasets_Final.write_h5ad(f"data/human_embryo_preimplantation/integration_8dataset/rawCount_Z_C_Xiao_M_P_Liu_Tyser_Xiang.h5ad")
 
 
     print("finished")
