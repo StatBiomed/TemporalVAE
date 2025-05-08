@@ -1,6 +1,6 @@
 # TemporalVAE: atlas-assisted temporal mapping of time-series single-cell transcriptomes during embryogenesis
 
-[![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/license/mit/)
+[![License](https://img.shields.io/badge/license-BSD--3--Clause-blue)](https://opensource.org/license/bsd-3-clause)
 
 Contact: Yuanhua Huang, Yijun Liu
 
