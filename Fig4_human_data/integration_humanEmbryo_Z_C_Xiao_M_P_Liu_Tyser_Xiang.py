@@ -111,9 +111,9 @@ def main():
 
     # save integration results
     adata_mulitDatasets_Final.write_h5ad(f"data/human_embryo_preimplantation/integration_8dataset/rawCount_Z_C_Xiao_M_P_Liu_Tyser_Xiang.h5ad")
+    print(f"save h5ad file as data/human_embryo_preimplantation/integration_8dataset/rawCount_Z_C_Xiao_M_P_Liu_Tyser_Xiang.h5ad")
 
 
-    print("finished")
     return
 def read_trans_Lv_data(file_path,gene_list_ref=None, min_gene_num=200,save_file_bool=False):
     # rawCount_adata = sc.read_h5ad("data/human_embryo_preimplantation/Lv2019/adata_hvg.h5ad")

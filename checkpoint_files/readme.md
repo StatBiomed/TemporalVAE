@@ -1,2 +1,5 @@
 ### "checkpoint_files/mouse_atlas.ckpt" is mouse atlas checkpoints and in orginal project is
 "TemporalVAE/results/Fig3_vae_kfoldOn_mouseAtlas_240901/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_epoch100_minGeneNum100/wholeData/SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial/version_2/checkpoint/last.ckpt"
+
+human 
+10.5281/zenodo.15339079

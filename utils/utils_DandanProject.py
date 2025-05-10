@@ -756,7 +756,8 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
                                                   special_path_str="",
                                                   random_drop_cell_bool=False,
                                                   normalized_cellTotalCount=1e6,
-                                                  data_raw_count_bool=True):
+                                                  data_raw_count_bool=True,
+                                                  return_normalized_raw_count=False, ):
     """
     :param global_data_path:
     :param file_name:
@@ -788,7 +789,7 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
     if file_name.split(".")[-1] in ["h5", "h5ad"]:
         _logger.info("input data is .h5 or .h5ad file, where cell as column and gene as row.")
         adata = anndata.read_h5ad(f"{global_data_path}/{file_name}")
-        cell_time = adata.obs
+        # cell_time = adata.obs
         _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
 
     elif file_name.split(".")[-1] == "csv":
@@ -799,8 +800,8 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
             adata = anndata.read_csv("{}/{}".format(global_data_path, file_name), delimiter=',')
         _logger.info("read the original sc expression anndata with shape (gene, cell): {}".format(adata.shape))
         adata = adata.T
-        cell_time = pd.read_csv(global_data_path + cell_info_file, sep="\t", index_col=0)
-        adata.obs = cell_time
+
+        adata.obs = pd.read_csv(global_data_path + cell_info_file, sep="\t", index_col=0)
     # read external file,
     if external_file_name is not None:
         external_file_name = [external_file_name] if isinstance(external_file_name, str) else external_file_name
@@ -808,33 +809,33 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
         for i in range(len(external_file_name)):
             if external_file_name[i].split(".")[-1] in ["h5", "h5ad"]:
                 _logger.info("External file name {} is .h5 or h5ad type".format(external_file_name[i]))
-                adata2 = anndata.read_h5ad("{}/{}".format(global_data_path, external_file_name[i]))
+                adata_external = anndata.read_h5ad("{}/{}".format(global_data_path, external_file_name[i]))
             elif external_file_name[i].split(".")[-1] == "csv":
                 _logger.info("External file name {} is .csv type".format(external_file_name[i]))
                 try:
-                    adata2 = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter='\t')
+                    adata_external = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter='\t')
                 except:
-                    adata2 = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter=',')
-                _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
+                    adata_external = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter=',')
+                _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata_external.shape))
                 _logger.info("here is important, we want to use same cell compare with no integration method.")
-                adata2 = adata2.T
+                adata_external = adata_external.T
                 # read cell info file
                 external_cell_time = pd.read_csv(global_data_path + external_cell_info_file[i], sep="\t", index_col=0)
-                external_cell_time = external_cell_time.reindex(adata2.obs_names)
-                adata2.obs = external_cell_time
+                external_cell_time = external_cell_time.reindex(adata_external.obs_names)
+                adata_external.obs = external_cell_time
 
-        # if external_cellId_list is not None:
-        #     _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
-        #     adata2 = adata2[external_cellId_list]
+            # if external_cellId_list is not None:
+            #     _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
+            #     adata_external = adata_external[external_cellId_list]
             # identify and remove duplicate cell
-            duplicate_columns = set(adata.obs_names) & set(adata2.obs_names)
-            adata2 = adata2[~adata2.obs_names.isin(duplicate_columns)]
+            duplicate_columns = set(adata.obs_names) & set(adata_external.obs_names)
+            adata_external = adata_external[~adata_external.obs_names.isin(duplicate_columns)]
             _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
 
-            col_gene_list = [_gene for _gene in adata.var_names if _gene in adata2.var_names]
+            col_gene_list = [_gene for _gene in adata.var_names if _gene in adata_external.var_names]
             adata = adata[:, col_gene_list]
-            adata2 = adata2[:, col_gene_list]
-            adata = anndata.concat([adata, adata2], axis=0,join='outer')
+            adata_external = adata_external[:, col_gene_list]
+            adata = anndata.concat([adata, adata_external], axis=0, join='outer')
             _logger.info("merged sc data and external test dataset with shape (cell, gene): {}".format(adata.shape))
 
     cell_time = adata.obs
@@ -999,10 +1000,11 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
     gene_raw_total_count = pd.DataFrame(data=adata.X.sum(axis=0), index=adata.var_names, columns=["raw_total_count"])
 
     # ---
-    sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount)
+    # sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount)
+    adata_normalized = sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount, copy=True)
     print(f"normalized sample to {normalized_cellTotalCount}")
     if data_raw_count_bool:
-        sc.pp.log1p(adata)
+        sc.pp.log1p(adata_normalized)
         print("Input data is raw count, do the log1p().")
     else:
         print("Input data is log-ed, skip the log-ed.")
@@ -1010,15 +1012,15 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
                  f"so that every cell has the same total count after normalization.")
     if plot_boxPlot_bool:
         try:
-            plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
+            plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata_normalized, cell_time, donor_attr,
                                                                special_path_str, test_donor,
                                                                special_file_str=f"6NormalizeTo1e6AndLog")
-            plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
+            plot_boxPlot_total_count_per_cell_whilePreprocess(adata_normalized, cell_time, donor_attr,
                                                               special_path_str, test_donor,
                                                               special_file_str=f"6NormalizeTo1e6AndLog")
         except:
             print("some error while plot before boxplot.")
-    sc_expression_df = pd.DataFrame(data=adata.X, columns=adata.var.index, index=adata.obs.index)
+    sc_expression_df = pd.DataFrame(data=adata_normalized.X, columns=adata_normalized.var.index, index=adata_normalized.obs.index)
     # 2023-08-05 15:12:28 for debug
     # sc_expression_df = sc_expression_df.sample(n=6000, random_state=0)
 
@@ -1045,7 +1047,13 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
     except:
         print("Not save preprocessed_cell_info.csv and preprocessed_gene_info.csv")
         pass
-    return sc_expression_df, cell_time
+    if return_normalized_raw_count:
+        import scipy.sparse as sp
+        adata.X = sp.csr_matrix(adata.X)
+        adata.layers['processed'] = sc_expression_df.values
+        return sc_expression_df, cell_time, adata
+    else:
+        return sc_expression_df, cell_time
 
 
 def cosSim(x, y):
