@@ -38,6 +38,7 @@ import numpy as np
 import pandas as pd
 import scanpy as sc
 
+
 def main():
     parser = argparse.ArgumentParser(description="CNN model for prediction of gene paris' regulatory relationship")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22
@@ -94,20 +95,17 @@ def main():
             print(exc)
     # ---------------------------------------set logger and parameters, creat result save path and folder----------------------------------------------
     latent_dim = config['model_params']['latent_dim']
-    # KNN_smooth_type = args.KNN_smooth_type
-
     time_standard_type = args.time_standard_type
+    # filter xiang data from integrated dataset
     temp_adata = ad.read_h5ad(f"data/{data_path}/rawCount_Z_C_Xiao_M_P_Liu_Tyser_Xiang.h5ad")
-    temp_adata=temp_adata[temp_adata.obs['dataset_label']=="Xiang"]
-    temp_adata_raw_count=pd.DataFrame(data=temp_adata.X.T,
-                                    columns=temp_adata.obs.index,
-                                    index=temp_adata.var_names)
+    temp_adata = temp_adata[temp_adata.obs['dataset_label'] == "Xiang"]
+    temp_adata_raw_count = pd.DataFrame(data=temp_adata.X.T,
+                                        columns=temp_adata.obs.index,
+                                        index=temp_adata.var_names)
     temp_adata_raw_count.to_csv(f"data/{data_path}/Xiang_rawCount.csv", sep="\t")
     temp_adata.obs.to_csv(f"data/{data_path}/Xiang_cellAnnotation.csv", sep="\t")
     sc_data_file_csv = f"{data_path}/Xiang_rawCount.csv"
     cell_info_file_csv = f"{data_path}/Xiang_cellAnnotation.csv"
-    # sc_data_file_csv = data_path + "/data_count_hvg.csv"
-    # cell_info_file_csv = data_path + "/cell_with_time.csv"
 
     _path = '{}/{}/'.format(result_save_path, data_path)
     if not os.path.exists(_path):

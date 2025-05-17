@@ -17,7 +17,7 @@ during human peri-implantation between in vivo and in vitro conditions.
 Furthermore, we showed that our atlas-based time predictor can effectively support RNA velocity modeling over short-time cell differentiation, including hematopoiesis and neuronal
 development.
 
-A preprint describing TemporalVAE's algorithms and results is at [bioRxiv](https://;.
+[//]: # (A preprint describing TemporalVAE's algorithms and results is at [bioRxiv]&#40;https://;.)
 
 ![](fig1_model_structure.png)
 
@@ -32,12 +32,13 @@ A preprint describing TemporalVAE's algorithms and results is at [bioRxiv](https
 ## Latest Updates
 
 * v0.1 (May, 2024): Initial release.
+* v0.2 (May, 2024)
 
 ---
 
 ## Installation
 
-To install TemporalVAE, python 3.9 is required and follow the instruction
+To install TemporalVAE, python 3.10.9 is required and follow the instruction
 
 1. Install <a href="https://docs.conda.io/projects/miniconda/en/latest/" target="_blank">Miniconda3</a> if not already available.
 2. Clone this repository:
@@ -52,34 +53,41 @@ To install TemporalVAE, python 3.9 is required and follow the instruction
   cd TemporalVAE
 ```
 
-4. (5-10 minutes) Create a conda environment with the required dependencies:
+4. (5-10 minutes) Create a conda environment with the required dependencies with two environment configuration files.  `env_necessary.yml` inclueds minimal essential dependencies and `env_all.yml` includes complete development environment.
 
 ```bash
-  conda env create -f environment.yml
-```
+# For minimal production environment:
+conda env create -f env_necessary.yml
 
+# For complete development environment:
+conda env create -f env_all.yml
+```
 5. Activate the `TemporalVAE` environment you just created:
 
 ```bash
   conda activate TemporalVAE
 ```
 
-6. Install **pytorch**: You may refer to [pytorch installtion](https://pytorch.org/get-started/locally/) as needed. For example, the command of installing a **cpu-only** pytorch
-   is:
+[//]: # (6. Install **pytorch**: You may refer to [pytorch installtion]&#40;https://pytorch.org/get-started/locally/&#41; as needed. For example, the command of installing a **cpu-only** pytorch)
 
-```bash
-conda install pytorch torchvision torchaudio cpuonly -c pytorch
-```
+[//]: # (   is:)
+
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (conda install pytorch torchvision torchaudio cpuonly -c pytorch)
+
+[//]: # (```)
 
 ---
 
 ## Reproduce the result in manuscript
 
-The code is in folder named by figure-index
+The code is in folder named by figure-index.
 
 ### Figure 2: 
-Compare the TemporalVAE with baseline methods in three small datasets cited in [Psupertime](https://academic.oup.com/bioinformatics/article/38/Supplement_1/i290/6617492) mansucript.
-1. Preprocess three datasets by the code described in [preprocess_data_fromPsupertimeManuscript.md](./Fig2_TemproalVAE_against_benchmark_methods/preprocess_data_fromPsupertimeManuscript.md)
+Compare the TemporalVAE with baseline methods on three small datasets cited in [Psupertime](https://academic.oup.com/bioinformatics/article/38/Supplement_1/i290/6617492) mansucript.
+1. Preprocess three datasets by the code described in [preprocess_data_fromPsupertimeManuscript.md](./Fig2_TemproalVAE_against_benchmark_methods/preprocess_data_fromPsupertimeManuscript.md).
 2. run the code of each benchmarking method, then run [plotFig2_check_corr.py](./Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py) to generate Fig2.
 ### Figure 3:
 1. Preprocess the mouse atlas data and mouse stereo data by
@@ -110,29 +118,42 @@ python -u Fig3_mouse_data/TemporalVAE_kFoldOn_mouseAtlas.py
 
 ### Figure 4:
 
-1. Preprocess the raw dataset by
+1. Download original data of eight published human datasets (See details in Supplementary file). Integrate the raw dataset by
 
 ```bash
-python -u Fig4_human_data/preprocess_humanEmbryo_xiang2019data.py
-python -u Fig4_human_data/preprocess_humanEmbryo_LV19.py
-python -u Fig4_human_data/preprocess_humanEmbryo_CS7_Tyser.py
+python -u Fig4_human_data/integration_humanEmbryo_Z_C_Xiao_M_P_Liu_Tyser_Xiang.py
 ```
 
-2. **Figure 4.A**: K-fold test on xiang19 dataset, please check _Fig4_human_data/vae_humanEmbryo_xiang19.ipynb_ or run code on console:
+2. **Figure 4.A-c**: Performance of TemporalVAE by training on six training datasets and test on two hold-out test dataset by
 
 ```bash
-python -u Fig4_human_data/TemporalVAE_humanEmbryo_kFoldOn_xiang19.py --file_path=/human_embryo_preimplantation/Xiang2019/hvg500/
+python -u Fig4_human_data/TemporalVAE_humanEmbryo_ref6Dataset_queryOnXiang_Tyser.py
 ```
 
-3. **Figure 4.B**: Temporal trained on xiang19 dataset and predict on Lv19 dataset, please check _Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.ipynb_ or run code
-   _Fig4_human_data/LR_PCA_RF_directlyPredictOn_humanEmbryo_PLOS.py_ on console.
-4. **Figure 4C&D**: train on 4 in vitro dataset and predict on one in vivo dataset, please check _Fig4_human_data/vae_humanEmbryo_Melania.ipynb_ or run code on console:
-
+2. **Sfig**: K-fold test on xiang19 dataset by:
 ```bash
-python -u Fig4_human_data/vae_humanEmbryo_Melania.py --file_path=/human_embryo_preimplantation/Melania_5datasets/
+python -u Fig4_human_data/TemporalVAE_humanEmbryo_kFoldOn_xiang19.py
+```
+### Figure 5: 
+1. Preprocess Marmoset and Cynomolgus data by
+```bash
+python -u Fig5_crossSpecies/preprocess_data_marmoset_inVivo.py
+python -u Fig5_crossSpecies/preprocess_data_Cyno.py
+```
+2. **Figure5.A-D**: Performance of TemporalVAE on cross species prediction by
+```bash
+python -u Fig5_crossSpecies/TemporalVAE_crossSpecies_referenceMelania_queryOnCynoAndMarmoset.py
+```
+### Figure 6:
+Identification of temporally sensitive genes by in silico perturbation.Here, we focus on the mouse embryo atlas as a showcase, thanks to its data consistency and broader time range.
+```bash 
+python -u Fig6_identify_keyGenes/TemporalVAE_identify_keyGenes_mouseAtlas.py
+python -u Fig6_identify_keyGenes/plot_perturbution_results.py
 ```
 
-### Figure 5:
+## Todo
+
+### Figure 5 - RNA velocity:
 1. The data is from paper <Systematic reconstruction of the cellular trajectories of mammalian embryogenesis.>.
 2. 1 **Figure 5. C&E** is the data of hematopoiesis cells, please check _Fig5_RNA_velocity/VAE_mouse_fineTune_Train_on_U_pairs_S_hematopoiesis.ipynb_ or run code on console:
 ```bash
@@ -143,9 +164,6 @@ python -u Fig5_RNA_velocity/TemporalVAE_mouse_fineTune_Train_on_U_pairs_S.py --s
 python -u Fig5_RNA_velocity/TemporalVAE_mouse_fineTune_Train_on_U_pairs_S.py --sc_file_name=240108mouse_embryogenesis/neuron --clf_weight=0.1
 ```
 3. The scVelo result in **Figure 5. E&F** is base on the _.ipynb_ code provided by the dataset's paper, please check _Fig5_RNA_velocity/scVelo_hematopoiesis.ipynb_ and _Fig5_RNA_velocity/scVelo_neuron.ipynb_
-
-## Todo
-
 [//]: # (Build a well-structured software packages)
 
 

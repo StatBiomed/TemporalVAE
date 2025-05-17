@@ -1,5 +1,5 @@
 
-## The code pre-processes the dataset used in Fig2
+## The code is used for pre-processing three small dataset mentioned in Fig2.
 
 ## Acinar dataset 
 Directly downloaded through the R-package of Psupertime. 

@@ -37,13 +37,16 @@ import numpy as np
 def main():
     parser = argparse.ArgumentParser(description="TemporalVAE")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22
-                        default="/Fig6_referenceHumanMelania_queryOnCyno_240902/",
+                        default="/Fig6_referenceHumanMelania_queryOnCyno&Marmoset_240903/",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
                         default="/human_embryo_preimplantation/Melania_5datasets/",
                         help="sc file folder path.")
     parser.add_argument('--query_file_path', type=str,
-                        default="/240910_marmoset_nature2022/Cyno_rawCounts",
+                        default="/240910_marmoset_nature2022/Cyno_rawCounts",  # inVivo is "marmoset"
+                        help="sc file folder path.")
+    parser.add_argument('--query_file_path2', type=str,
+                        default="/240910_marmoset_nature2022/inVivo_rawCounts",  # inVivo is "marmoset"
                         help="sc file folder path.")
     # ------------------ preprocess sc data setting ------------------
     parser.add_argument('--min_gene_num', type=int,
@@ -114,15 +117,23 @@ def main():
     #     data_raw_count_bool = False
     # else:
     #     data_raw_count_bool = True
-    query_data_file_csv = f"{args.query_file_path}/data_count_hvg.csv"
-    query_cell_info_file_csv = f"{args.query_file_path}/cell_with_time.csv"
+    # query_data_file_csv = f"{args.query_file_path}/data_count_hvg.csv"
+    # query_cell_info_file_csv = f"{args.query_file_path}/cell_with_time.csv"
+    # query_data_file_csv2 = f"{args.query_file_path2}/data_count_hvg.csv"
+    # query_cell_info_file_csv2 = f"{args.query_file_path2}/cell_with_time.csv"
+    query_data_file_csv_list = [f"{args.query_file_path}/data_count_hvg.csv",
+                                f"{args.query_file_path2}/data_count_hvg.csv"]
+    query_cell_info_file_csv_list = [f"{args.query_file_path}/cell_with_time.csv",
+                                     f"{args.query_file_path2}/cell_with_time.csv"]
     sc_expression_df, cell_time = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path,
                                                                                 sc_data_file_csv,
                                                                                 cell_info_file_csv,
                                                                                 # donor_attr=donor_attr,
                                                                                 # drop_out_donor=drop_out_donor,
-                                                                                external_file_name=query_data_file_csv,
-                                                                                external_cell_info_file=query_cell_info_file_csv,
+                                                                                external_file_name=query_data_file_csv_list,
+                                                                                external_cell_info_file=query_cell_info_file_csv_list,
+                                                                                # external_file_name2=query_data_file_csv2,
+                                                                                # external_cell_info_file2=query_cell_info_file_csv2,
                                                                                 min_cell_num=args.min_cell_num,
                                                                                 min_gene_num=args.min_gene_num,
                                                                                 data_raw_count_bool=True)  # 2024-04-20 15:38:58
@@ -130,16 +141,19 @@ def main():
     special_path_str = ""
     # ---------------------------------------- set donor list and dictionary -----------------------------------------------------
     species_list = np.unique(cell_time["species"])
-    donor_dic = {'human': 0, "cynomolgus": 1}
+    donor_dic = {'human': 0, "cynomolgus": 1, "marmoset": 2}
     batch_dic = donor_dic.copy()
     save_file_name = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}/"
     # """2024-08-23 15:57:41 not use here, remove
     #  ---------------------- TASK: use reference data to train a model  ------------------------
     if args.train_whole_model:
-        cell_drop_index_list = cell_time.loc[cell_time["species"]=="cynomolgus"].index
+        _logger.info(f"Each species: {Counter(cell_time['species'])}")
+        cell_drop_index_list = cell_time.loc[cell_time["species"].isin(["cynomolgus", "marmoset"])].index
+        _logger.info(f"remove species Cyno and Marmoset: {len(cell_drop_index_list)}")
         sc_expression_df_filter = sc_expression_df.drop(cell_drop_index_list, axis=0)
         cell_time_filter = cell_time.drop(cell_drop_index_list, axis=0)
         cell_time_filter = cell_time_filter.loc[sc_expression_df_filter.index]
+        _logger.info(f"Training cell number is {len(cell_time_filter)}")
         sc_expression_train, y_time_nor_train, donor_index_train, runner, experiment, _m, train_clf_result, label_dic, total_result = onlyTrain_model(
             sc_expression_df_filter, donor_dic,
             special_path_str,
@@ -161,82 +175,96 @@ def main():
     # """
     ### ------------TASK : K-FOLD TEST--------------------------------------
     if args.kfold_test:
-        query_str ="cynomolgus"
-        test_donor_list = [query_str]
+        test_donor_list = ["cynomolgus", "marmoset"]
+        _logger.info(f"k-fold on species: {test_donor_list}")
+
         predict_donors_dic, label_dic, kFold_result_recall_dic = task_kFoldTest(test_donor_list, sc_expression_df, donor_dic, batch_dic,
-                                                                  special_path_str, cell_time, time_standard_type,
-                                                                  config, args.train_epoch_num, _logger,
-                                                                  donor_str="species",
-                                                                  batch_size=args.batch_size, recall_predicted_mu=True)
-        mu_result=kFold_result_recall_dic[query_str][-1]
-        train_mu_result, test_mu_result = mu_result
-        cell_time_query = cell_time.loc[predict_donors_dic[query_str].index]
-        cell_time_query["predicted_time"] = predict_donors_dic[query_str]['pseudotime'].apply(denormalize, args=(min(label_dic.keys()) / 100,
-                                                                                                                 max(label_dic.keys()) / 100,
-                                                                                                                 min(label_dic.values()),
-                                                                                                                 max(label_dic.values())))
-        cell_time_query["dataset_label"] = query_str
-        cell_time_query = cell_time_query[["time", "predicted_time", "dataset_label", "Stage", "species"]]
-        adata_mu_query = ad.AnnData(X=test_mu_result.cpu().numpy(), obs=cell_time_query)
-        try:
-            adata_mu_reference = ad.read_h5ad(f"{save_file_name}/n50_latent_mu.h5ad")
-            adata_mu_reference.obs["species"] = "human"
-            # adata_mu_reference.obs["lab"] = "human"
-        except:
-            print("error on predict on query dataset. \n"
-                  "Note: *TASK: use reference data to train a model* is necessary, "
-                  "because it generate train's n50_latent_mu.h5ad file. \n"
-                  "TASK : K-FOLD TEST is based on Function task_kFoldTest, "
-                  "and it's difficult to return lantent_mu of each fold.")
+                                                                                special_path_str, cell_time, time_standard_type,
+                                                                                config, args.train_epoch_num, _logger,
+                                                                                donor_str="species",
+                                                                                batch_size=args.batch_size, recall_predicted_mu=True)
+        for query_str in test_donor_list:
+            mu_result = kFold_result_recall_dic[query_str][-1]
+            train_mu_result, test_mu_result = mu_result
+            cell_time_query = cell_time.loc[predict_donors_dic[query_str].index]
+            cell_time_query["predicted_time"] = predict_donors_dic[query_str]['pseudotime'].apply(denormalize, args=(min(label_dic.keys()) / 100,
+                                                                                                                     max(label_dic.keys()) / 100,
+                                                                                                                     min(label_dic.values()),
+                                                                                                                     max(label_dic.values())))
+            cell_time_query["dataset_label"] = query_str
+            cell_time_query = cell_time_query[["time", "predicted_time", "dataset_label", "Stage", "species"]]
 
-        adata_all = anndata.concat([adata_mu_reference.copy(), adata_mu_query.copy()], axis=0)
-        # adata_all.obs["cell_typeMask4dataset"] = adata_all.obs.apply(lambda row: 'l & m & p & z & xiao' if row['species'] != 'cynomolgus' else row['cell_type'], axis=1)
-        # adata_all.obs["cell_typeMaskTyser"] = adata_all.obs.apply(lambda row: 't' if row['dataset_label'] == 't' else row['cell_type'], axis=1)
+            plot_violin_240223(cell_time_query.copy(), save_file_name,
+                               x_attr="time",
+                               y_attr="predicted_time",
+                               special_file_name=f"kfold_queryOn{query_str}", color_map="viridis")
 
-        # ---- 1 method: mapping tyser data to other 4 dataset's umap, just use different umap model
-        # sc.pp.neighbors(adata_mu_query, n_neighbors=50, n_pcs=20)
-        # sc.tl.umap(adata_mu_query, min_dist=0.75)
-        # ----
+            adata_mu_query = ad.AnnData(X=test_mu_result.cpu().numpy(), obs=cell_time_query)
+            try:
+                adata_mu_reference = ad.read_h5ad(f"{save_file_name}/n50_latent_mu.h5ad")
+                adata_mu_reference.obs["species"] = "human"
 
-        # ----2 method mapping tyser data to other 4 dataset's umap, use same umap model by 4 dataset,
-        # Create a UMAP model instance
-        import umap
-        # reducer = umap.UMAP(n_neighbors=50, min_dist=0.75, n_components=2, random_state=101)
-        reducer = umap.UMAP(n_neighbors=50, min_dist=0.75, n_components=2, random_state=0)
-        embedding_reference = reducer.fit_transform(adata_mu_reference.X)
-        embedding_query = reducer.transform(adata_mu_query.X)
-        adata_mu_reference.obsm['X_umap'] = embedding_reference
-        adata_mu_query.obsm['X_umap'] = embedding_query
+            except:
+                print("error on predict on query dataset. \n"
+                      "Note: *TASK: use reference data to train a model* is necessary, "
+                      "because it generate train's n50_latent_mu.h5ad file. \n"
+                      "TASK : K-FOLD TEST is based on Function task_kFoldTest, "
+                      "and it's difficult to return lantent_mu of each fold.")
 
-        ### ---------------- Plot images ---------------
-        reference_dataset_str = '&'.join(adata_all.obs['dataset_label'].unique().astype('str'))
-        # combin two AnnData's UMAP loc
-        adata_all.obsm["X_umap"] = np.vstack([adata_mu_reference.obsm['X_umap'], adata_mu_query.obsm['X_umap']])
-        adata_all.write_h5ad(f"{save_file_name}/{reference_dataset_str}_mu.h5ad")
-        # --- plot on Predict Time
-        plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
-                                                     mask_dataset_label='cynomolgus', plot_attr='predicted_time', mask_str="species",
-                                                     reference_dataset_str=reference_dataset_str,
-                                                     special_file_str="_maskCyno"
-                                                     )
-        plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
-                                                     mask_dataset_label='human', plot_attr='predicted_time', mask_str="species",
-                                                     reference_dataset_str=reference_dataset_str,
-                                                     special_file_str="_maskHuman"
-                                                     )
-        plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
-                                                     mask_dataset_label='cynomolgus', plot_attr='time', mask_str="species",
-                                                     reference_dataset_str=reference_dataset_str,
-                                                     special_file_str="_maskCyno"
-                                                     )
-        plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
-                                                     mask_dataset_label='human', plot_attr='time', mask_str="species",
-                                                     reference_dataset_str=reference_dataset_str,
-                                                     special_file_str="_maskHuman"
-                                                     )
+            adata_all = anndata.concat([adata_mu_reference.copy(), adata_mu_query.copy()], axis=0)
+            # adata_all.obs["cell_typeMask4dataset"] = adata_all.obs.apply(lambda row: 'l & m & p & z & xiao' if row['species'] != 'cynomolgus' else row['cell_type'], axis=1)
+            # adata_all.obs["cell_typeMaskTyser"] = adata_all.obs.apply(lambda row: 't' if row['dataset_label'] == 't' else row['cell_type'], axis=1)
 
-        import gc
-        gc.collect()
+            # ---- 1 method: mapping tyser data to other 4 dataset's umap, just use different umap model
+            # sc.pp.neighbors(adata_mu_query, n_neighbors=50, n_pcs=20)
+            # sc.tl.umap(adata_mu_query, min_dist=0.75)
+            # ----
+
+            # ----2 method mapping tyser data to other 4 dataset's umap, use same umap model by 4 dataset,
+            # Create a UMAP model instance
+            import umap
+            # reducer = umap.UMAP(n_neighbors=50, min_dist=0.75, n_components=2, random_state=101)
+            reducer = umap.UMAP(n_neighbors=50, min_dist=0.75, n_components=2, random_state=0)
+            embedding_reference = reducer.fit_transform(adata_mu_reference.X)
+            embedding_query = reducer.transform(adata_mu_query.X)
+            adata_mu_reference.obsm['X_umap'] = embedding_reference
+            adata_mu_query.obsm['X_umap'] = embedding_query
+
+            ### ---------------- Plot images ---------------
+            reference_dataset_str = '&'.join(adata_all.obs['dataset_label'].unique().astype('str'))
+            # combin two AnnData's UMAP loc
+            adata_all.obsm["X_umap"] = np.vstack([adata_mu_reference.obsm['X_umap'], adata_mu_query.obsm['X_umap']])
+            adata_all.write_h5ad(f"{save_file_name}/{reference_dataset_str}_mu.h5ad")
+            _logger.info(Counter(adata_all.obs["species"]))
+            # --- plot on Predict Time
+            plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
+                                                         mask_dataset_label=query_str, plot_attr='time', mask_str="species",
+                                                         reference_dataset_str=reference_dataset_str,
+                                                         special_file_str=f"_mask{query_str}_colorHuman",
+                                                         mask_color_alpha=0,
+                                                         use_category_legend=True
+                                                         )
+            plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
+                                                         mask_dataset_label='human', plot_attr='time', mask_str="species",
+                                                         reference_dataset_str=reference_dataset_str,
+                                                         special_file_str=f"_maskHuman_color{query_str}",
+                                                         use_category_legend=True
+                                                         )
+            plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
+                                                         mask_dataset_label=query_str, plot_attr='predicted_time', mask_str="species",
+                                                         reference_dataset_str=reference_dataset_str,
+                                                         special_file_str=f"_mask{query_str}_colorHuman",
+                                                         mask_color_alpha=0
+                                                         )
+            plot_tyser_mapping_to_4dataset_predictedTime(adata_all.copy(), save_file_name, label_dic,
+                                                         mask_dataset_label='human', plot_attr='predicted_time', mask_str="species",
+                                                         reference_dataset_str=reference_dataset_str,
+                                                         special_file_str=f"_maskHuman_color{query_str}",
+                                                         )
+
+
+            import gc
+            gc.collect()
         _logger.info("Finish fold-test.")
 
     _logger.info("Finish all.")

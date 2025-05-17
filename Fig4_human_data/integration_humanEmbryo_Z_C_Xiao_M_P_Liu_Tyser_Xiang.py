@@ -249,7 +249,6 @@ def cellType_reAnnotation(orginal_cell_type,):
 def read_trans_Xiang19(file_path,gene_list_ref=None,min_gene_num=50,save_file_bool=False):
     from utils.utils_DandanProject import series_matrix2csv
 
-
     raw_count = pd.read_csv(f"{file_path}/GSE136447_555sample_gene_count_matrix.txt", sep="\t", header=0, index_col=0)
     raw_count=raw_count.T
     raw_count.columns = raw_count.columns.str.split("|").str[-1]
