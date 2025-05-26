@@ -739,15 +739,13 @@ def downSample_matrix(matrix, target_location="row", reduce_multiple=10):
         downsampled_matrix = samples.reshape(matrix.shape)
 
         return downsampled_matrix
-
-
-def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, cell_info_file,  # 2024-02-23 12:56:15 remove KNN_smooth_type
+def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, cell_info_file,
                                                   drop_out_donor=None, donor_attr="donor", gene_list=None,
                                                   drop_out_cell_type=None,
                                                   min_cell_num=50, min_gene_num=100, keep_sub_type_with_cell_num=None,
                                                   external_file_name=None, external_cell_info_file=None,
-                                                  external_file_name2=None, external_cell_info_file2=None,
-                                                  external_cellId_list=None,
+                                                  # external_file_name2=None, external_cell_info_file2=None,
+                                                  # external_cellId_list=None,
                                                   downSample_on_testData_bool=False, test_donor=None,
                                                   downSample_location_type=None,
                                                   augmentation_on_trainData_bool=False,
@@ -757,7 +755,7 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
                                                   normalized_cellTotalCount=1e6,
                                                   data_raw_count_bool=True):
     """
-    :param golbal_data_path:
+    :param global_data_path:
     :param file_name:
     :param cell_info_file:
     :param drop_out_donor:
@@ -784,83 +782,66 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
     # drop should before perprocess sc data
     # from .utils_Dandan_plot import plot_boxPlot_nonExpGene_percentage_whilePreprocess
     _logger.info("the original sc expression anndata should be gene as row, cell as column")
-    try:
-        adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter='\t')
-    except:
-        adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter=',')
-    _logger.info("read the original sc expression anndata with shape (gene, cell): {}".format(adata.shape))
+    if file_name.split(".")[-1] in ["h5", "h5ad"]:
+        _logger.info("input data is .h5 or .h5ad file, where cell as column and gene as row.")
+        adata = anndata.read_h5ad(f"{global_data_path}/{file_name}")
+        cell_time = adata.obs
+        _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
 
+    elif file_name.split(".")[-1] == "csv":
+        _logger.info("input data is .csv file, where gene as row, cell as column.")
+        try:
+            adata = anndata.read_csv("{}/{}".format(global_data_path, file_name), delimiter='\t')
+        except:
+            adata = anndata.read_csv("{}/{}".format(global_data_path, file_name), delimiter=',')
+        _logger.info("read the original sc expression anndata with shape (gene, cell): {}".format(adata.shape))
+        adata = adata.T
+        cell_time = pd.read_csv(global_data_path + cell_info_file, sep="\t", index_col=0)
+        adata.obs = cell_time
+    # read external file,
     if external_file_name is not None:
-        try:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter='\t')
-        except:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter=',')
-        _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
-        _logger.info("here is important, we want to use same cell compare with no integration method.")
-        if external_cellId_list is not None:
-            _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
-            adata2 = adata2[:, external_cellId_list].copy()
-        # adata2=adata2.T.copy()
-        # sc.pp.filter_cells(adata2, min_genes=min_gene_num)
-        # adata2=adata2.T.copy()
-        # 2023-08-03 18:41:20 concat adata and adata2
-        # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
-        duplicate_columns = set(adata.var_names) & set(adata2.var_names)
-        # 删除adata2中的重复列
-        adata2 = adata2[:, ~adata2.var_names.isin(duplicate_columns)]
-        _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
+        external_file_name = [external_file_name] if isinstance(external_file_name, str) else external_file_name
 
-        adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
-        _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
-    if external_file_name2 is not None:
-        try:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter='\t')
-        except:
-            adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter=',')
-        _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
-        _logger.info("here is important, we want to use same cell compare with no integration method.")
-        if external_cellId_list is not None:
-            _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
-            adata2 = adata2[:, external_cellId_list].copy()
-        # adata2=adata2.T.copy()
-        # sc.pp.filter_cells(adata2, min_genes=min_gene_num)
-        # adata2=adata2.T.copy()
-        # 2023-08-03 18:41:20 concat adata and adata2
-        # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
-        duplicate_columns = set(adata.var_names) & set(adata2.var_names)
-        # 删除adata2中的重复列
-        adata2 = adata2[:, ~adata2.var_names.isin(duplicate_columns)]
-        _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
+        for i in range(len(external_file_name)):
+            if external_file_name[i].split(".")[-1] in ["h5", "h5ad"]:
+                _logger.info("External file name {} is .h5 or h5ad type".format(external_file_name[i]))
+                adata2 = anndata.read_h5ad("{}/{}".format(global_data_path, external_file_name[i]))
+            elif external_file_name[i].split(".")[-1] == "csv":
+                _logger.info("External file name {} is .csv type".format(external_file_name[i]))
+                try:
+                    adata2 = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter='\t')
+                except:
+                    adata2 = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter=',')
+                _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
+                _logger.info("here is important, we want to use same cell compare with no integration method.")
+                adata2 = adata2.T
+                # read cell info file
+                external_cell_time = pd.read_csv(global_data_path + external_cell_info_file[i], sep="\t", index_col=0)
+                external_cell_time = external_cell_time.reindex(adata2.obs_names)
+                adata2.obs = external_cell_time
 
-        adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
-        _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
+        # if external_cellId_list is not None:
+        #     _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
+        #     adata2 = adata2[external_cellId_list]
+            # identify and remove duplicate cell
+            duplicate_columns = set(adata.obs_names) & set(adata2.obs_names)
+            adata2 = adata2[~adata2.obs_names.isin(duplicate_columns)]
+            _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
 
+            col_gene_list = [_gene for _gene in adata.var_names if _gene in adata2.var_names]
+            adata = adata[:, col_gene_list]
+            adata2 = adata2[:, col_gene_list]
+            adata = anndata.concat([adata, adata2], axis=0,join='outer')
+            _logger.info("merged sc data and external test dataset with shape (cell, gene): {}".format(adata.shape))
+
+    cell_time = adata.obs
+    _logger.info(f"cell annotation includes {cell_time.columns}")
+    # -------------
     if gene_list is not None:
-        overlap_gene = list(set(adata.obs_names) & set(gene_list))
-        adata = adata[overlap_gene].copy()
+        overlap_gene = list(set(adata.var_names) & set(gene_list))
+        adata = adata[:, overlap_gene].copy()
         _logger.info("with gene list require, adata filted with {} genes.".format(len(overlap_gene)))
-    adata = adata.T  # 基因和cell转置矩阵
     _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
-    cell_time = pd.read_csv(golbal_data_path + cell_info_file, sep="\t", index_col=0)
-    if external_cell_info_file is not None:
-        external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file, sep="\t", index_col=0)
-        _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
-
-        external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
-        _logger.info("drop out {} duplicate cell(with the same cell name)".format(len(duplicate_columns)))
-
-        cell_time = pd.concat([cell_time, external_cell_time])
-        _logger.info("merged sc cell info and external cell info dataframe with (cell, attr-num): {}".format(cell_time.shape))
-    if external_cell_info_file2 is not None:
-        external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file2, sep="\t", index_col=0)
-        _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
-
-        external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
-        _logger.info("drop out {} duplicate cell(with the same cell name)".format(len(duplicate_columns)))
-
-        cell_time = pd.concat([cell_time, external_cell_time])
-        _logger.info("merged sc cell info and external cell info dataframe with (cell, attr-num): {}".format(cell_time.shape))
-
     if drop_out_donor is not None:
         drop_out_cell = list(
             set(cell_time.loc[cell_time[donor_attr].isin(list(drop_out_donor))].index) & set(adata.obs.index))
@@ -1062,6 +1043,330 @@ def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, c
         print("Not save preprocessed_cell_info.csv and preprocessed_gene_info.csv")
         pass
     return sc_expression_df, cell_time
+
+
+# old version
+# def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, cell_info_file,  # 2024-02-23 12:56:15 remove KNN_smooth_type
+#                                                   drop_out_donor=None, donor_attr="donor", gene_list=None,
+#                                                   drop_out_cell_type=None,
+#                                                   min_cell_num=50, min_gene_num=100, keep_sub_type_with_cell_num=None,
+#                                                   external_file_name=None, external_cell_info_file=None,
+#                                                   external_file_name2=None, external_cell_info_file2=None,
+#                                                   external_cellId_list=None,
+#                                                   downSample_on_testData_bool=False, test_donor=None,
+#                                                   downSample_location_type=None,
+#                                                   augmentation_on_trainData_bool=False,
+#                                                   plot_boxPlot_bool=False,
+#                                                   special_path_str="",
+#                                                   random_drop_cell_bool=False,
+#                                                   normalized_cellTotalCount=1e6,
+#                                                   data_raw_count_bool=True):
+#     """
+#     :param golbal_data_path:
+#     :param file_name:
+#     :param cell_info_file:
+#     :param drop_out_donor:
+#     :param donor_attr:
+#     :param gene_list:
+#     :param drop_out_cell_type:
+#     :param min_cell_num:
+#     :param min_gene_num:
+#     :param keep_sub_type_with_cell_num:
+#     :param external_file_name:
+#     :param external_cell_info_file:
+#     :param external_cellId_list:
+#     :param downSample_on_testData_bool:
+#     :param test_donor:
+#     :param downSample_location_type:
+#     :param augmentation_on_trainData_bool:
+#     :param plot_boxPlot_bool:
+#     :param special_path_str:
+#     :param random_drop_cell_bool:
+#     :param normalized_cellTotalCount:
+#     :param data_raw_count_bool: default is True, and do normalized bu scanpy. Require the input adata is raw count, but if input is already normalized, don't do normalization.
+#     :return:
+#     """
+#     # drop should before perprocess sc data
+#     # from .utils_Dandan_plot import plot_boxPlot_nonExpGene_percentage_whilePreprocess
+#     _logger.info("the original sc expression anndata should be gene as row, cell as column")
+#     try:
+#         adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter='\t')
+#     except:
+#         adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter=',')
+#     _logger.info("read the original sc expression anndata with shape (gene, cell): {}".format(adata.shape))
+#
+#     if external_file_name is not None:
+#         try:
+#             adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter='\t')
+#         except:
+#             adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter=',')
+#         _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
+#         _logger.info("here is important, we want to use same cell compare with no integration method.")
+#         if external_cellId_list is not None:
+#             _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
+#             adata2 = adata2[:, external_cellId_list].copy()
+#         # adata2=adata2.T.copy()
+#         # sc.pp.filter_cells(adata2, min_genes=min_gene_num)
+#         # adata2=adata2.T.copy()
+#         # 2023-08-03 18:41:20 concat adata and adata2
+#         # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
+#         duplicate_columns = set(adata.var_names) & set(adata2.var_names)
+#         # 删除adata2中的重复列
+#         adata2 = adata2[:, ~adata2.var_names.isin(duplicate_columns)]
+#         _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
+#
+#         adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
+#         _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
+#     if external_file_name2 is not None:
+#         try:
+#             adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter='\t')
+#         except:
+#             adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter=',')
+#         _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
+#         _logger.info("here is important, we want to use same cell compare with no integration method.")
+#         if external_cellId_list is not None:
+#             _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
+#             adata2 = adata2[:, external_cellId_list].copy()
+#         # adata2=adata2.T.copy()
+#         # sc.pp.filter_cells(adata2, min_genes=min_gene_num)
+#         # adata2=adata2.T.copy()
+#         # 2023-08-03 18:41:20 concat adata and adata2
+#         # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
+#         duplicate_columns = set(adata.var_names) & set(adata2.var_names)
+#         # 删除adata2中的重复列
+#         adata2 = adata2[:, ~adata2.var_names.isin(duplicate_columns)]
+#         _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
+#
+#         adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
+#         _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
+#
+#     if gene_list is not None:
+#         overlap_gene = list(set(adata.obs_names) & set(gene_list))
+#         adata = adata[overlap_gene].copy()
+#         _logger.info("with gene list require, adata filted with {} genes.".format(len(overlap_gene)))
+#     adata = adata.T  # 基因和cell转置矩阵
+#     _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
+#     cell_time = pd.read_csv(golbal_data_path + cell_info_file, sep="\t", index_col=0)
+#     if external_cell_info_file is not None:
+#         external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file, sep="\t", index_col=0)
+#         _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
+#
+#         external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
+#         _logger.info("drop out {} duplicate cell(with the same cell name)".format(len(duplicate_columns)))
+#
+#         cell_time = pd.concat([cell_time, external_cell_time])
+#         _logger.info("merged sc cell info and external cell info dataframe with (cell, attr-num): {}".format(cell_time.shape))
+#     if external_cell_info_file2 is not None:
+#         external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file2, sep="\t", index_col=0)
+#         _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
+#
+#         external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
+#         _logger.info("drop out {} duplicate cell(with the same cell name)".format(len(duplicate_columns)))
+#
+#         cell_time = pd.concat([cell_time, external_cell_time])
+#         _logger.info("merged sc cell info and external cell info dataframe with (cell, attr-num): {}".format(cell_time.shape))
+#
+#     if drop_out_donor is not None:
+#         drop_out_cell = list(
+#             set(cell_time.loc[cell_time[donor_attr].isin(list(drop_out_donor))].index) & set(adata.obs.index))
+#         adata = adata[adata.obs_names.drop(drop_out_cell)].copy()
+#         _logger.info("After drop out {}, get expression dataframe with shape (cell, gene): {}.".format(drop_out_donor,
+#                                                                                                        adata.shape))
+#     if drop_out_cell_type is not None:
+#         _logger.info(f"drop out {len(drop_out_cell_type)} cell type: {drop_out_cell_type}")
+#         # 2023-11-07 11:05:26 for Joy project, she focus on epi cells, so remove fibro cells, and the attr name in cell_time is "broad_celltype"
+#         drop_out_cell = list(set(cell_time.loc[cell_time["broad_celltype"].isin(list(drop_out_cell_type))].index) & set(adata.obs.index))
+#         adata = adata[adata.obs_names.drop(drop_out_cell)].copy()
+#         _logger.info("After drop out {}, get expression dataframe with shape (cell, gene): {}.".format(drop_out_donor, adata.shape))
+#     if plot_boxPlot_bool:
+#         try:
+#             plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
+#                                                                special_path_str, test_donor,
+#                                                                special_file_str="1InitialImportData")
+#             plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
+#                                                               special_path_str, test_donor,
+#                                                               special_file_str="1InitialImportData")
+#         except:
+#             print("some error while plot before boxplot.")
+#     if random_drop_cell_bool:
+#         _logger.info("To fast check model performance, random dropout cells, only save few cells to train and test")
+#         random.seed(123)
+#         # 随机生成不重复的样本索引
+#         random_indices = random.sample(range(adata.shape[0]), int(adata.n_obs / 10), )
+#
+#         # 从 anndata 对象中获取选定的样本数据
+#         adata = adata[random_indices, :].copy()
+#         _logger.info("After random select 1/10 samples from adata, remain adata shape: {}".format(adata.shape))
+#         if plot_boxPlot_bool:
+#             try:
+#                 plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
+#                                                                    special_path_str, test_donor,
+#                                                                    special_file_str="2RandomDropPartCell")
+#                 plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
+#                                                                   special_path_str, test_donor,
+#                                                                   special_file_str="2RandomDropPartCell")
+#             except:
+#                 print("some error while plot before boxplot.")
+#
+#     if downSample_on_testData_bool:
+#         _logger.info("Down sample on test donor: {}, downSample location type: {}".format(test_donor, downSample_location_type))
+#         test_cell = list(set(cell_time.loc[cell_time[donor_attr] == test_donor].index) & set(adata.obs.index))
+#         adata_test = adata[test_cell].copy()
+#
+#         test_dataframe = pd.DataFrame(data=adata_test.X, columns=adata_test.var.index, index=adata_test.obs.index)
+#         temp = downSample_matrix(np.array(test_dataframe.values), target_location=downSample_location_type)
+#         downSample_test_dataframe = pd.DataFrame(data=temp, columns=test_dataframe.columns, index=test_dataframe.index)
+#         downSample_test_anndata = anndata.AnnData(downSample_test_dataframe)
+#         adata = adata[adata.obs_names.drop(test_cell)].copy()
+#         adata = anndata.concat([adata.copy(), downSample_test_anndata.copy()], axis=0)
+#         # downSample_test_dataframe.values.sum()
+#
+#         if plot_boxPlot_bool:
+#             try:
+#                 plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
+#                                                                    special_path_str, test_donor,
+#                                                                    special_file_str=f"3DownSampleOnTestBy{downSample_location_type}")
+#                 plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
+#                                                                   special_path_str, test_donor,
+#                                                                   special_file_str=f"3DownSampleOnTestBy{downSample_location_type}")
+#             except:
+#                 print("some error while plot before boxplot.")
+#     if augmentation_on_trainData_bool:
+#         _logger.info("Data augmentation on train set by down sample 1/10 and 1/3, downSample location type line")
+#         train_cell = list(set(cell_time.loc[cell_time[donor_attr] != test_donor].index) & set(adata.obs.index))
+#         _logger.info(f"the train cell number is {len(train_cell)}")
+#         adata_train = adata[train_cell].copy()
+#
+#         train_dataframe = pd.DataFrame(data=adata_train.X, columns=adata_train.var.index, index=adata_train.obs.index)
+#         temp10 = downSample_matrix(np.array(train_dataframe.values), target_location="line", reduce_multiple=10)
+#         temp3 = downSample_matrix(np.array(train_dataframe.values), target_location="line", reduce_multiple=3)
+#         downSample10_train_df = pd.DataFrame(data=temp10, columns=train_dataframe.columns,
+#                                              index=train_dataframe.index + "_downSample10")
+#         downSample3_train_df = pd.DataFrame(data=temp3, columns=train_dataframe.columns,
+#                                             index=train_dataframe.index + "_downSample3")
+#         downSample10_train_anndata = anndata.AnnData(downSample10_train_df)
+#         downSample3_train_anndata = anndata.AnnData(downSample3_train_df)
+#
+#         adata = anndata.concat([adata.copy(), downSample10_train_anndata.copy()], axis=0)
+#         adata = anndata.concat([adata.copy(), downSample3_train_anndata.copy()], axis=0)
+#         _logger.info(f"After concat downSample 1/10 and 1/3 train cell, the adata with {adata.n_obs} cell, {adata.n_vars} gene.")
+#         train_cell_time = cell_time.loc[train_cell]
+#         downSample10_train_cell_time = train_cell_time.copy()
+#         downSample10_train_cell_time.index = downSample10_train_cell_time.index + "_downSample10"
+#         downSample3_train_cell_time = train_cell_time.copy()
+#         downSample3_train_cell_time.index = downSample3_train_cell_time.index + "_downSample3"
+#
+#         cell_time = pd.concat([cell_time, downSample10_train_cell_time])
+#         cell_time = pd.concat([cell_time, downSample3_train_cell_time])
+#         _logger.info(
+#             f"Also add the downSample cell info to cell time dataframe and shape to {cell_time.shape}, columns is {cell_time.columns}")
+#         if plot_boxPlot_bool:
+#             try:
+#                 plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
+#                                                                    special_path_str, test_donor,
+#                                                                    special_file_str="4DataAugmentationOnTrainByline")
+#                 plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
+#                                                                   special_path_str, test_donor,
+#                                                                   special_file_str="4DataAugmentationOnTrainByline")
+#             except:
+#                 print("some error while plot before boxplot.")
+#
+#     # 数据数目统计
+#     _shape = adata.shape
+#     _new_shape = (0, 0)
+#     while _new_shape != _shape:  # make sure drop samples and genes
+#         _shape = adata.shape
+#         sc.pp.filter_cells(adata, min_genes=min_gene_num)  # drop samples with less than 20 gene expression
+#         sc.pp.filter_genes(adata, min_cells=min_cell_num)  # drop genes which none expression in 3 samples
+#         _new_shape = adata.shape
+#     _logger.info("After drop gene threshold: {}, cell threshold: {}, remain adata shape: {}".format(min_cell_num,
+#                                                                                                     min_gene_num,
+#                                                                                                     adata.shape))
+#
+#     if plot_boxPlot_bool:
+#         try:
+#             plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
+#                                                                special_path_str, test_donor,
+#                                                                special_file_str=f"5filterGene{min_cell_num}Cell{min_gene_num}")
+#             plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
+#                                                               special_path_str, test_donor,
+#                                                               special_file_str=f"5filterGene{min_cell_num}Cell{min_gene_num}")
+#         except:
+#             print("some error while plot before boxplot.")
+#
+#     if keep_sub_type_with_cell_num is not None:
+#         drop_out_cell = []
+#         _logger.info(f"Random select {keep_sub_type_with_cell_num} cells in each sub celltype; "
+#                      f"if one sub type number less than the threshold, keep all.")
+#         _cell_time = cell_time.loc[adata.obs_names]
+#         from collections import Counter
+#         _num_dic = dict(Counter(_cell_time["major_cell_type"]))
+#         _logger.info("In this cell type (sub cell type, number of cells): {}".format(_num_dic))
+#         for _cell_type, _cell_num in _num_dic.items():
+#             if _cell_num > keep_sub_type_with_cell_num:
+#                 _cell_type_df = _cell_time.loc[_cell_time["major_cell_type"] == _cell_type]
+#                 _drop_cell = _cell_type_df.sample(n=len(_cell_type_df) - keep_sub_type_with_cell_num,
+#                                                   random_state=0).index
+#                 drop_out_cell += list(_drop_cell)
+#                 _logger.info("Drop out {} cells for {}, which has {} cells before".format(len(_drop_cell), _cell_type,
+#                                                                                           _cell_num))
+#         adata = adata[adata.obs_names.drop(drop_out_cell)].copy()
+#         _logger.info("After drop out {}, get expression dataframe with shape (cell, gene): {}.".format(drop_out_donor,
+#                                                                                                        adata.shape))
+#
+#     _logger.info("Drop cells with less than {} gene expression, drop genes which none expression in {} samples".format(min_gene_num, min_cell_num))
+#
+#     _logger.info("After filter, get cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
+#     gene_raw_total_count = pd.DataFrame(data=adata.X.sum(axis=0), index=adata.var_names, columns=["raw_total_count"])
+#
+#     # ---
+#     sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount)
+#     print(f"normalized sample to {normalized_cellTotalCount}")
+#     if data_raw_count_bool:
+#         sc.pp.log1p(adata)
+#         print("Input data is raw count, do the log1p().")
+#     else:
+#         print("Input data is log-ed, skip the log-ed.")
+#     _logger.info(f"Finish normalize per cell to {normalized_cellTotalCount}, "
+#                  f"so that every cell has the same total count after normalization.")
+#     if plot_boxPlot_bool:
+#         try:
+#             plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
+#                                                                special_path_str, test_donor,
+#                                                                special_file_str=f"6NormalizeTo1e6AndLog")
+#             plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
+#                                                               special_path_str, test_donor,
+#                                                               special_file_str=f"6NormalizeTo1e6AndLog")
+#         except:
+#             print("some error while plot before boxplot.")
+#     sc_expression_df = pd.DataFrame(data=adata.X, columns=adata.var.index, index=adata.obs.index)
+#     # 2023-08-05 15:12:28 for debug
+#     # sc_expression_df = sc_expression_df.sample(n=6000, random_state=0)
+#
+#     denseM = sc_expression_df.values
+#     # denseM = KNN_smoothing_start(denseM, type=KNN_smooth_type) # 2024-02-23 12:54:26 remove this useless KNN_smooth_type
+#     # _logger.info("Finish smooth by {} method.".format(KNN_smooth_type))
+#     from sklearn.preprocessing import scale
+#     denseM = scale(denseM.astype(float), axis=0, with_mean=True, with_std=True)
+#     _logger.info("Finish normalize per gene as Gaussian-dist (0, 1).")
+#
+#     sc_expression_df = pd.DataFrame(data=denseM, columns=sc_expression_df.columns, index=sc_expression_df.index)
+#
+#     cell_time = cell_time.loc[sc_expression_df.index]
+#     _logger.info("Get expression dataframe with shape (cell, gene): {}, and cell time info with shape: {}.".format(
+#         sc_expression_df.shape, cell_time.shape))
+#     try:
+#
+#         _save_path = "{}{}/".format(_logger.root.handlers[0].baseFilename.replace(".log", ""), special_path_str)
+#         if not os.path.exists(_save_path):
+#             os.makedirs(_save_path)
+#         cell_time.to_csv(f"{_save_path}/preprocessed_cell_info.csv")
+#         gene_raw_total_count.to_csv(f"{_save_path}/preprocessed_gene_info.csv")
+#         _logger.info(f"save preprocessed_cell_info.csv and preprocessed_gene_info.csv at {_save_path}")
+#     except:
+#         print("Not save preprocessed_cell_info.csv and preprocessed_gene_info.csv")
+#         pass
+#     return sc_expression_df, cell_time
 
 
 def cosSim(x, y):
