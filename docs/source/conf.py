@@ -56,7 +56,7 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ['_static']
 
 import os
-import django
+# import django
 import sys
 # sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('../..')) #更改成这个路径
