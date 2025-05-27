@@ -15,4 +15,3 @@ python:
         - method: pip
           path: .
           extra_requirements: [docs]
-        - requirements: docs/source/requirements.txt  # 添加额外的依赖文件
