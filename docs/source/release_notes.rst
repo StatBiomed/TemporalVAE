@@ -5,6 +5,6 @@ Release Notes
 =============
 
 
-Version 0.1.2 :small:`Aug 21, 2018`
+Version 1.0 :small:`March 21, 2025`
 -----------------------------------
-First alpha release of scvelo.
+First alpha release of TemporalVAE.
