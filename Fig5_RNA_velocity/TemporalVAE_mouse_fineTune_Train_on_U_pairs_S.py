@@ -17,7 +17,7 @@ if os.getcwd().split("/")[-1] != "TemporalVAE":
     os.chdir("..")
 sys.path.append(os.getcwd())
 
-from utils.utils_DandanProject import *
+from utils.utils_project import *
 
 import pandas as pd
 
@@ -354,7 +354,7 @@ def plot_RNAvelocity(v, fine_tune_result_adata, save_result_path, plt_attr, fine
     unspliced_fine_tune_result_data = fine_tune_test_result_dic["unspliced"].copy()
     unspliced_fine_tune_result_data.write_h5ad(f"{save_result_path}/unspliced_latent_mu.h5ad")
 
-    from utils.utils_Dandan_plot import plt_latentDim
+    from utils.utils_plot import plt_latentDim
     plt_latentDim(spliced_fine_tune_result_data, unspliced_fine_tune_result_data, save_result_path)
 
 

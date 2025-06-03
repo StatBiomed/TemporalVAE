@@ -24,13 +24,13 @@ from utils.logging_system import LogHelper
 smoke_test = ('CI' in os.environ)  # ignore; used to check code integrity in the Pyro repo
 assert pyro.__version__.startswith('1.8.5')
 pyro.set_rng_seed(1)
-from utils.utils_DandanProject import str2bool, auto_select_gpu_and_cpu, preprocessData_and_dropout_some_donor_or_gene, trans_time
-from utils.utils_DandanProject import denormalize
+from utils.utils_project import str2bool, auto_select_gpu_and_cpu, preprocessData_and_dropout_some_donor_or_gene, trans_time
+from utils.utils_project import denormalize
 from collections import Counter
 
 import yaml
 import argparse
-from utils.utils_Dandan_plot import Embryodonor_resort_key,plot_on_each_test_donor_violin_fromDF
+from utils.utils_plot import Embryodonor_resort_key,plot_on_each_test_donor_violin_fromDF
 import numpy as np
 from benchmarking_methods.benchmarking_methods import science2022
 import pandas as pd
@@ -158,7 +158,7 @@ def main():
                                                                                             max(label_dic.values())))
 
     kFold_test_result_df.to_csv(f"{save_path}/k_fold_test_result.csv")
-    from utils.utils_DandanProject import calculate_real_predict_corrlation_score
+    from utils.utils_project import calculate_real_predict_corrlation_score
     corr_stats = calculate_real_predict_corrlation_score(kFold_test_result_df['predicted_time'], kFold_test_result_df['stage'])
     _logger.info(f'k-fold test results of corrs: {corr_stats}, \n result save at {save_path}/k_fold_test_result.csv')
     # color_dic = plot_on_each_test_donor_violin_fromDF(kFold_test_result_df.copy(), save_path, physical_str="predicted_time", x_str="stage", cmap_color="viridis")

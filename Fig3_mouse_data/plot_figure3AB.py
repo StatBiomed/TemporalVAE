@@ -14,7 +14,7 @@ if os.getcwd().split("/")[-1] != "TemporalVAE":
     os.chdir("..")
 sys.path.append(os.getcwd())
 
-from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score, umap_vae_latent_space_adata_version
+from utils.utils_plot import calculate_real_predict_corrlation_score, umap_vae_latent_space_adata_version
 import pandas as pd
 import json
 import scanpy as sc
@@ -25,7 +25,7 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import seaborn as sns
 from collections import Counter
-from utils.utils_Dandan_plot import colors_tuple_hexadecimalColorCode, plt_umap_byScanpy
+from utils.utils_plot import colors_tuple_hexadecimalColorCode, plt_umap_byScanpy
 import numpy as np
 import anndata as ad
 

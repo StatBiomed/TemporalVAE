@@ -31,10 +31,10 @@ sys.path.append(os.getcwd())
 import pandas as pd
 import anndata as ad
 import scanpy as sc
-from utils.utils_DandanProject import read_rds_file
+from utils.utils_project import read_rds_file
 from collections import Counter
 import anndata as ad
-from utils.utils_Dandan_plot import plot_data_quality
+from utils.utils_plot import plot_data_quality
 import re
 
 def main():
@@ -247,7 +247,7 @@ def cellType_reAnnotation(orginal_cell_type,):
     #  yolk sac endoderm (YS.Endo),
     return temp
 def read_trans_Xiang19(file_path,gene_list_ref=None,min_gene_num=50,save_file_bool=False):
-    from utils.utils_DandanProject import series_matrix2csv
+    from utils.utils_project import series_matrix2csv
 
     raw_count = pd.read_csv(f"{file_path}/GSE136447_555sample_gene_count_matrix.txt", sep="\t", header=0, index_col=0)
     raw_count=raw_count.T

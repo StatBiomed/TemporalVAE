@@ -21,7 +21,7 @@ import pandas as pd
 import seaborn as sns
 
 from model_master.experiment_temporalVAE import temporalVAEExperiment
-from utils.utils_DandanProject import denormalize
+from utils.utils_project import denormalize
 
 
 def main():

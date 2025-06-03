@@ -16,13 +16,13 @@ sys.path.append(os.getcwd())
 import anndata as ad
 import pandas as pd
 from collections import Counter
-from utils.utils_DandanProject import geneId_geneName_dic, predict_newData_preprocess_df, preprocessData_and_dropout_some_donor_or_gene
-from utils.utils_Dandan_plot import calculate_real_predict_corrlation_score, plot_psupertime_density
+from utils.utils_project import geneId_geneName_dic, predict_newData_preprocess_df, preprocessData_and_dropout_some_donor_or_gene
+from utils.utils_plot import calculate_real_predict_corrlation_score, plot_psupertime_density
 import time
 import logging
 from utils.logging_system import LogHelper
 import yaml
-from utils.utils_Dandan_plot import plot_violin_240223
+from utils.utils_plot import plot_violin_240223
 import gc
 def main():
     min_gene_num = 50
@@ -135,7 +135,7 @@ def directly_predict_on_vae(query_adata, save_path, checkpoint_file, config):
     pseudoTime_directly_predict_by_pretrained_model = train_result[0][0]
     pseudoTime_directly_predict_by_pretrained_model_df = pd.DataFrame(pseudoTime_directly_predict_by_pretrained_model, columns=["pseudotime_by_preTrained_mouseAtlas_model"])
     pseudoTime_directly_predict_by_pretrained_model_df.index = query_adata.obs_names
-    from utils.utils_DandanProject import denormalize
+    from utils.utils_project import denormalize
     pseudoTime_directly_predict_by_pretrained_model_df["physical_pseudotime_by_preTrained_mouseAtlas_model"] = pseudoTime_directly_predict_by_pretrained_model_df[
         "pseudotime_by_preTrained_mouseAtlas_model"].apply(denormalize, args=(8.5, 18.75, -5, 5))
     mu_predict_by_pretrained_model = train_result[0][1].cpu().numpy()
@@ -144,7 +144,7 @@ def directly_predict_on_vae(query_adata, save_path, checkpoint_file, config):
 
     color_dic = plot_violin_240223(cell_time_stereo, save_path, x_attr="time",special_legend_str="5")
     # print(color_dic)
-    from utils.utils_Dandan_plot import plot_umap_240223
+    from utils.utils_plot import plot_umap_240223
     plot_umap_240223(mu_predict_by_pretrained_model, cell_time_stereo, color_dic, save_path, attr_str="time")
 
     color_dic = {'Brain': "#FA8072", 'Connective tissue': "#32CD32",

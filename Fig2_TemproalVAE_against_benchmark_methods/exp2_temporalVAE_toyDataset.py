@@ -19,7 +19,7 @@ sys.path.append(os.getcwd())
 from utils.GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory
 import logging
 from utils.logging_system import LogHelper
-from utils.utils_DandanProject import trans_time, plot_training_loss_for_tags, denormalize
+from utils.utils_project import trans_time, plot_training_loss_for_tags, denormalize
 import anndata
 import pandas as pd
 

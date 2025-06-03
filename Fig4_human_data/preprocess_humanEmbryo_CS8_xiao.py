@@ -19,10 +19,10 @@ import scanpy as sc
 import pandas as pd
 import anndata as ad
 from collections import Counter
-from utils.utils_DandanProject import calHVG_adata as calHVG
-from utils.utils_DandanProject import read_rds_file
-from utils.utils_DandanProject import series_matrix2csv
-from utils.utils_Dandan_plot import draw_venn,plot_data_quality
+from utils.utils_project import calHVG_adata as calHVG
+from utils.utils_project import read_rds_file
+from utils.utils_project import series_matrix2csv
+from utils.utils_plot import draw_venn,plot_data_quality
 
 
 def main(select_hvg_bool = False):

@@ -17,9 +17,9 @@ if os.getcwd().split("/")[-1] != "TemporalVAE":
     os.chdir("..")
 sys.path.append(os.getcwd())
 import pandas as pd
-from utils.utils_DandanProject import denormalize, get_top_gene_perturb_data,preprocessData_and_dropout_some_donor_or_gene
-from utils.utils_Dandan_plot import plt_enrichmentResult
-from utils.utils_Dandan_plot import plt_lineChart_stageGeneDic_inStages, plt_allGene_dot_voteNum_meanDetT_Exp, plt_venn_fromDict,plt_muiltViolin_forGenes_xRawCount
+from utils.utils_project import denormalize, get_top_gene_perturb_data,preprocessData_and_dropout_some_donor_or_gene
+from utils.utils_plot import plt_enrichmentResult
+from utils.utils_plot import plt_lineChart_stageGeneDic_inStages, plt_allGene_dot_voteNum_meanDetT_Exp, plt_venn_fromDict,plt_muiltViolin_forGenes_xRawCount
 import numpy as np
 
 
