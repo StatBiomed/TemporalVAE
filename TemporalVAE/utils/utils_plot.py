@@ -1,10 +1,10 @@
 # -*-coding:utf-8 -*-
 """
-@Project ：TemporalVAE 
+@Project ：TemporalVAE
 @File    ：utils_plot.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
-@Date    ：2023/7/27 16:37 
+@Date    ：2023/7/27 16:37
 """
 
 import logging
@@ -2059,7 +2059,7 @@ def plt_lineChart_stageGeneDic_inStages(top_gene_dic, perturb_data_denor,
 
         ax.set_ylabel(f'{cal_detT_str.capitalize()} △t', fontsize=16)
         ax.set_yticklabels(ax.get_yticklabels(), fontsize=16)
-        ax.legend(loc='upper right',fontsize=16)
+        ax.legend(loc='upper right', fontsize=16)
     for i, ax in enumerate(axs):
         ax.grid(True, which='both', axis='x', linestyle='--', linewidth=0.5)  # 启用 X 轴的网格线
         if plt_timePoint == "whole":
@@ -2217,7 +2217,7 @@ def plt_muiltViolin_forGenes_xRawCount(adata_df, intersection, cell_info,
     expr_matrix = adata_df[list(intersection)]
     # 确保 cell_anno 的索引与 expr_matrix 对应
     expr_matrix['cell_id'] = expr_matrix.index
-    cell_info["cell_id"]=cell_info.index
+    cell_info["cell_id"] = cell_info.index
     cell_info2 = cell_info[cell_info['cell_id'].isin(expr_matrix['cell_id'])]
 
     # 合并表达数据和细胞注释

@@ -2,9 +2,9 @@
 """
 @Project ：TemporalVAE
 @File    ：utils_project.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
-@Date    ：2023/6/10 18:49 
+@Date    ：2023/6/10 18:49
 """
 import logging
 import gc
@@ -99,7 +99,7 @@ def predict_on_one_donor(gplvm, cell_time, sc_expression_train, sc_expression_te
     # ---------------------------------------------- Freeze gplvm for prediction  --------------------------------------------------
     import matplotlib.pyplot as plt
     """
-    After training GPLVM, we get good hyperparameters for the data. 
+    After training GPLVM, we get good hyperparameters for the data.
     Then when new data is provided, we train GPLVM again with these fixed hyperparameters to learn X.
     """
     import pyro
@@ -566,7 +566,7 @@ def predict_on_one_donor(gplvm, cell_time, sc_expression_train, sc_expression_te
     # ---------------------------------------------- Freeze gplvm for prediction  --------------------------------------------------
     import matplotlib.pyplot as plt
     """
-    After training GPLVM, we get good hyperparameters for the data. 
+    After training GPLVM, we get good hyperparameters for the data.
     Then when new data is provided, we train GPLVM again with these fixed hyperparameters to learn X.
     """
     import pyro
@@ -739,6 +739,8 @@ def downSample_matrix(matrix, target_location="row", reduce_multiple=10):
         downsampled_matrix = samples.reshape(matrix.shape)
 
         return downsampled_matrix
+
+
 def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, cell_info_file,
                                                   drop_out_donor=None, donor_attr="donor", gene_list=None,
                                                   drop_out_cell_type=None,
@@ -820,9 +822,9 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
                 external_cell_time = external_cell_time.reindex(adata2.obs_names)
                 adata2.obs = external_cell_time
 
-        # if external_cellId_list is not None:
-        #     _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
-        #     adata2 = adata2[external_cellId_list]
+            # if external_cellId_list is not None:
+            #     _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
+            #     adata2 = adata2[external_cellId_list]
             # identify and remove duplicate cell
             duplicate_columns = set(adata.obs_names) & set(adata2.obs_names)
             adata2 = adata2[~adata2.obs_names.isin(duplicate_columns)]
@@ -831,7 +833,7 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
             col_gene_list = [_gene for _gene in adata.var_names if _gene in adata2.var_names]
             adata = adata[:, col_gene_list]
             adata2 = adata2[:, col_gene_list]
-            adata = anndata.concat([adata, adata2], axis=0,join='outer')
+            adata = anndata.concat([adata, adata2], axis=0, join='outer')
             _logger.info("merged sc data and external test dataset with shape (cell, gene): {}".format(adata.shape))
 
     cell_time = adata.obs
@@ -1483,14 +1485,14 @@ def identify_timeCorGene(sc_expression_df, cell_info, y_time_nor_tensor, donor_i
     :param sc_expression_df:
     :param y_time_nor_tensor:
     :param donor_index_tensor:
-    :param runner: 
-    :param experiment: 
+    :param runner:
+    :param experiment:
     :param trained_clf_ndarray:
-    :param golbal_path: 
-    :param file_path: 
-    :param latent_dim: 
-    :param special_path_str: 
-    :param config: 
+    :param golbal_path:
+    :param file_path:
+    :param latent_dim:
+    :param special_path_str:
+    :param config:
     :return:
     """
     save_file_path = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}{special_path_str}/"
@@ -1692,16 +1694,16 @@ def test_on_newDataset(sc_expression_train, data_golbal_path, result_save_path, 
     """
     2023-07-13 14:39:38 dandan share a new dataset (download from public database, with epi and fibro, different platfrom: ct and 10X)
     use all dandan data as train data to train a model and test on the new dataset.
-    :param sc_expression_train: 
+    :param sc_expression_train:
     :param data_golbal_path:
-    :param KNN_smooth_type: 
-    :param runner: 
-    :param experiment: 
-    :param config: 
-    :param latent_dim: 
-    :param special_path_str: 
-    :param time_standard_type: 
-    :return: 
+    :param KNN_smooth_type:
+    :param runner:
+    :param experiment:
+    :param config:
+    :param latent_dim:
+    :param special_path_str:
+    :param time_standard_type:
+    :return:
     """
     from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
     _logger.info("Test on new dataset.")
@@ -1833,7 +1835,7 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
     :param plot_latentSpaceUmap:
     :return:
     """
-    from ..model_master.experiment import VAEXperiment
+    from ..model_master.experiment import VAEEXperiment
     from ..model_master.dataset import SupervisedVAEDataset
     from ..model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
@@ -1936,7 +1938,7 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
                                     test_batch_size=batch_size, predict_batch_size=batch_size,
                                     label_dic=label_dic)
     # data.setup("train")
-    experiment = VAEXperiment(MyVAEModel, config['exp_params'])
+    experiment = VAEEXperiment(MyVAEModel, config['exp_params'])
 
     # 创建一个 LearningRateMonitor 回调实例
     lr_monitor = LearningRateMonitor()
@@ -2345,7 +2347,7 @@ def one_fold_test_adversarialTrain(fold, donor_list, sc_expression_df, donor_dic
 def onlyTrain_model(sc_expression_df, donor_dic,
                     special_path_str,
                     cell_time,
-                    time_standard_type, config, train_epoch_num,  plot_latentSpaceUmap=True,
+                    time_standard_type, config, train_epoch_num, plot_latentSpaceUmap=True,
                     time_saved_asFloat=False,
                     batch_size=None, max_attempts=10000000, adversarial_bool=False, batch_dic=None,
                     donor_str="donor", time_str="time", checkpoint_file=None, min_max_val=None,
@@ -2369,7 +2371,7 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     :return:
     """
     from ..model_master.experiment_adversarial import VAEXperiment_adversarial
-    from ..model_master.experiment import VAEXperiment
+    from ..model_master.experiment import VAEEXperiment
     from ..model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
     from pytorch_lightning.loggers import TensorBoardLogger
@@ -2464,7 +2466,7 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     if adversarial_bool:
         experiment = VAEXperiment_adversarial(MyVAEModel, config['exp_params'])
     else:
-        experiment = VAEXperiment(MyVAEModel, config['exp_params'])
+        experiment = VAEEXperiment(MyVAEModel, config['exp_params'])
     # 创建一个 LearningRateMonitor 回调实例
     lr_monitor = LearningRateMonitor()
     # add 2023-09-07 20:34:57 add memory check
@@ -2517,13 +2519,13 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     else:
         _logger.info("Don't plot training loss line for check.")
 
-    """when we want to get an embedding for specific inputs: 
+    """when we want to get an embedding for specific inputs:
     We either
-    1 Feed a hand-written character "9" to VAE, receive a 20 dimensional "mean" vector, then embed it into 2D dimension using t-SNE, 
+    1 Feed a hand-written character "9" to VAE, receive a 20 dimensional "mean" vector, then embed it into 2D dimension using t-SNE,
     and finally plot it with label "9" or the actual image next to the point, or
     2 We use 2D mean vectors and plot directly without using t-SNE.
-    Note that 'variance' vector is not used for embedding. 
-    However, its size can be used to show the degree of uncertainty. 
+    Note that 'variance' vector is not used for embedding.
+    However, its size can be used to show the degree of uncertainty.
     For example a clear '9' would have less variance than a hastily written '9' which is close to '0'."""
     if plot_latentSpaceUmap:
         if time_standard_type == "organdic":  # 2023-11-07 17:10:53 add for Joy project
@@ -2573,7 +2575,7 @@ def fineTuning_calRNAvelocity(sc_expression_df, config_file, checkpoint_file, ad
     import yaml
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from ..model_master.experiment import VAEXperiment
+    from ..model_master.experiment import VAEEXperiment
     from ..model_master.experiment_adversarial import VAEXperiment_adversarial
     from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
     # make data with gene express min
@@ -2614,7 +2616,7 @@ def fineTuning_calRNAvelocity(sc_expression_df, config_file, checkpoint_file, ad
     if adversarial_bool:
         experiment = VAEXperiment_adversarial(MyVAEModel, config['exp_params'])
     else:
-        experiment = VAEXperiment(MyVAEModel, config['exp_params'])
+        experiment = VAEEXperiment(MyVAEModel, config['exp_params'])
     # z=experiment.predict_step(data_predict,1)
     train_result = runner.predict(experiment, data_predict)
     if len(train_result) > 1:
@@ -3676,7 +3678,7 @@ def task_kFoldTest(donor_list, sc_expression_df, donor_dic, batch_dic,
                                                                                            checkpoint_file=checkpoint_file)
             predict_donors_dic.update(predict_donor_dic)
     else:
-        kFold_result_recall_dic=dict()
+        kFold_result_recall_dic = dict()
         for fold in range(len(donor_list)):
             gc.collect()
             if recall_predicted_mu:
@@ -3829,7 +3831,7 @@ def get_top_gene_perturb_data(cell_info, stage, perturb_data_denor,
     #     abs_mean_df = pert_data.apply(lambda col: abs(np.array(col) - np.array(cell_df["predicted_time_denor"])).mean())
     #     top_gene_list = abs_mean_df.nlargest(top_gene_num).index
     if top_metric == "vote_samples":
-        column_counts=voteScore_genePerturbation(cell_df, pert_data, top_gene_num, predictedTime_attr="predicted_time_denor")
+        column_counts = voteScore_genePerturbation(cell_df, pert_data, top_gene_num, predictedTime_attr="predicted_time_denor")
         top_gene_list = column_counts.head(top_gene_num)
         print(f"With {top_metric} strategy, select {top_gene_num} gene: {top_gene_list}")
         top_gene_list = list(top_gene_list.keys())
@@ -3847,9 +3849,10 @@ def get_top_gene_perturb_data(cell_info, stage, perturb_data_denor,
         temp = pd.DataFrame(temp, index=cell_df.index)
         temp = temp.sample(n=int(len(temp) / 10), random_state=42)
         plt_gene_pd = pd.concat([plt_gene_pd, temp], axis=0)
-    return plt_gene_pd, top_gene_list,pert_data
+    return plt_gene_pd, top_gene_list, pert_data
 
-def voteScore_genePerturbation(cell_df,perturb_df,top_gene_num,predictedTime_attr="predicted_time_denor"):
+
+def voteScore_genePerturbation(cell_df, perturb_df, top_gene_num, predictedTime_attr="predicted_time_denor"):
     _temp = perturb_df - np.array(cell_df[predictedTime_attr])[:, np.newaxis]
     _temp = abs(_temp)
     top_columns_per_row = _temp.apply(lambda row: row.nlargest(top_gene_num).index.tolist(), axis=1)

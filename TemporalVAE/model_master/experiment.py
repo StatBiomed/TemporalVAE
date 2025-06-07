@@ -8,12 +8,12 @@ import numpy as np
 
 
 
-class VAEXperiment(pl.LightningModule):
+class VAEEXperiment(pl.LightningModule):
 
     def __init__(self,
                  vae_model: BaseVAE,
                  params: dict) -> None:
-        super(VAEXperiment, self).__init__()
+        super(VAEEXperiment, self).__init__()
         # self.training_step_outputs = []
         self.model = vae_model
         self.params = params
@@ -118,7 +118,7 @@ class VAEXperiment(pl.LightningModule):
     #     # self.sample_images()
     #     print()
     def sample_images(self):
-        # Get sample reconstruction image            
+        # Get sample reconstruction image
         test_input, test_label = next(iter(self.trainer.datamodule.test_dataloader()))
         test_input = test_input.to(self.curr_device)
         test_label = test_label.to(self.curr_device)

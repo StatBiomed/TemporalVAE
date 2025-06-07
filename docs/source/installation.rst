@@ -27,7 +27,7 @@ Dependencies
 - `anndata <https://anndata.readthedocs.io/>`_ - annotated data object.
 - `scanpy <https://scanpy.readthedocs.io/>`_ - toolkit for single-cell analysis.
 - `numpy <https://docs.scipy.org/>`_, `scipy <https://docs.scipy.org/>`_, `pandas <https://pandas.pydata.org/>`_, `scikit-learn <https://scikit-learn.org/>`_, `matplotlib <https://matplotlib.org/>`_.
-- `pytorch`_ - deep learning frameworks.
+- `pytorch <https://pytorch.org/>`_ - deep learning frameworks.
 
 
 
