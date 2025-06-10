@@ -1835,7 +1835,7 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
     :param plot_latentSpaceUmap:
     :return:
     """
-    from ..model_master.experiment import VAEEXperiment
+    from ..model_master.experiment_temporalVAE import temporalVAEExperiment
     from ..model_master.dataset import SupervisedVAEDataset
     from ..model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
@@ -1938,7 +1938,7 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
                                     test_batch_size=batch_size, predict_batch_size=batch_size,
                                     label_dic=label_dic)
     # data.setup("train")
-    experiment = VAEEXperiment(MyVAEModel, config['exp_params'])
+    experiment = temporalVAEExperiment(MyVAEModel, config['exp_params'])
 
     # 创建一个 LearningRateMonitor 回调实例
     lr_monitor = LearningRateMonitor()
@@ -2371,7 +2371,7 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     :return:
     """
     from ..model_master.experiment_adversarial import VAEXperiment_adversarial
-    from ..model_master.experiment import VAEEXperiment
+    from ..model_master.experiment_temporalVAE import temporalVAEExperiment
     from ..model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
     from pytorch_lightning.loggers import TensorBoardLogger
@@ -2466,7 +2466,7 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     if adversarial_bool:
         experiment = VAEXperiment_adversarial(MyVAEModel, config['exp_params'])
     else:
-        experiment = VAEEXperiment(MyVAEModel, config['exp_params'])
+        experiment = temporalVAEExperiment(MyVAEModel, config['exp_params'])
     # 创建一个 LearningRateMonitor 回调实例
     lr_monitor = LearningRateMonitor()
     # add 2023-09-07 20:34:57 add memory check
@@ -2575,7 +2575,7 @@ def fineTuning_calRNAvelocity(sc_expression_df, config_file, checkpoint_file, ad
     import yaml
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from ..model_master.experiment import VAEEXperiment
+    from ..model_master.experiment_temporalVAE import temporalVAEExperiment
     from ..model_master.experiment_adversarial import VAEXperiment_adversarial
     from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
     # make data with gene express min
@@ -2616,7 +2616,7 @@ def fineTuning_calRNAvelocity(sc_expression_df, config_file, checkpoint_file, ad
     if adversarial_bool:
         experiment = VAEXperiment_adversarial(MyVAEModel, config['exp_params'])
     else:
-        experiment = VAEEXperiment(MyVAEModel, config['exp_params'])
+        experiment = temporalVAEExperiment(MyVAEModel, config['exp_params'])
     # z=experiment.predict_step(data_predict,1)
     train_result = runner.predict(experiment, data_predict)
     if len(train_result) > 1:

@@ -8,12 +8,12 @@ import numpy as np
 
 
 
-class VAEEXperiment(pl.LightningModule):
+class temporalVAEExperiment(pl.LightningModule):
 
     def __init__(self,
                  vae_model: BaseVAE,
                  params: dict) -> None:
-        super(VAEEXperiment, self).__init__()
+        super(temporalVAEExperiment, self).__init__()
         # self.training_step_outputs = []
         self.model = vae_model
         self.params = params
