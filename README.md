@@ -85,10 +85,10 @@ conda env create -f env_all.yml
 
 The code is in folder named by figure-index.
 
-### Figure 2: 
+### Figure 2:
 Compare the TemporalVAE with baseline methods on three small datasets cited in [Psupertime](https://academic.oup.com/bioinformatics/article/38/Supplement_1/i290/6617492) mansucript.
-1. Preprocess three datasets by the code described in [preprocess_data_fromPsupertimeManuscript.md](./Fig2_TemproalVAE_against_benchmark_methods/preprocess_data_fromPsupertimeManuscript.md).
-2. run the code of each benchmarking method, then run [plotFig2_check_corr.py](./Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py) to generate Fig2.
+1. Preprocess three datasets by the code described in [preprocess_data_fromPsupertimeManuscript.md](demo/Fig2_TemproalVAE_against_benchmark_methods/preprocess_data_fromPsupertimeManuscript.md).
+2. run the code of each benchmarking method, then run [plotFig2_check_corr.py](demo/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py) to generate Fig2.
 ### Figure 3:
 1. Preprocess the mouse atlas data and mouse stereo data by
 
@@ -100,10 +100,10 @@ python -u Fig3_mouse_data/preprocess_data_mouse_embryo_stereo.py
 2. Reproduce the result of **Figure3.A&B** and save results in folder _results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809_
 
 ```bash
-python -u Fig3_mouse_data/TemporalVAE_kFoldOn_mouseAtlas.py 
+python -u Fig3_mouse_data/TemporalVAE_kFoldOn_mouseAtlas.py
 --result_save_path=230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809
 --vae_param_file=supervise_vae_regressionclfdecoder_mouse_stereo
---file_path=/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000 
+--file_path=/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000
 --time_standard_type=embryoneg5to5
 --train_epoch_num=100  --kfold_test --train_whole_model
 > logs/log.log
@@ -134,7 +134,7 @@ python -u Fig4_human_data/TemporalVAE_humanEmbryo_ref6Dataset_queryOnXiang_Tyser
 ```bash
 python -u Fig4_human_data/TemporalVAE_humanEmbryo_kFoldOn_xiang19.py
 ```
-### Figure 5: 
+### Figure 5:
 1. Preprocess Marmoset and Cynomolgus data by
 ```bash
 python -u Fig5_crossSpecies/preprocess_data_marmoset_inVivo.py
@@ -146,7 +146,7 @@ python -u Fig5_crossSpecies/TemporalVAE_crossSpecies_referenceMelania_queryOnCyn
 ```
 ### Figure 6:
 Identification of temporally sensitive genes by in silico perturbation.Here, we focus on the mouse embryo atlas as a showcase, thanks to its data consistency and broader time range.
-```bash 
+```bash
 python -u Fig6_identify_keyGenes/TemporalVAE_identify_keyGenes_mouseAtlas.py
 python -u Fig6_identify_keyGenes/plot_perturbution_results.py
 ```
