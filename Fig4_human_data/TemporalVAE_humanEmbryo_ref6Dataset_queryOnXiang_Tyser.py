@@ -20,12 +20,11 @@ import torch
 torch.set_float32_matmul_precision('high')
 import pyro
 
-from utils.logging_system import LogHelper
+from TemporalVAE.utils import *
 
 smoke_test = ('CI' in os.environ)  # ignore; used to check code integrity in the Pyro repo
 assert pyro.__version__.startswith('1.8.5')
 pyro.set_rng_seed(1)
-from utils.utils_project import *
 from collections import Counter
 import os
 import yaml
@@ -38,7 +37,7 @@ import pandas as pd
 def main():
     parser = argparse.ArgumentParser(description="TemporalVAE")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22
-                        default="/Fig4_TemporalVAE_human_ref6dataset_queryOnTyserAndXiang/",
+                        default="/test/Fig4_TemporalVAE_human_ref6dataset_queryOnTyserAndXiang/",
                         help="results all save here")
     parser.add_argument('--file_path', type=str,
                         default="/human_embryo_preimplantation/integration_8dataset/",
@@ -310,7 +309,7 @@ def queryOneDataset_referenceOn6Datasets_humanEmbryo(test_donor,
     donor_index_test = x_sc_test.new_tensor(
         [int(batch_dic[cell_time.loc[_cell_name]['dataset_label']]) for _cell_name in sc_expression_test.index.values])
     test_data = [[x_sc_test[:, i], y_time_nor_test[i], donor_index_test[i]] for i in range(x_sc_test.shape[1])]
-    from model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
     data_test = SupervisedVAEDataset_onlyPredict(predict_data=test_data, predict_batch_size=len(test_data))
     test_result = runner.predict(experiment, data_test)
     test_clf_result, test_mu_result, test_latent_log_var_result = test_result[0][0], test_result[0][1], \

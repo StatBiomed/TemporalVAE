@@ -15,7 +15,6 @@ root state selected as the state with the highest number of cells from the first
 function orderCells used to extract the ordering.
 
 """
-import sys
 import os
 
 print(os.getcwd())
@@ -24,7 +23,7 @@ import os
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
-from utils.utils_plot import plot_psupertime_density
+from TemporalVAE.utils.utils_plot import plot_psupertime_density
 
 from plotFig2_check_corr import preprocess_parameters,corr
 def main():

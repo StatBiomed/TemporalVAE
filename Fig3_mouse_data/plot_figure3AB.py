@@ -14,9 +14,8 @@ if os.getcwd().split("/")[-1] != "TemporalVAE":
     os.chdir("..")
 sys.path.append(os.getcwd())
 
-from utils.utils_plot import calculate_real_predict_corrlation_score, umap_vae_latent_space_adata_version
+from TemporalVAE.utils import calculate_real_predict_corrlation_score
 import pandas as pd
-import json
 import scanpy as sc
 import matplotlib.pyplot as plt
 # 2023-11-03 11:38:31
@@ -25,9 +24,8 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import seaborn as sns
 from collections import Counter
-from utils.utils_plot import colors_tuple_hexadecimalColorCode, plt_umap_byScanpy
+from TemporalVAE.utils import plt_umap_byScanpy
 import numpy as np
-import anndata as ad
 
 # global_folder_path = "results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_dim50_timeembryoneg5to5_epoch100_dropDonorno_mouseEmbryonicDevelopment_embryoneg5to5"
 global_folder_path = "results/Fig3_TemporalVAE_kfoldOn_mouseAtlas_240901/mouse_embryonic_development/preprocess_adata_JAX_dataset_combine_minGene100_minCell50_hvg1000/supervise_vae_regressionclfdecoder_mouse_stereo_dim50_timeembryoneg5to5_epoch100_minGeneNum100"

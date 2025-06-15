@@ -27,7 +27,7 @@ import pandas as pd
 import pyreadr
 import anndata
 import logging
-from utils.logging_system import LogHelper
+from TemporalVAE.utils import LogHelper
 
 from collections import Counter
 import gc

@@ -1,0 +1,3 @@
+ [submodule "TemporalVAE-reproducibility"]
+	path = TemporalVAE-reproducibility
+	url = https://github.com/StatBiomed/TemporalVAE-reproducibility

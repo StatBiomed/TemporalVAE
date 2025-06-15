@@ -1,0 +1,48 @@
+numpy==1.24.4
+# scipy==1.15.2
+pandas==2.2.3
+scikit-learn==1.5.1
+xarray==2023.12.0
+# dask==2024.9.1
+
+# Deep learning frameworks
+tensorflow==2.13.0
+torch==2.0.1
+torchvision==0.15.2
+torchaudio==2.0.2
+pytorch-lightning==2.0.4
+keras==2.13.1
+jax==0.4.29
+jaxlib==0.4.30
+flax==0.7.5
+
+# Data visualization
+matplotlib==3.9.2
+seaborn==0.13.2
+plotly==5.15.0  # Recommended addition
+
+# Bioinformatics/single-cell analysis
+scanpy==1.10.3
+anndata==0.8.0
+scvi-tools==1.0.4
+umap-learn==0.5.4
+
+# Image processing
+pillow==10.0.0
+opencv-python==4.8.0.76  # Recommended addition
+
+# Natural language processing
+spacy==3.6.1
+nltk==3.8.1  # Recommended addition
+
+ # Essential utilities
+jupyterlab==4.0.9
+ipython==8.14.0
+tqdm==4.64.1
+pyyaml==6.0.1
+requests==2.31.0
+h5py==3.13.0
+pyarrow==13.0.0
+fsspec==2023.6.0
+
+django

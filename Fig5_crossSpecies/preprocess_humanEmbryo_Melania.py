@@ -8,12 +8,7 @@
 """
 import scanpy as sc
 import pandas as pd
-import anndata as ad
 from collections import Counter
-from utils.utils_project import calHVG_adata as calHVG
-from utils.utils_project import series_matrix2csv
-from utils.utils_plot import draw_venn
-import h5py
 
 
 def main():

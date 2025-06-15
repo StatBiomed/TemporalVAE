@@ -7,13 +7,10 @@
 @Date    ：2024/7/28 15:48 
 """
 
-import sys
 import os
 
-from spacy.cli.train import train
-
 print(os.getcwd())
-from utils.utils_plot import plot_psupertime_density
+from TemporalVAE.utils.utils_plot import plot_psupertime_density
 import anndata
 import numpy as np
 import pandas as pd

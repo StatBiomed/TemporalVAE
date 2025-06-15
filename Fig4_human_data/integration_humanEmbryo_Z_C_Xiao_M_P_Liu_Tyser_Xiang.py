@@ -29,13 +29,11 @@ if os.getcwd().split("/")[-1] != "TemporalVAE":
     os.chdir("..")
 sys.path.append(os.getcwd())
 import pandas as pd
-import anndata as ad
 import scanpy as sc
-from utils.utils_project import read_rds_file
 from collections import Counter
 import anndata as ad
-from utils.utils_plot import plot_data_quality
-import re
+from TemporalVAE.utils import plot_data_quality
+
 
 def main():
     # 2025-04-01 10:10:34 Counter({'z': 5911, 'm': 4820, 'p': 1529, 't': 1195, 'l': 989})
@@ -247,7 +245,7 @@ def cellType_reAnnotation(orginal_cell_type,):
     #  yolk sac endoderm (YS.Endo),
     return temp
 def read_trans_Xiang19(file_path,gene_list_ref=None,min_gene_num=50,save_file_bool=False):
-    from utils.utils_project import series_matrix2csv
+    from TemporalVAE.utils import series_matrix2csv
 
     raw_count = pd.read_csv(f"{file_path}/GSE136447_555sample_gene_count_matrix.txt", sep="\t", header=0, index_col=0)
     raw_count=raw_count.T

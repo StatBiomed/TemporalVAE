@@ -9,11 +9,10 @@
 use dataset mentioned in psupertime manuscript
 
 """
-import sys
 import os
 
 print(os.getcwd())
-from utils.utils_plot import plot_psupertime_density
+from TemporalVAE.utils.utils_plot import plot_psupertime_density
 from pypsupertime import Psupertime
 import anndata
 import os

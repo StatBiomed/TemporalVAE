@@ -20,15 +20,14 @@ https://shendure-web.gs.washington.edu/content/members/DEAP_website/public/scrip
 # sys.path.append("..")
 
 import os
-import gc
 
 print(os.getcwd())
-from utils.utils_plot import plot_psupertime_density
+from TemporalVAE.utils.utils_plot import plot_psupertime_density
 import anndata
 # import os
 import numpy as np
 import pandas as pd
-from plotFig2_check_corr import preprocess_parameters,corr,distribution_metric
+from plotFig2_check_corr import preprocess_parameters,corr
 from benchmarking_methods.benchmarking_methods import science2022
 def main():
     dataset_list = [ "acinarHVG", "embryoBeta", "humanGermline"]

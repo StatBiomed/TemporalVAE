@@ -21,12 +21,11 @@ import torch
 torch.set_float32_matmul_precision('high')
 import pyro
 
-from utils.logging_system import LogHelper
+from TemporalVAE.utils import *
 
 smoke_test = ('CI' in os.environ)  # ignore; used to check code integrity in the Pyro repo
 assert pyro.__version__.startswith('1.8.5')
 pyro.set_rng_seed(1)
-from utils.utils_project import *
 from collections import Counter
 import os
 import yaml
@@ -34,7 +33,7 @@ import argparse
 import anndata as ad
 import numpy as np
 
-
+import logging
 def main():
     parser = argparse.ArgumentParser(description="TemporalVAE")
     parser.add_argument('--result_save_path', type=str,  # 2023-07-13 17:40:22

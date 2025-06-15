@@ -65,7 +65,7 @@ def main():
 
     Cyno_rawCounts_adata = ad.AnnData(X=Cyno_rawCounts.T, obs=Cyno_cell_info)
 
-    from utils.utils_plot import plot_data_quality
+    from TemporalVAE.utils import plot_data_quality
     plot_data_quality(Cyno_rawCounts_adata)
 
     Cyno_rawCounts_adata.write_h5ad(f"{save_path}/RawCounts.h5ad")

@@ -38,7 +38,7 @@ def main():
 
     inVivo_rawCounts_adata = ad.AnnData(X=inVivo_rawCounts.iloc[2:].astype(int).T, obs=_temp)
 
-    from utils.utils_plot import plot_data_quality
+    from TemporalVAE.utils import plot_data_quality
     plot_data_quality(inVivo_rawCounts_adata)
 
     inVivo_rawCounts_adata.write_h5ad(f"{save_path}/RawCounts.h5ad")

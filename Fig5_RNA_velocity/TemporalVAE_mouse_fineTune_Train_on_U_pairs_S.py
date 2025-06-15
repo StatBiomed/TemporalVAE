@@ -17,13 +17,12 @@ if os.getcwd().split("/")[-1] != "TemporalVAE":
     os.chdir("..")
 sys.path.append(os.getcwd())
 
-from utils.utils_project import *
-
 import pandas as pd
 
 import argparse
-
-
+import scanpy as sc
+import anndata
+from TemporalVAE.utils import *
 def main():
     print("train (fine tune) on moment u concat s; and test on u and s, respectively.")
     parser = argparse.ArgumentParser(description="fine tune model")
@@ -96,7 +95,7 @@ def read_mouse_embryogenesisData(sc_file_name):
     adata.obs_names_make_unique()
     adata.var_names_make_unique()
     hvg_dic = None
-
+    from TemporalVAE.utils import geneId_geneName_dic
     gene_dic = geneId_geneName_dic()
 
     def temp_process_day(day_str):
@@ -354,7 +353,7 @@ def plot_RNAvelocity(v, fine_tune_result_adata, save_result_path, plt_attr, fine
     unspliced_fine_tune_result_data = fine_tune_test_result_dic["unspliced"].copy()
     unspliced_fine_tune_result_data.write_h5ad(f"{save_result_path}/unspliced_latent_mu.h5ad")
 
-    from utils.utils_plot import plt_latentDim
+    from TemporalVAE.utils import plt_latentDim
     plt_latentDim(spliced_fine_tune_result_data, unspliced_fine_tune_result_data, save_result_path)
 
 

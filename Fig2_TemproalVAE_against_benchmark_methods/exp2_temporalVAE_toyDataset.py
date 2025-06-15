@@ -16,17 +16,17 @@ import sys
 # if os.getcwd().split("/")[-1] != "TemporalVAE":
 #     os.chdir("..")
 sys.path.append(os.getcwd())
-from utils.GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory
+from TemporalVAE.utils.GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory
 import logging
-from utils.logging_system import LogHelper
-from utils.utils_project import trans_time, plot_training_loss_for_tags, denormalize
+from TemporalVAE.utils import LogHelper
+from TemporalVAE.utils import trans_time, plot_training_loss_for_tags
 import anndata
 import pandas as pd
 
 import numpy as np
-from model_master.experiment_temporalVAE import temporalVAEExperiment
-from model_master.dataset import SupervisedVAEDataset, SupervisedVAEDataset_onlyPredict
-from model_master import vae_models
+from TemporalVAE.model_master.experiment_temporalVAE import temporalVAEExperiment
+from TemporalVAE.model_master.dataset import SupervisedVAEDataset, SupervisedVAEDataset_onlyPredict
+from TemporalVAE.model_master import vae_models
 
 import torch
 from pytorch_lightning import Trainer

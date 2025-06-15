@@ -9,19 +9,15 @@
 pseudotime
 """
 import os
-import time
 
-import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import spearmanr, kendalltau
-import random
 import numpy as np
 
 import pandas as pd
 import seaborn as sns
 
-from model_master.experiment_temporalVAE import temporalVAEExperiment
-from utils.utils_project import denormalize
+from TemporalVAE.utils import denormalize
 
 
 def main():

@@ -26,18 +26,18 @@ import torch
 torch.set_float32_matmul_precision('high')
 import pyro
 import logging
-from utils.logging_system import LogHelper
+from TemporalVAE.utils import LogHelper
 
 smoke_test = ('CI' in os.environ)  # ignore; used to check code integrity in the Pyro repo
 assert pyro.__version__.startswith('1.8.5')
 pyro.set_rng_seed(1)
-from utils.utils_project import str2bool, auto_select_gpu_and_cpu, preprocessData_and_dropout_some_donor_or_gene
-from utils.utils_project import task_kFoldTest, onlyTrain_model, identify_timeCorGene
+from TemporalVAE.utils import str2bool, auto_select_gpu_and_cpu, preprocessData_and_dropout_some_donor_or_gene
+from TemporalVAE.utils import task_kFoldTest, onlyTrain_model, identify_timeCorGene
 from collections import Counter
 
 import yaml
 import argparse
-from utils.utils_plot import Embryodonor_resort_key
+from TemporalVAE.utils import Embryodonor_resort_key
 import numpy as np
 
 
@@ -153,7 +153,7 @@ def main():
         plt_image_adata = ad.AnnData(X=total_result["mu"].cpu().numpy())
         plt_image_adata.obs = cell_time
         plt_image_adata.write_h5ad(f"{save_path}/latent_mu.h5ad")
-        from utils.utils_plot import plt_umap_byScanpy
+        from TemporalVAE.utils import plt_umap_byScanpy
         # plt_umap_byScanpy(plt_image_adata.copy(), ["time", "celltype_update"], save_path=save_path,mode=None)
         plt_umap_byScanpy(plt_image_adata.copy(), ["time"],
                           save_path=save_path, mode=None, figure_size=(7, 6), color_map="viridis")
