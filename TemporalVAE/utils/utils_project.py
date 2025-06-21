@@ -2,9 +2,9 @@
 """
 @Project ：TemporalVAE
 @File    ：utils_DandanProject.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
-@Date    ：2023/6/10 18:49 
+@Date    ：2023/6/10 18:49
 """
 import logging
 
@@ -91,76 +91,6 @@ def setup_model(y, time, latent_dim, device):
     return gplvm
 
 
-def predict_on_one_donor(gplvm, cell_time, sc_expression_train, sc_expression_test, golbal_path, file_path, donor,
-                         sample_num=10, args=None):
-    # ---------------------------------------------- Freeze gplvm for prediction  --------------------------------------------------
-    """
-    After training GPLVM, we get good hyperparameters for the data. 
-    Then when new data is provided, we train GPLVM again with these fixed hyperparameters to learn X.
-    """
-    import pyro
-    # Freeze gplvm
-    # for param in gplvm.parameters():
-    #     param.requires_grad_(False)
-    pyro.settings.set(module_local_params=False)
-    gplvm.mode = "guide"
-    # sample 10 times
-    sample_y_data = dict()
-    labels = cell_time["time"].unique()
-    sc_expression_df_copy = sc_expression_train.copy()
-    for _cell_name in sc_expression_train.index.values:
-        sc_expression_df_copy.rename(index={_cell_name: cell_time.loc[_cell_name]["time"]}, inplace=True)
-    _logger.info("Sample from latent space {} times".format(sample_num))
-    for i in range(sample_num):
-        _X_one_sample = gplvm.X
-        _Y_one_sample = gplvm.forward(_X_one_sample)
-        # _Y_one_sample[0] is loc, _Y_one_sample[1] is var
-        _Y_one_sample_df = pd.DataFrame(data=_Y_one_sample[0].cpu().detach().numpy().T,
-                                        index=_X_one_sample[:, 0].cpu().detach().numpy(),
-                                        columns=sc_expression_train.columns)
-        for i, label in enumerate(labels):
-            if label not in sample_y_data.keys():
-                sample_y_data[label] = _Y_one_sample_df[sc_expression_df_copy.index == label]
-            else:
-                sample_y_data[label] = sample_y_data[label]._append(
-                    _Y_one_sample_df[sc_expression_df_copy.index == label])
-
-    each_type_num = np.inf
-    for key in sample_y_data.keys():
-        _logger.info("label {} have sampled {} cells".format(key, len(sample_y_data[key])))
-        if len(sample_y_data[key]) < each_type_num:
-            each_type_num = len(sample_y_data[key])
-    for key in sample_y_data.keys():
-        sample_y_data[key] = sample_y_data[key].sample(n=each_type_num)
-
-    # # filter sc_expression_test; 2023-06-19 20:22:38 don't filter gene for test data, so delete code here
-    # for _gene in sc_expression_test:
-    #     if np.var(sc_expression_test[_gene].values) == 0:
-    #         sc_expression_test = sc_expression_test.drop(_gene, axis=1)
-    from utils_project import cosSim
-    sample_y_data_df = pd.DataFrame(columns=sc_expression_train.columns)
-    # sample_y_data_df_attr_time =pd.DataFrame(columns=sc_expression_train.columns)
-    for key in sample_y_data.keys():
-        sample_y_data_df = sample_y_data_df._append(sample_y_data[key])
-        # temp=pd.DataFrame(data=sample_y_data[key].values,columns=sc_expression_train.columns,index=[key for i in range(len(sample_y_data[key]))])
-        # sample_y_data_df_attr_time=sample_y_data_df_attr_time._append(temp)
-    # plot the generated cells
-    # plot_latent_dim_image(_X_one_sample.shape[1], labels, X, sample_y_data_df_attr_time, golbal_path, file_path, "time", reorder_labels=True, args=args,special_str="Sampled_")
-
-    sample_y_data_df = sample_y_data_df[sc_expression_test.columns]
-    result_test_pseudotime = pd.DataFrame(index=sc_expression_test.index, columns=["pseudotime"])
-    for test_index, row_test in sc_expression_test.iterrows():
-        _cell_samilars = []
-        for time, row_sampled in sample_y_data_df.iterrows():
-            _cell_samilars.append([time, cosSim(row_test, row_sampled)])
-        _cell_samilars = np.array(_cell_samilars)
-        _cell_samilars = _cell_samilars[_cell_samilars[:, 1].argsort()][::-1][:10, 0]
-        _cell_samilars = np.mean(_cell_samilars)
-        result_test_pseudotime.loc[test_index]["pseudotime"] = _cell_samilars
-    result_test_pseudotime.to_csv('{}/{}/test_onOneDonor_{}.csv'.format(golbal_path, file_path, donor), sep="\t",
-                                  index=True, header=True)
-    _logger.info("Test donor: {}, pseudotime for each cell is {}".format(donor, result_test_pseudotime))
-    return result_test_pseudotime
 
 
 def preprocessData(golbal_path, file_name, KNN_smooth_type, cell_info_file, gene_list=None, min_cell_num=50,
@@ -322,74 +252,7 @@ def pearsonrSim(x, y):
 #     return item
 
 
-def test_on_newDataset(sc_expression_train, data_golbal_path, result_save_path, KNN_smooth_type, runner, experiment,
-                       config, latent_dim,
-                       special_path_str, time_standard_type, test_data_path):
-    """
-    2023-07-13 14:39:38 dandan share a new dataset (download from public database, with epi and fibro, different platfrom: ct and 10X)
-    use all dandan data as train data to train a model and test on the new dataset.
-    :param sc_expression_train:
-    :param data_golbal_path:
-    :param KNN_smooth_type:
-    :param runner:
-    :param experiment:
-    :param config:
-    :param latent_dim:
-    :param special_path_str:
-    :param time_standard_type:
-    :return:
-    """
-    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
-    _logger.info("Test on new dataset.")
 
-    gene_list = sc_expression_train.columns
-
-    _logger.info("Test on dataset: {}".format(test_data_path))
-    gene_dic = dict()
-    file_name_test = test_data_path + "/data_count.csv"
-    cell_info_file_test = test_data_path + "/cell_info.csv"
-    sc_expression_df_test, cell_time_test = preprocessData_and_dropout_some_donor_or_gene(data_golbal_path, file_name_test, cell_info_file_test,
-                                                                                          gene_list=gene_list, min_cell_num=0,
-                                                                                          min_gene_num=10)
-
-    loss_gene = list(set(gene_list) - set(sc_expression_df_test.columns))
-    _logger.info("loss {} gene in test data, set them to 0".format(len(loss_gene)))
-    _logger.info("test data don't have gene: {}".format(loss_gene))
-    gene_dic["model_gene"] = list(gene_list)
-    gene_dic["loss_gene"] = list(loss_gene)
-    gene_dic["testdata_gene"] = list(sc_expression_df_test.columns)
-    for _g in loss_gene:
-        sc_expression_df_test[_g] = 0
-    x_sc_test = torch.tensor(sc_expression_df_test.values, dtype=torch.get_default_dtype()).t()
-    _logger.info("Set x_sc_test data with shape (gene, cells): {}".format(x_sc_test.shape))
-    train_data = [[x_sc_test[:, i], torch.tensor(0), torch.tensor(0)] for i in range(x_sc_test.shape[1])]
-    data_test = SupervisedVAEDataset_onlyPredict(predict_data=train_data, predict_batch_size=len(train_data))
-    test_result = runner.predict(experiment, data_test)
-    test_clf_result, test_latent_mu_result, test_latent_log_var_result = test_result[0][0], test_result[0][1], \
-        test_result[0][2]
-    if test_clf_result.shape[1] == 1:
-        test_clf_result = test_clf_result.squeeze()
-        test_clf_result_df = pd.DataFrame(data=test_clf_result, index=sc_expression_df_test.index,
-                                          columns=["pseudotime"])
-        _logger.info("Time type is continues.")
-    else:
-        test_clf_result = test_clf_result.squeeze()
-        test_clf_result = np.argmax(test_clf_result, axis=1)
-        test_clf_result_df = pd.DataFrame(data=test_clf_result, index=sc_expression_df_test.index,
-                                          columns=["pseudotime"])
-        _logger.info("Time type is discrete.")
-
-    _save_path = "{}{}/".format(_logger.root.handlers[0].baseFilename.replace(".log", ""), special_path_str)
-    if not os.path.exists(_save_path):
-        os.makedirs(_save_path)
-    _save_file_name = "{}/{}_testOnExternal_{}.csv".format(_save_path, config['model_params']['name'],
-                                                           test_data_path.replace("/", "").replace(".rds", "").replace(" ", "_"))
-
-    test_clf_result_df.to_csv(_save_file_name, sep="\t")
-    import json
-    with open(_save_file_name.replace(".csv", "geneUsed.json"), 'w') as f:
-        json.dump(gene_dic, f)
-    _logger.info("result save at: {}".format(_save_file_name))
 
 
 def test_on_newDonor(test_donor_name, sc_expression_test, runner, experiment, predict_donors_dic):
@@ -561,7 +424,7 @@ def predict_on_one_donor(gplvm, cell_time, sc_expression_train, sc_expression_te
                          sample_num=10, args=None):
     # ---------------------------------------------- Freeze gplvm for prediction  --------------------------------------------------
     """
-    After training GPLVM, we get good hyperparameters for the data. 
+    After training GPLVM, we get good hyperparameters for the data.
     Then when new data is provided, we train GPLVM again with these fixed hyperparameters to learn X.
     """
     import pyro
@@ -1168,14 +1031,14 @@ def identify_timeCorGene(sc_expression_df, cell_info, y_time_nor_tensor, donor_i
     :param sc_expression_df:
     :param y_time_nor_tensor:
     :param donor_index_tensor:
-    :param runner: 
-    :param experiment: 
+    :param runner:
+    :param experiment:
     :param trained_clf_ndarray:
-    :param golbal_path: 
-    :param file_path: 
-    :param latent_dim: 
-    :param special_path_str: 
-    :param config: 
+    :param golbal_path:
+    :param file_path:
+    :param latent_dim:
+    :param special_path_str:
+    :param config:
     :return:
     """
     save_file_path = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}{special_path_str}/"
@@ -1375,16 +1238,16 @@ def test_on_newDataset(sc_expression_train, data_golbal_path, result_save_path, 
     """
     2023-07-13 14:39:38 dandan share a new dataset (download from public database, with epi and fibro, different platfrom: ct and 10X)
     use all dandan data as train data to train a model and test on the new dataset.
-    :param sc_expression_train: 
+    :param sc_expression_train:
     :param data_golbal_path:
-    :param KNN_smooth_type: 
-    :param runner: 
-    :param experiment: 
-    :param config: 
-    :param latent_dim: 
-    :param special_path_str: 
-    :param time_standard_type: 
-    :return: 
+    :param KNN_smooth_type:
+    :param runner:
+    :param experiment:
+    :param config:
+    :param latent_dim:
+    :param special_path_str:
+    :param time_standard_type:
+    :return:
     """
     from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
     _logger.info("Test on new dataset.")
@@ -2200,13 +2063,13 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     else:
         _logger.info("Don't plot training loss line for check.")
 
-    """when we want to get an embedding for specific inputs: 
+    """when we want to get an embedding for specific inputs:
     We either
-    1 Feed a hand-written character "9" to VAE, receive a 20 dimensional "mean" vector, then embed it into 2D dimension using t-SNE, 
+    1 Feed a hand-written character "9" to VAE, receive a 20 dimensional "mean" vector, then embed it into 2D dimension using t-SNE,
     and finally plot it with label "9" or the actual image next to the point, or
     2 We use 2D mean vectors and plot directly without using t-SNE.
-    Note that 'variance' vector is not used for embedding. 
-    However, its size can be used to show the degree of uncertainty. 
+    Note that 'variance' vector is not used for embedding.
+    However, its size can be used to show the degree of uncertainty.
     For example a clear '9' would have less variance than a hastily written '9' which is close to '0'."""
     if plot_latentSpaceUmap:
         if time_standard_type == "organdic":  # 2023-11-07 17:10:53 add for Joy project

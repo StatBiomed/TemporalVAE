@@ -7,7 +7,7 @@ Contact: Yuanhua Huang, Yijun Liu
 Email:  yuanhua@hku.hk
 
 
-A user-oriented repo is at https://github.com/StatBiomed/TemporalVAE-release with more features to be added.
+[//]: # (A user-oriented repo is at https://github.com/StatBiomed/TemporalVAE-release with more features to be added.)
 
 ## Introduction
 
@@ -33,7 +33,7 @@ development.
 
 * v0.1 (May, 2024): Initial release.
 * v0.2 (May, 2024)
-
+* v1.0 (May, 2025): Branch releaseV1.0
 ---
 
 ## Installation
