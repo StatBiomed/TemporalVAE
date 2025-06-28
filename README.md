@@ -53,13 +53,12 @@ To install TemporalVAE, python 3.10.9 is required and follow the instruction
   cd TemporalVAE
 ```
 
-4. (5-10 minutes) Create a conda environment (`TemporalVAE-V1.0`) with the required dependencies with two environment configuration files.  `env_necessary.yml` inclueds minimal essential dependencies and `env_all.yml` includes complete development environment.
+4. (5-10 minutes) Create a conda environment (`TemporalVAE-V1.0`) with the required dependencies with two environment configuration files.  `env_necessary.yml` inclueds minimal essential dependencies and `env_all.yml` includes complete development environment. If you encounter any pcks version issues, please check `env_all.yml` for more version information.
 
 ```bash
-# For minimal production environment:
-conda env create -f env_necessary.yml
+  conda env create -f env_necessary.yml
 ```
-If you encounter any pcks version issues, please check `env_all.yml` for more version information.
+
 
 5. Activate the `TemporalVAE` environment you just created:
 
@@ -82,18 +81,17 @@ If you encounter any pcks version issues, please check `env_all.yml` for more ve
 
 ## Reproduce the result in manuscript
 
-The code is in folder named by figure-index.
-
 ### Figure 2:
 Compare the TemporalVAE with baseline methods on three small datasets cited in [Psupertime](https://academic.oup.com/bioinformatics/article/38/Supplement_1/i290/6617492) mansucript.
 1. Preprocess three datasets by the code described in [preprocess_data_fromPsupertimeManuscript.md](demo/Fig2_TemproalVAE_against_benchmark_methods/preprocess_data_fromPsupertimeManuscript.md).
-2. run the code of each benchmarking method, then run [plotFig2_check_corr.py](demo/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py) to generate Fig2.
+2. Run the code of each benchmarking method.
+3. Run [plotFig2_check_corr.py](demo/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py) to generate Fig2.
 ### Figure 3:
 1. Preprocess the mouse atlas data and mouse stereo data by
 
 ```bash
-python -u Fig3_mouse_data/preprocess_data_mouse_embryonic_development_combineData.py
-python -u Fig3_mouse_data/preprocess_data_mouse_embryo_stereo.py
+    python -u Fig3_mouse_data/preprocess_data_mouse_embryonic_development_combineData.py
+    python -u Fig3_mouse_data/preprocess_data_mouse_embryo_stereo.py
 ```
 
 2. Reproduce the result of **Figure3.A&B** and save results in folder _results/230827_trainOn_mouse_embryonic_development_kFold_testOnYZdata0809_
