@@ -1,4 +1,4 @@
-name: my_python_env
+name: TemporalVAE-V1.0
 channels:
 - conda-forge
 - defaults
