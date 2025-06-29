@@ -2,7 +2,7 @@
 """
 @Project ：TemporalVAE
 @File    ：exp2_science2022_toyDataset.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
 @Date    ：2024-07-21 13:44:06
 
@@ -20,8 +20,10 @@ https://shendure-web.gs.washington.edu/content/members/DEAP_website/public/scrip
 # sys.path.append("..")
 
 import os
-
-print(os.getcwd())
+import sys
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(f"project_root: {project_root}")
+sys.path.append(project_root)
 from TemporalVAE.utils.utils_plot import plot_psupertime_density
 import anndata
 # import os

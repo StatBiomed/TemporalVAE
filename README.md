@@ -66,6 +66,13 @@ To install TemporalVAE, python 3.10.9 is required and follow the instruction
   conda activate TemporalVAE-V1.0
 ```
 
+6. Create `data` folder to save your data, `results` folder to save training and prediction results, `logs` folder to save detailed log files.
+
+```bash
+  mkdir data
+  mkdir results
+  mkdir logs
+```
 [//]: # (6. Install **pytorch**: You may refer to [pytorch installtion]&#40;https://pytorch.org/get-started/locally/&#41; as needed. For example, the command of installing a **cpu-only** pytorch)
 
 [//]: # (   is:)
@@ -85,6 +92,11 @@ To install TemporalVAE, python 3.10.9 is required and follow the instruction
 Compare the TemporalVAE with baseline methods on three small datasets cited in [Psupertime](https://academic.oup.com/bioinformatics/article/38/Supplement_1/i290/6617492) mansucript.
 1. Preprocess three datasets by the code described in [preprocess_data_fromPsupertimeManuscript.md](demo/Fig2_TemproalVAE_against_benchmark_methods/preprocess_data_fromPsupertimeManuscript.md).
 2. Run the code of each benchmarking method.
+   1. For example run the LR:
+   ```bash
+   python demo/Fig2_TemproalVAE_against_benchmark_methods/exp2_LR_toyDataset.py
+   ```
+
 3. Run [plotFig2_check_corr.py](demo/Fig2_TemproalVAE_against_benchmark_methods/plotFig2_check_corr.py) to generate Fig2.
 ### Figure 3:
 1. Preprocess the mouse atlas data and mouse stereo data by

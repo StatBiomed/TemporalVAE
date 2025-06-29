@@ -1,14 +1,18 @@
 # -*-coding:utf-8 -*-
 """
-@Project ：TemporalVAE 
+@Project ：TemporalVAE
 @File    ：kFold_check_corr.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
 @Date    ：2023/9/26 16:27
 
 pseudotime
 """
 import os
+import sys
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(f"project_root: {project_root}")
+sys.path.append(project_root)
 
 import matplotlib.pyplot as plt
 from scipy.stats import spearmanr, kendalltau
@@ -139,12 +143,13 @@ def get_method_result(method, dataset):  #
 
 def preprocess_parameters(dataset, additional_path=""):  # "acinarHVG", "embryoBeta", "humanGermline"
     print(f"for dataset {dataset}.")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
     # ------------ for Mouse embryonic beta cells dataset and Human Germline dataset:
     if dataset in ["embryoBeta", "humanGermline"]:
-        data_x_df = pd.read_csv(f'data_fromPsupertime/{dataset}_X.csv', index_col=0).T
-        hvg_gene_list = pd.read_csv(f'data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
+        data_x_df = pd.read_csv(f'{script_dir}/data_fromPsupertime/{dataset}_X.csv', index_col=0).T
+        hvg_gene_list = pd.read_csv(f'{script_dir}/data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
         data_x_df = data_x_df[hvg_gene_list["gene_name"]]
-        data_y_df = pd.read_csv(f'data_fromPsupertime/{dataset}_Y.csv', index_col=0)
+        data_y_df = pd.read_csv(f'{script_dir}/data_fromPsupertime/{dataset}_Y.csv', index_col=0)
         data_y_df = data_y_df["time"]
         preprocessing_params = {"select_genes": "all", "log": True}
     # # ------------ for Human Germline dataset:
@@ -157,8 +162,8 @@ def preprocess_parameters(dataset, additional_path=""):  # "acinarHVG", "embryoB
     #     preprocessing_params = {"select_genes": "all", "log": True}
     # ------------ for Acinar dataset, in acinar data set total 8 donors with 8 ages:
     elif dataset == "acinarHVG":
-        data_x_df = pd.read_csv('data_fromPsupertime/acinar_hvg_sce_X.csv', index_col=0).T
-        data_y_df = pd.read_csv('data_fromPsupertime/acinar_hvg_sce_Y.csv')
+        data_x_df = pd.read_csv(f'{script_dir}/data_fromPsupertime/acinar_hvg_sce_X.csv', index_col=0).T
+        data_y_df = pd.read_csv(f'{script_dir}/data_fromPsupertime/acinar_hvg_sce_Y.csv')
         data_y_df = np.array(data_y_df['x'])
         preprocessing_params = {"select_genes": "all", "log": False}
     import anndata
@@ -327,6 +332,8 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
 
 def corr(x1, x2, special_str="", as_str=False):
     from scipy.stats import spearmanr, kendalltau, pearsonr
+    x1 = x1.apply(pd.to_numeric, errors='coerce')
+    x2 = x2.apply(pd.to_numeric, errors='coerce')
     sp_correlation, sp_p_value = spearmanr(x1, x2)
     ke_correlation, ke_p_value = kendalltau(x1, x2)
     pe_correlation, pe_p_value = pearsonr(x1, x2)
@@ -340,7 +347,7 @@ def corr(x1, x2, special_str="", as_str=False):
     sp = f"{special_str} spearman correlation score: {sp_correlation}, p-value: {sp_p_value}."
     print(sp)
     pe = f"{special_str} pearson correlation score: {pe_correlation}, p-value: {pe_p_value}."
-    print(sp)
+    print(pe)
     ke = f"{special_str} kendalltau correlation score: {ke_correlation},p-value: {ke_p_value}."
     print(ke)
 

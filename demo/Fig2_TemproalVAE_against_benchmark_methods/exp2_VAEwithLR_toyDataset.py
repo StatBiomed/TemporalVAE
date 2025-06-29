@@ -12,11 +12,9 @@ method is standard VAE to get low-dim representation and LR to predict
 """
 import os
 import sys
-
-# necessary: change current path to TemporalVAE
-# if os.getcwd().split("/")[-1] != "TemporalVAE":
-#     os.chdir("..")
-sys.path.append(os.getcwd())
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(f"project_root: {project_root}")
+sys.path.append(project_root)
 from TemporalVAE.utils import auto_select_gpu_and_cpu, check_memory
 import logging
 from TemporalVAE.utils import LogHelper

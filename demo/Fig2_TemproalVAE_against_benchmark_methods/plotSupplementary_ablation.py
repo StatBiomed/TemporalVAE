@@ -1,14 +1,18 @@
 # -*-coding:utf-8 -*-
 """
-@Project ：TemporalVAE 
+@Project ：TemporalVAE
 @File    ：plotSupplementary_ablation.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
 @Date    ：2025-04-15 13:51:06
 
 ablation exps for Temporal and Ablated-TemporalVAE (VAE get low-dim data representation and then use LR to predict pseudo-time)
 """
 import os
+import sys
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(f"project_root: {project_root}")
+sys.path.append(project_root)
 
 import matplotlib.pyplot as plt
 from scipy.stats import spearmanr, kendalltau

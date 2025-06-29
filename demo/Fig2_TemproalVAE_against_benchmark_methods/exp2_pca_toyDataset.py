@@ -1,8 +1,8 @@
 # -*-coding:utf-8 -*-
 """
-@Project ：TemporalVAE 
+@Project ：TemporalVAE
 @File    ：exp2_pca_toyDataset.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
 @Date    ：2023/9/26 17:16
 For principle component analysis (PCA),
@@ -16,8 +16,10 @@ function orderCells used to extract the ordering.
 
 """
 import os
-
-print(os.getcwd())
+import sys
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(f"project_root: {project_root}")
+sys.path.append(project_root)
 import anndata
 import os
 import numpy as np

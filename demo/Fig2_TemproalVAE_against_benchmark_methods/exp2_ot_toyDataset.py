@@ -1,15 +1,18 @@
 # -*-coding:utf-8 -*-
 """
-@Project ：TemporalVAE 
+@Project ：TemporalVAE
 @File    ：exp2_ot_toyDataset.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
-@Date    ：2024/7/28 15:48 
+@Date    ：2024/7/28 15:48
 """
 
 import os
+import sys
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(f"project_root: {project_root}")
+sys.path.append(project_root)
 
-print(os.getcwd())
 from TemporalVAE.utils.utils_plot import plot_psupertime_density
 import anndata
 import numpy as np

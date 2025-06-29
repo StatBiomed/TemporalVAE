@@ -1,18 +1,20 @@
 # -*-coding:utf-8 -*-
 """
-@Project ：TemporalVAE 
+@Project ：TemporalVAE
 @File    ：exp2_randomForest_toyDataset.py
-@IDE     ：PyCharm 
+@IDE     ：PyCharm
 @Author  ：awa121
-@Date    ：2023/9/26 14:29 
+@Date    ：2023/9/26 14:29
 
 
 use dataset mentioned in psupertime manuscript
 
 """
 import os
-
-print(os.getcwd())
+import sys
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(f"project_root: {project_root}")
+sys.path.append(project_root)
 from TemporalVAE.utils.utils_plot import plot_psupertime_density
 import anndata
 import os
