@@ -15,9 +15,9 @@ dependencies:
     - pynvml==11.5.0
 
     # Deep learning frameworks
-    - torch==2.0.1
-    - torchvision==0.15.2
-    - torchaudio==2.0.2
+#    - torch==2.0.1
+#    - torchvision==0.15.2
+#    - torchaudio==2.0.2
     - pytorch-lightning==2.0.4
     - keras==2.13.1
     - jax==0.4.29

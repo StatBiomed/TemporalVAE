@@ -53,11 +53,19 @@ To install TemporalVAE, python 3.10.9 is required and follow the instruction
   cd TemporalVAE
 ```
 
-4. (5-10 minutes) Create a conda environment (`TemporalVAE-V1.0`) with the required dependencies with two environment configuration files.  `env_necessary.yml` inclueds minimal essential dependencies and `env_all.yml` includes complete development environment. If you encounter any pcks version issues, please check `env_all.yml` for more version information.
+4. (5-10 minutes)
+   1. Create a conda environment (`TemporalVAE-V1.0`) with the required dependencies with two environment configuration files.  `env_necessary.yml` inclueds minimal essential dependencies and `env_all.yml` includes complete development environment. If you encounter any pcks version issues, please check `env_all.yml` for more version information.
 
-```bash
-  conda env create -f env_necessary.yml
-```
+    ```bash
+      conda env create -f env_necessary.yml
+    ```
+
+    2. Install PyTorch correctly for your system, check your computer's configuration (OS, CUDA version, etc.) and download Pytorch from https://pytorch.org.
+   3. Install `pytorch-lightning`
+   ```bash
+   pip install pytorch-lightning
+   ```
+
 
 
 5. Activate the `TemporalVAE` environment you just created:
