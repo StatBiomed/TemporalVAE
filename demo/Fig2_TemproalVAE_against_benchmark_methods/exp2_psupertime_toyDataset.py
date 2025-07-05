@@ -28,8 +28,8 @@ def main():
 def method_calculate(dataset):
     adata, data_x_df, data_y_df = preprocess_parameters(dataset)
     method="psupertime"
-    if not os.path.exists(f'{os.getcwd()}/{method}_results'):
-        os.makedirs(f'{os.getcwd()}/{method}_results')
+    if not os.path.exists(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results'):
+        os.makedirs(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results')
     # --------------------------------------------
     donor_list = list(np.unique(data_y_df))
     kFold_test_result_df = pd.DataFrame(columns=['time', 'pseudotime', 'predicted_label'])
@@ -62,17 +62,17 @@ def method_calculate(dataset):
     print("k-fold test final result:")
     kFold_test_result_df["pseudotime"]=kFold_test_result_df["psupertime"]
     corr(kFold_test_result_df["time"], kFold_test_result_df["pseudotime"])
-    kFold_test_result_df.to_csv(f'{os.getcwd()}/{method}_results/{dataset}_{method}_result.csv', index=True)
-    print(f"test result save at {os.getcwd()}/{method}_results/{dataset}_{method}_result.csv")
+    kFold_test_result_df.to_csv(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_{method}_result.csv', index=True)
+    print(f"test result save at demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_{method}_result.csv")
     # f = tp.plot_grid_search(title="Grid Search")
-    # f.savefig(f"{os.getcwd()}/psupertime_results/gridSearch.png")
+    # f.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/psupertime_results/gridSearch.png")
     # f = tp.plot_model_perf((adata.X, adata.obs.time), figsize=(6, 5))
-    # f.savefig(f"{os.getcwd()}/psupertime_results/modelPred.png")
+    # f.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/psupertime_results/modelPred.png")
     # f = tp.plot_identified_gene_coefficients(adata, n_top=20)
-    # f.savefig(f"{os.getcwd()}/psupertime_results/geneCoff.png")
-    save_path = f"{os.getcwd()}/{method}_results/"
+    # f.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/psupertime_results/geneCoff.png")
+    save_path = f"demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/"
     plot_psupertime_density(kFold_test_result_df, save_path, label_key="time", psupertime_key="pseudotime", method=dataset)
-    print(f"figure save at {os.getcwd()}/{method}_results/{dataset}_labelsOverPsupertime.png")
+    print(f"figure save at demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_labelsOverPsupertime.png")
 
 
 

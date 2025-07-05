@@ -1,5 +1,5 @@
 rm(list = ls())
-setwd("/mnt/yijun/nfs_share/awa_project/awa_github/TemporalVAE/Fig2_TemproalVAE_against_benchmark_methods")
+setwd("demo/Fig2_TemproalVAE_against_benchmark_methods")
 library(Seurat)
 print(packageVersion("Seurat"))
 library(SeuratData)

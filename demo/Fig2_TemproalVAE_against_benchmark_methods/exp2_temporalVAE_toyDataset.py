@@ -9,13 +9,6 @@
 use dataset mentioned in psupertime manuscript
 
 """
-# import os
-# import sys
-#
-# # necessary: change current path to TemporalVAE
-# # if os.getcwd().split("/")[-1] != "TemporalVAE":
-# #     os.chdir("..")
-# sys.path.append(os.getcwd())
 import os
 import sys
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -56,30 +49,30 @@ def method_calculate(dataset):
 
     time_standard_type = "embryoneg5to5"  #
     print(f"time standard type: {time_standard_type}")
-    if not os.path.exists(f'{os.getcwd()}/{method}_results'):
-        os.makedirs(f'{os.getcwd()}/{method}_results')
+    if not os.path.exists(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results'):
+        os.makedirs(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results')
 
     # ------- set config and logger ------
 
     train_epoch_num = 60  # 2024-04-16 18:19:48
     # train_epoch_num = 150
     import yaml
-    with open("../../vae_model_configs/supervise_vae_regressionclfdecoder_exp2_toyDataset.yaml", 'r') as file:
+    with open("vae_model_configs/supervise_vae_regressionclfdecoder_exp2_toyDataset.yaml", 'r') as file:
         try:
             config = yaml.safe_load(file)
         except yaml.YAMLError as exc:
             print(exc)
 
-    logger_file = f'{os.getcwd()}/exp2_temporalVAE_toyDataset.log'
-    LogHelper.setup(log_path=logger_file, level='INFO')
-    _logger = logging.getLogger(__name__)
-    print("Finished setting up the logger at: {}.".format(logger_file))
+    # logger_file = f'demo/Fig2_TemproalVAE_against_benchmark_methods/exp2_temporalVAE_toyDataset.log'
+    # LogHelper.setup(log_path=logger_file, level='INFO')
+    # _logger = logging.getLogger(__name__)
+    # print("Finished setting up the logger at: {}.".format(logger_file))
     print(f"Epoch number: {train_epoch_num}")
 
     donor_list = list(np.unique(data_y_df))
     kFold_test_result_df = pd.DataFrame(columns=['time', 'pseudotime', 'trans_label'])
 
-    save_path = _logger.root.handlers[0].baseFilename.replace(".log", "")
+    save_path = "demo/Fig2_TemproalVAE_against_benchmark_methods"
     for fold in range(len(donor_list)):
         _result_df = process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config, save_path, train_epoch_num)
 
@@ -87,17 +80,17 @@ def method_calculate(dataset):
     print("k-fold test final result:")
     print(kFold_test_result_df)
     corr(kFold_test_result_df["time"], kFold_test_result_df["pseudotime"])
-    kFold_test_result_df.to_csv(f'{os.getcwd()}/{method}_results/{dataset}_{method}_result.csv', index=True)
-    print(f"test result save at {os.getcwd()}/{method}_results/{dataset}_{method}_result.csv")
+    kFold_test_result_df.to_csv(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_{method}_result.csv', index=True)
+    print(f"test result save at demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_{method}_result.csv")
 
     # f = tp.plot_grid_search(title="Grid Search")
-    # f.savefig(f"{os.getcwd()}/psupertime_results/gridSearch.png")
+    # f.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/psupertime_results/gridSearch.png")
     # f = tp.plot_model_perf((adata.X, adata.obs.time), figsize=(6, 5))
-    # f.savefig(f"{os.getcwd()}/psupertime_results/modelPred.png")
+    # f.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/psupertime_results/modelPred.png")
     # f = tp.plot_identified_gene_coefficients(adata, n_top=20)
-    # f.savefig(f"{os.getcwd()}/psupertime_results/geneCoff.png")
+    # f.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/psupertime_results/geneCoff.png")
     from exp2_psupertime_toyDataset import plot_psupertime_density
-    save_path = f"{os.getcwd()}/{method}_results/"
+    save_path = f"demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/"
     plot_psupertime_density(kFold_test_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=f"{dataset}_")
     print(f"figure save at {save_path}/{dataset}_labelsOverPsupertime.png")
 
@@ -124,8 +117,7 @@ def process_fold_toyDataset(fold, donor_list, adata, time_standard_type, config,
 
     # ----------------------------------------split Train and Test dataset-----------------------------------------------------
     print("the {}/{} fold train, use donor-{} as test set".format(fold + 1, len(donor_list), donor_list[fold]))
-    subFold_save_file_path = "{}/temporalVAE_results/{}/".format(save_path,
-                                                         donor_list[fold])
+    subFold_save_file_path = f"{save_path}/temporalVAE_results/{donor_list[fold]}/"
 
     if not os.path.exists(subFold_save_file_path):
         os.makedirs(subFold_save_file_path)

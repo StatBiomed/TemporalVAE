@@ -6,7 +6,7 @@ Directly downloaded through the R-package of Psupertime.
 
 R code:
 ```r
-setwd('./Fig2_TemproalVAE_against_benchmark_methods')
+setwd('demo/Fig2_TemproalVAE_against_benchmark_methods')
 
 # make Acinar cell dataset ------------------------------------------------------------
 suppressPackageStartupMessages({
@@ -39,7 +39,7 @@ import pandas as pd
 import os
 import numpy as np
 
-os.chdir('./Fig2_TemproalVAE_against_benchmark_methods')
+os.chdir('demo/Fig2_TemproalVAE_against_benchmark_methods')
 
 
 def main():
@@ -103,7 +103,7 @@ Dataset can access on [GEO GSE86146](https://www.ncbi.nlm.nih.gov/geo/query/acc.
 
 1 use following R code to combine .txt.gz files:
 ```r
-setwd('./Fig2_TemproalVAE_against_benchmark_methods')
+setwd('demo/Fig2_TemproalVAE_against_benchmark_methods')
 # make Human germline dataset ------------------------------------------------------------
 
 folder_path <- "data_fromPsupertime/GSE86146"
@@ -161,7 +161,7 @@ import pandas as pd
 import os
 import numpy as np
 
-os.chdir('./Fig2_TemproalVAE_against_benchmark_methods')
+os.chdir('demo/Fig2_TemproalVAE_against_benchmark_methods')
 
 
 def main():

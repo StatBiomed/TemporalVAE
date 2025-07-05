@@ -136,7 +136,7 @@ def corr_withRemoveDonor(df, label_to_remove, corr_method,):
 
 def get_method_result(method, dataset):  #
 
-    file = f"{os.getcwd()}/{method}_results/{dataset}_{method}_result.csv"
+    file = f"demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_{method}_result.csv"
     data = pd.read_csv(file, index_col=0)
     return data
 
@@ -155,7 +155,7 @@ def preprocess_parameters(dataset, additional_path=""):  # "acinarHVG", "embryoB
     # # ------------ for Human Germline dataset:
     # elif dataset == "humanGermline":
     #     data_x_df = pd.read_csv('data_fromPsupertime/humanGermline_X.csv', index_col=0).T
-    #     hvg_gene_list = pd.read_csv(f'{os.getcwd()}/data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
+    #     hvg_gene_list = pd.read_csv(f'demo/Fig2_TemproalVAE_against_benchmark_methods/data_fromPsupertime/{dataset}_gene_list.csv', index_col=0)
     #     data_x_df = data_x_df[hvg_gene_list["gene_name"]]
     #     data_y_df = pd.read_csv('data_fromPsupertime/humanGermline_Y.csv', index_col=0)
     #     data_y_df = data_y_df["time"]
@@ -241,8 +241,8 @@ def plot_boxAndDot_on_allData(pca_df, randomForest_df, lr_df, psupertime_df, tem
     plt.rc('xtick', labelsize=16)
     plt.rc('ytick', labelsize=16)
 
-    plt.savefig(f"{os.getcwd()}/{dataset}_methods_boxAndDot_results.pdf")
-    plt.savefig(f"{os.getcwd()}/{dataset}_methods_boxAndDot_results.png", dpi=200)
+    plt.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/{dataset}_methods_boxAndDot_results.pdf")
+    plt.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/{dataset}_methods_boxAndDot_results.png", dpi=200)
 
     # 显示图形
     plt.show()
@@ -322,9 +322,9 @@ def plot_kFold_corr(pca_df, randomForest_df, lr_df, psupertime_df, vae_df,
     # 调整子图布局
     plt.suptitle(f'{dataset_dic[dataset]}: Correlation for Each Deleted donor', fontsize=18)
     plt.tight_layout(rect=[0, 0, 1, 0.95])
-    plt.savefig(f"{os.getcwd()}/{dataset}_methods_results.pdf")
-    plt.savefig(f"{os.getcwd()}/{dataset}_methods_results.png", dpi=200)
-    print(f"figure save at {os.getcwd()}")
+    plt.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/{dataset}_methods_results.pdf")
+    plt.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/{dataset}_methods_results.png", dpi=200)
+    print(f"figure save at demo/Fig2_TemproalVAE_against_benchmark_methods")
     # 显示图形
     plt.show()
     plt.close()

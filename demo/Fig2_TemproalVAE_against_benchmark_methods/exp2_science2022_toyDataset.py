@@ -40,12 +40,12 @@ def main():
 def method_calculate(dataset):
     adata, data_x_df, data_y_df = preprocess_parameters(dataset)
     method = "science2022"
-    # os.makedirs(f'{os.getcwd()}/preprocessedData_ByPypsupertime_forSeurat')
-    # data_x_df.to_csv(f'{os.getcwd()}/preprocessedData_ByPypsupertime_forSeurat/{dataset}_X.csv')
-    # adata.obs["time"].to_csv(f'{os.getcwd()}/preprocessedData_ByPypsupertime_forSeurat/{dataset}_Y.csv')
+    # os.makedirs(f'demo/Fig2_TemproalVAE_against_benchmark_methods/preprocessedData_ByPypsupertime_forSeurat')
+    # data_x_df.to_csv(f'demo/Fig2_TemproalVAE_against_benchmark_methods/preprocessedData_ByPypsupertime_forSeurat/{dataset}_X.csv')
+    # adata.obs["time"].to_csv(f'demo/Fig2_TemproalVAE_against_benchmark_methods/preprocessedData_ByPypsupertime_forSeurat/{dataset}_Y.csv')
 
-    if not os.path.exists(f'{os.getcwd()}/{method}_results'):
-        os.makedirs(f'{os.getcwd()}/{method}_results')
+    if not os.path.exists(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results'):
+        os.makedirs(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results')
     # --------------------------------------------
     donor_list = list(np.unique(data_y_df))
     kFold_test_result_df = pd.DataFrame(columns=['time', 'pseudotime'])
@@ -71,12 +71,12 @@ def method_calculate(dataset):
 
     # emd, mmd, r_squared=distribution_metric(np.array(kFold_test_result_df["time"]),np.array(kFold_test_result_df["pseudotime"]))
 
-    kFold_test_result_df.to_csv(f'{os.getcwd()}/{method}_results/{dataset}_{method}_result.csv', index=True)
-    print(f"test result save at {os.getcwd()}/{method}_results/{dataset}_{method}_result.csv")
+    kFold_test_result_df.to_csv(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_{method}_result.csv', index=True)
+    print(f"test result save at demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_{method}_result.csv")
 
-    save_path = f"{os.getcwd()}/{method}_results/"
+    save_path = f"demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/"
     plot_psupertime_density(kFold_test_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=method)
-    print(f"figure save at {os.getcwd()}/{method}_results/{dataset}_labelsOverPsupertime.png")
+    print(f"figure save at demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_labelsOverPsupertime.png")
 
 
 

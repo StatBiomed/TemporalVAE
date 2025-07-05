@@ -49,8 +49,8 @@ def method_calculate(dataset):
 
     time_standard_type = "embryoneg5to5"  #
     print(f"time standard type: {time_standard_type}")
-    if not os.path.exists(f'{os.getcwd()}/{method}_results'):
-        os.makedirs(f'{os.getcwd()}/{method}_results')
+    if not os.path.exists(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results'):
+        os.makedirs(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results')
 
     # ------- set config and logger ------
 
@@ -63,7 +63,7 @@ def method_calculate(dataset):
         except yaml.YAMLError as exc:
             print(exc)
 
-    logger_file = f'{os.getcwd()}/exp2_vae_with LR_toyDataset.log'
+    logger_file = f'demo/Fig2_TemproalVAE_against_benchmark_methods/exp2_vae_with LR_toyDataset.log'
     LogHelper.setup(log_path=logger_file, level='INFO')
     _logger = logging.getLogger(__name__)
     print("Finished setting up the logger at: {}.".format(logger_file))
@@ -80,17 +80,17 @@ def method_calculate(dataset):
     print("k-fold test final result:")
     print(kFold_test_result_df)
     corr(kFold_test_result_df["time"], kFold_test_result_df["pseudotime"])
-    kFold_test_result_df.to_csv(f'{os.getcwd()}/{method}_results/{dataset}_{method}_result.csv', index=True)
-    print(f"test result save at {os.getcwd()}/{method}_results/{dataset}_{method}_result.csv")
+    kFold_test_result_df.to_csv(f'demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_{method}_result.csv', index=True)
+    print(f"test result save at demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/{dataset}_{method}_result.csv")
 
     # f = tp.plot_grid_search(title="Grid Search")
-    # f.savefig(f"{os.getcwd()}/psupertime_results/gridSearch.png")
+    # f.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/psupertime_results/gridSearch.png")
     # f = tp.plot_model_perf((adata.X, adata.obs.time), figsize=(6, 5))
-    # f.savefig(f"{os.getcwd()}/psupertime_results/modelPred.png")
+    # f.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/psupertime_results/modelPred.png")
     # f = tp.plot_identified_gene_coefficients(adata, n_top=20)
-    # f.savefig(f"{os.getcwd()}/psupertime_results/geneCoff.png")
+    # f.savefig(f"demo/Fig2_TemproalVAE_against_benchmark_methods/psupertime_results/geneCoff.png")
     from exp2_psupertime_toyDataset import plot_psupertime_density
-    save_path = f"{os.getcwd()}/{method}_results/"
+    save_path = f"demo/Fig2_TemproalVAE_against_benchmark_methods/{method}_results/"
     plot_psupertime_density(kFold_test_result_df, save_path=save_path, label_key="time", psupertime_key="pseudotime", method=f"{dataset}_")
     print(f"figure save at {save_path}/{dataset}_labelsOverPsupertime.png")
 

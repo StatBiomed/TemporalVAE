@@ -61,9 +61,9 @@ To install TemporalVAE, python 3.10.9 is required and follow the instruction
     ```
 
     2. Install PyTorch correctly for your system, check your computer's configuration (OS, CUDA version, etc.) and download Pytorch from https://pytorch.org.
-   3. Install `pytorch-lightning`
+   3. Install `tensorboard`
    ```bash
-   pip install pytorch-lightning
+   pip install tensorboard
    ```
 
 
