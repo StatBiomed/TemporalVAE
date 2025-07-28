@@ -16,7 +16,7 @@ Quick install can be achieved via pip (python >=3.8)
 **Step 0**: create a conda environment and activate it:
 
 ```bash
-conda create -n tvae python=3.11
+conda create -n tvae python=3.10.9
 conda activate tvae
 
 # Optional: add jupyter lab kernal
@@ -27,7 +27,7 @@ python -m ipykernel install --user --name tvae --display-name "tvae"
 **Step 1**: install TemporalVAE from GitHub:
 ```bash
 # or developing version
-pip install -U git+https://github.com/StatBiomed/TemporalVAE
+pip install -U git+https://github.com/StatBiomed/TemporalVAE-release
 
 # for published version (TO AVAILABLE SOON)
 # pip install -U TemporalVAE
