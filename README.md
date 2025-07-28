@@ -1,9 +1,11 @@
 # TemporalVAE
-Temporal mapping of single cells from time-series atlas
+Temporal mapping of single cells from time-series atlas with time-predicting VAE
 
 ## Reproducibility
-For reproducibility of the manuscript's analyses, the scripts for generating figures are available at 
-[TemporalVAE-reproducibility](https://github.com/StatBiomed/TemporalVAE-reproducibility) 
+For reproducibility of the manuscript's analyses, the scripts for generating 
+figures are available at 
+[TemporalVAE-reproducibility](
+   https://github.com/StatBiomed/TemporalVAE-reproducibility) 
 folder/submodule.
 
 
@@ -11,21 +13,39 @@ folder/submodule.
 
 Quick install can be achieved via pip (python >=3.8)
 
-```bash
-# for published version
-pip install -U TemporalVAE
+**Step 0**: create a conda environment and activate it:
 
+```bash
+conda create -n tvae python=3.11
+conda activate tvae
+
+# Optional: add jupyter lab kernal
+pip install ipykernel
+python -m ipykernel install --user --name tvae --display-name "tvae"
+```
+
+**Step 1**: install TemporalVAE from GitHub:
+```bash
 # or developing version
 pip install -U git+https://github.com/StatBiomed/TemporalVAE
+
+# for published version (TO AVAILABLE SOON)
+# pip install -U TemporalVAE
 ```
 
 ## Quick Usage
 
-More examples can be found at [examples](./examples) folder, including
-[TemporalVAE_demo.ipynb](./examples/TemporalVAE_embryoBetaCells_demo.ipynb)
+Reference examples can be found at [examples](./examples) folder, including
 
+* training: [hEmbryo8_training.ipynb](./examples/hEmbryo8_training.ipynb)
 
-Here is a quick start (TO IMPLEMENT):
+* cross-validation: [hEmbryo8_Xiang_CV.ipynb](./examples/hEmbryo8_Xiang_CV.ipynb)
+
+* predicting: [TO BE ADDED]
+
+## Future plan for easier use
+
+Here are the future plan for easier use (TO IMPLEMENT):
 
 1. Import TemporalVAE and create an object of the class TVAE.
 
