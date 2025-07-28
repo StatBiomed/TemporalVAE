@@ -1,27 +1,24 @@
 # -*-coding:utf-8 -*-
 """
 @Project ：TemporalVAE
-@File    ：utils_project.py
+@File    ：utils_DandanProject.py
 @IDE     ：PyCharm
 @Author  ：awa121
 @Date    ：2023/6/10 18:49
 """
 import logging
-import gc
 
 _logger = logging.getLogger(__name__)
 
 import os
 
 from .GPU_manager_pytorch import auto_select_gpu_and_cpu, check_memory, check_gpu_memory
-from ..model_master import *
+from TemporalVAE.model_master import *
 import time
 import random
 import json
 import anndata
-import pandas as pd
 
-import numpy as np
 import scanpy as sc
 
 from .utils_plot import *
@@ -97,7 +94,6 @@ def setup_model(y, time, latent_dim, device):
 def predict_on_one_donor(gplvm, cell_time, sc_expression_train, sc_expression_test, golbal_path, file_path, donor,
                          sample_num=10, args=None):
     # ---------------------------------------------- Freeze gplvm for prediction  --------------------------------------------------
-    import matplotlib.pyplot as plt
     """
     After training GPLVM, we get good hyperparameters for the data.
     Then when new data is provided, we train GPLVM again with these fixed hyperparameters to learn X.
@@ -343,7 +339,7 @@ def test_on_newDataset(sc_expression_train, data_golbal_path, result_save_path, 
     :param time_standard_type:
     :return:
     """
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
     _logger.info("Test on new dataset.")
 
     gene_list = sc_expression_train.columns
@@ -411,7 +407,7 @@ def test_on_newDonor(test_donor_name, sc_expression_test, runner, experiment, pr
     :param time_standard_type:
     :return:
     """
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
 
     x_sc_test = torch.tensor(sc_expression_test.values, dtype=torch.get_default_dtype()).t()
     _logger.info("Set x_sc_test data with shape (gene, cells): {}".format(x_sc_test.shape))
@@ -564,7 +560,6 @@ def setup_model(y, time, latent_dim, device):
 def predict_on_one_donor(gplvm, cell_time, sc_expression_train, sc_expression_test, golbal_path, file_path, donor,
                          sample_num=10, args=None):
     # ---------------------------------------------- Freeze gplvm for prediction  --------------------------------------------------
-    import matplotlib.pyplot as plt
     """
     After training GPLVM, we get good hyperparameters for the data.
     Then when new data is provided, we train GPLVM again with these fixed hyperparameters to learn X.
@@ -741,6 +736,7 @@ def downSample_matrix(matrix, target_location="row", reduce_multiple=10):
         return downsampled_matrix
 
 
+# 2024-02-23 12:56:15 remove KNN_smooth_type
 def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, cell_info_file,
                                                   drop_out_donor=None, donor_attr="donor", gene_list=None,
                                                   drop_out_cell_type=None,
@@ -755,7 +751,8 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
                                                   special_path_str="",
                                                   random_drop_cell_bool=False,
                                                   normalized_cellTotalCount=1e6,
-                                                  data_raw_count_bool=True):
+                                                  data_raw_count_bool=True,
+                                                  return_normalized_raw_count=False, ):
     """
     :param global_data_path:
     :param file_name:
@@ -787,7 +784,7 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
     if file_name.split(".")[-1] in ["h5", "h5ad"]:
         _logger.info("input data is .h5 or .h5ad file, where cell as column and gene as row.")
         adata = anndata.read_h5ad(f"{global_data_path}/{file_name}")
-        cell_time = adata.obs
+        # cell_time = adata.obs
         _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
 
     elif file_name.split(".")[-1] == "csv":
@@ -798,8 +795,8 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
             adata = anndata.read_csv("{}/{}".format(global_data_path, file_name), delimiter=',')
         _logger.info("read the original sc expression anndata with shape (gene, cell): {}".format(adata.shape))
         adata = adata.T
-        cell_time = pd.read_csv(global_data_path + cell_info_file, sep="\t", index_col=0)
-        adata.obs = cell_time
+
+        adata.obs = pd.read_csv(global_data_path + cell_info_file, sep="\t", index_col=0)
     # read external file,
     if external_file_name is not None:
         external_file_name = [external_file_name] if isinstance(external_file_name, str) else external_file_name
@@ -807,33 +804,33 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
         for i in range(len(external_file_name)):
             if external_file_name[i].split(".")[-1] in ["h5", "h5ad"]:
                 _logger.info("External file name {} is .h5 or h5ad type".format(external_file_name[i]))
-                adata2 = anndata.read_h5ad("{}/{}".format(global_data_path, external_file_name[i]))
+                adata_external = anndata.read_h5ad("{}/{}".format(global_data_path, external_file_name[i]))
             elif external_file_name[i].split(".")[-1] == "csv":
                 _logger.info("External file name {} is .csv type".format(external_file_name[i]))
                 try:
-                    adata2 = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter='\t')
+                    adata_external = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter='\t')
                 except:
-                    adata2 = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter=',')
-                _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
+                    adata_external = anndata.read_csv("{}/{}".format(global_data_path, external_file_name[i]), delimiter=',')
+                _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata_external.shape))
                 _logger.info("here is important, we want to use same cell compare with no integration method.")
-                adata2 = adata2.T
+                adata_external = adata_external.T
                 # read cell info file
                 external_cell_time = pd.read_csv(global_data_path + external_cell_info_file[i], sep="\t", index_col=0)
-                external_cell_time = external_cell_time.reindex(adata2.obs_names)
-                adata2.obs = external_cell_time
+                external_cell_time = external_cell_time.reindex(adata_external.obs_names)
+                adata_external.obs = external_cell_time
 
             # if external_cellId_list is not None:
             #     _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
-            #     adata2 = adata2[external_cellId_list]
+            #     adata_external = adata_external[external_cellId_list]
             # identify and remove duplicate cell
-            duplicate_columns = set(adata.obs_names) & set(adata2.obs_names)
-            adata2 = adata2[~adata2.obs_names.isin(duplicate_columns)]
+            duplicate_columns = set(adata.obs_names) & set(adata_external.obs_names)
+            adata_external = adata_external[~adata_external.obs_names.isin(duplicate_columns)]
             _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
 
-            col_gene_list = [_gene for _gene in adata.var_names if _gene in adata2.var_names]
+            col_gene_list = [_gene for _gene in adata.var_names if _gene in adata_external.var_names]
             adata = adata[:, col_gene_list]
-            adata2 = adata2[:, col_gene_list]
-            adata = anndata.concat([adata, adata2], axis=0, join='outer')
+            adata_external = adata_external[:, col_gene_list]
+            adata = anndata.concat([adata, adata_external], axis=0, join='outer')
             _logger.info("merged sc data and external test dataset with shape (cell, gene): {}".format(adata.shape))
 
     cell_time = adata.obs
@@ -998,10 +995,11 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
     gene_raw_total_count = pd.DataFrame(data=adata.X.sum(axis=0), index=adata.var_names, columns=["raw_total_count"])
 
     # ---
-    sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount)
+    # sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount)
+    adata_normalized = sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount, copy=True)
     print(f"normalized sample to {normalized_cellTotalCount}")
     if data_raw_count_bool:
-        sc.pp.log1p(adata)
+        sc.pp.log1p(adata_normalized)
         print("Input data is raw count, do the log1p().")
     else:
         print("Input data is log-ed, skip the log-ed.")
@@ -1009,15 +1007,15 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
                  f"so that every cell has the same total count after normalization.")
     if plot_boxPlot_bool:
         try:
-            plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
+            plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata_normalized, cell_time, donor_attr,
                                                                special_path_str, test_donor,
                                                                special_file_str=f"6NormalizeTo1e6AndLog")
-            plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
+            plot_boxPlot_total_count_per_cell_whilePreprocess(adata_normalized, cell_time, donor_attr,
                                                               special_path_str, test_donor,
                                                               special_file_str=f"6NormalizeTo1e6AndLog")
         except:
             print("some error while plot before boxplot.")
-    sc_expression_df = pd.DataFrame(data=adata.X, columns=adata.var.index, index=adata.obs.index)
+    sc_expression_df = pd.DataFrame(data=adata_normalized.X, columns=adata_normalized.var.index, index=adata_normalized.obs.index)
     # 2023-08-05 15:12:28 for debug
     # sc_expression_df = sc_expression_df.sample(n=6000, random_state=0)
 
@@ -1044,331 +1042,13 @@ def preprocessData_and_dropout_some_donor_or_gene(global_data_path, file_name, c
     except:
         print("Not save preprocessed_cell_info.csv and preprocessed_gene_info.csv")
         pass
-    return sc_expression_df, cell_time
-
-
-# old version
-# def preprocessData_and_dropout_some_donor_or_gene(golbal_data_path, file_name, cell_info_file,  # 2024-02-23 12:56:15 remove KNN_smooth_type
-#                                                   drop_out_donor=None, donor_attr="donor", gene_list=None,
-#                                                   drop_out_cell_type=None,
-#                                                   min_cell_num=50, min_gene_num=100, keep_sub_type_with_cell_num=None,
-#                                                   external_file_name=None, external_cell_info_file=None,
-#                                                   external_file_name2=None, external_cell_info_file2=None,
-#                                                   external_cellId_list=None,
-#                                                   downSample_on_testData_bool=False, test_donor=None,
-#                                                   downSample_location_type=None,
-#                                                   augmentation_on_trainData_bool=False,
-#                                                   plot_boxPlot_bool=False,
-#                                                   special_path_str="",
-#                                                   random_drop_cell_bool=False,
-#                                                   normalized_cellTotalCount=1e6,
-#                                                   data_raw_count_bool=True):
-#     """
-#     :param golbal_data_path:
-#     :param file_name:
-#     :param cell_info_file:
-#     :param drop_out_donor:
-#     :param donor_attr:
-#     :param gene_list:
-#     :param drop_out_cell_type:
-#     :param min_cell_num:
-#     :param min_gene_num:
-#     :param keep_sub_type_with_cell_num:
-#     :param external_file_name:
-#     :param external_cell_info_file:
-#     :param external_cellId_list:
-#     :param downSample_on_testData_bool:
-#     :param test_donor:
-#     :param downSample_location_type:
-#     :param augmentation_on_trainData_bool:
-#     :param plot_boxPlot_bool:
-#     :param special_path_str:
-#     :param random_drop_cell_bool:
-#     :param normalized_cellTotalCount:
-#     :param data_raw_count_bool: default is True, and do normalized bu scanpy. Require the input adata is raw count, but if input is already normalized, don't do normalization.
-#     :return:
-#     """
-#     # drop should before perprocess sc data
-#     # from .utils_Dandan_plot import plot_boxPlot_nonExpGene_percentage_whilePreprocess
-#     _logger.info("the original sc expression anndata should be gene as row, cell as column")
-#     try:
-#         adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter='\t')
-#     except:
-#         adata = anndata.read_csv("{}/{}".format(golbal_data_path, file_name), delimiter=',')
-#     _logger.info("read the original sc expression anndata with shape (gene, cell): {}".format(adata.shape))
-#
-#     if external_file_name is not None:
-#         try:
-#             adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter='\t')
-#         except:
-#             adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name), delimiter=',')
-#         _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
-#         _logger.info("here is important, we want to use same cell compare with no integration method.")
-#         if external_cellId_list is not None:
-#             _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
-#             adata2 = adata2[:, external_cellId_list].copy()
-#         # adata2=adata2.T.copy()
-#         # sc.pp.filter_cells(adata2, min_genes=min_gene_num)
-#         # adata2=adata2.T.copy()
-#         # 2023-08-03 18:41:20 concat adata and adata2
-#         # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
-#         duplicate_columns = set(adata.var_names) & set(adata2.var_names)
-#         # 删除adata2中的重复列
-#         adata2 = adata2[:, ~adata2.var_names.isin(duplicate_columns)]
-#         _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
-#
-#         adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
-#         _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
-#     if external_file_name2 is not None:
-#         try:
-#             adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter='\t')
-#         except:
-#             adata2 = anndata.read_csv("{}/{}".format(golbal_data_path, external_file_name2), delimiter=',')
-#         _logger.info("read the external test dataset sc expression anndata with shape (gene, cell): {}".format(adata2.shape))
-#         _logger.info("here is important, we want to use same cell compare with no integration method.")
-#         if external_cellId_list is not None:
-#             _logger.info(f"external data select cells by external_cellId_list with {len(external_cellId_list)} cells")
-#             adata2 = adata2[:, external_cellId_list].copy()
-#         # adata2=adata2.T.copy()
-#         # sc.pp.filter_cells(adata2, min_genes=min_gene_num)
-#         # adata2=adata2.T.copy()
-#         # 2023-08-03 18:41:20 concat adata and adata2
-#         # 查找adata1和adata2中duplicate columns, that is the duplicate cell name
-#         duplicate_columns = set(adata.var_names) & set(adata2.var_names)
-#         # 删除adata2中的重复列
-#         adata2 = adata2[:, ~adata2.var_names.isin(duplicate_columns)]
-#         _logger.info("drop out {} duplicate cell (with the same cell name) from external data".format(len(duplicate_columns)))
-#
-#         adata = anndata.concat([adata.copy(), adata2.copy()], axis=1)
-#         _logger.info("merged sc data and external test dataset with shape (gene, cell): {}".format(adata.shape))
-#
-#     if gene_list is not None:
-#         overlap_gene = list(set(adata.obs_names) & set(gene_list))
-#         adata = adata[overlap_gene].copy()
-#         _logger.info("with gene list require, adata filted with {} genes.".format(len(overlap_gene)))
-#     adata = adata.T  # 基因和cell转置矩阵
-#     _logger.info("Import data, cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
-#     cell_time = pd.read_csv(golbal_data_path + cell_info_file, sep="\t", index_col=0)
-#     if external_cell_info_file is not None:
-#         external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file, sep="\t", index_col=0)
-#         _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
-#
-#         external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
-#         _logger.info("drop out {} duplicate cell(with the same cell name)".format(len(duplicate_columns)))
-#
-#         cell_time = pd.concat([cell_time, external_cell_time])
-#         _logger.info("merged sc cell info and external cell info dataframe with (cell, attr-num): {}".format(cell_time.shape))
-#     if external_cell_info_file2 is not None:
-#         external_cell_time = pd.read_csv(golbal_data_path + external_cell_info_file2, sep="\t", index_col=0)
-#         _logger.info("Import external cell info dataframe with (cell, attr-num): {}".format(external_cell_time.shape))
-#
-#         external_cell_time = external_cell_time.drop(duplicate_columns, axis=0)
-#         _logger.info("drop out {} duplicate cell(with the same cell name)".format(len(duplicate_columns)))
-#
-#         cell_time = pd.concat([cell_time, external_cell_time])
-#         _logger.info("merged sc cell info and external cell info dataframe with (cell, attr-num): {}".format(cell_time.shape))
-#
-#     if drop_out_donor is not None:
-#         drop_out_cell = list(
-#             set(cell_time.loc[cell_time[donor_attr].isin(list(drop_out_donor))].index) & set(adata.obs.index))
-#         adata = adata[adata.obs_names.drop(drop_out_cell)].copy()
-#         _logger.info("After drop out {}, get expression dataframe with shape (cell, gene): {}.".format(drop_out_donor,
-#                                                                                                        adata.shape))
-#     if drop_out_cell_type is not None:
-#         _logger.info(f"drop out {len(drop_out_cell_type)} cell type: {drop_out_cell_type}")
-#         # 2023-11-07 11:05:26 for Joy project, she focus on epi cells, so remove fibro cells, and the attr name in cell_time is "broad_celltype"
-#         drop_out_cell = list(set(cell_time.loc[cell_time["broad_celltype"].isin(list(drop_out_cell_type))].index) & set(adata.obs.index))
-#         adata = adata[adata.obs_names.drop(drop_out_cell)].copy()
-#         _logger.info("After drop out {}, get expression dataframe with shape (cell, gene): {}.".format(drop_out_donor, adata.shape))
-#     if plot_boxPlot_bool:
-#         try:
-#             plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
-#                                                                special_path_str, test_donor,
-#                                                                special_file_str="1InitialImportData")
-#             plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
-#                                                               special_path_str, test_donor,
-#                                                               special_file_str="1InitialImportData")
-#         except:
-#             print("some error while plot before boxplot.")
-#     if random_drop_cell_bool:
-#         _logger.info("To fast check model performance, random dropout cells, only save few cells to train and test")
-#         random.seed(123)
-#         # 随机生成不重复的样本索引
-#         random_indices = random.sample(range(adata.shape[0]), int(adata.n_obs / 10), )
-#
-#         # 从 anndata 对象中获取选定的样本数据
-#         adata = adata[random_indices, :].copy()
-#         _logger.info("After random select 1/10 samples from adata, remain adata shape: {}".format(adata.shape))
-#         if plot_boxPlot_bool:
-#             try:
-#                 plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
-#                                                                    special_path_str, test_donor,
-#                                                                    special_file_str="2RandomDropPartCell")
-#                 plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
-#                                                                   special_path_str, test_donor,
-#                                                                   special_file_str="2RandomDropPartCell")
-#             except:
-#                 print("some error while plot before boxplot.")
-#
-#     if downSample_on_testData_bool:
-#         _logger.info("Down sample on test donor: {}, downSample location type: {}".format(test_donor, downSample_location_type))
-#         test_cell = list(set(cell_time.loc[cell_time[donor_attr] == test_donor].index) & set(adata.obs.index))
-#         adata_test = adata[test_cell].copy()
-#
-#         test_dataframe = pd.DataFrame(data=adata_test.X, columns=adata_test.var.index, index=adata_test.obs.index)
-#         temp = downSample_matrix(np.array(test_dataframe.values), target_location=downSample_location_type)
-#         downSample_test_dataframe = pd.DataFrame(data=temp, columns=test_dataframe.columns, index=test_dataframe.index)
-#         downSample_test_anndata = anndata.AnnData(downSample_test_dataframe)
-#         adata = adata[adata.obs_names.drop(test_cell)].copy()
-#         adata = anndata.concat([adata.copy(), downSample_test_anndata.copy()], axis=0)
-#         # downSample_test_dataframe.values.sum()
-#
-#         if plot_boxPlot_bool:
-#             try:
-#                 plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
-#                                                                    special_path_str, test_donor,
-#                                                                    special_file_str=f"3DownSampleOnTestBy{downSample_location_type}")
-#                 plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
-#                                                                   special_path_str, test_donor,
-#                                                                   special_file_str=f"3DownSampleOnTestBy{downSample_location_type}")
-#             except:
-#                 print("some error while plot before boxplot.")
-#     if augmentation_on_trainData_bool:
-#         _logger.info("Data augmentation on train set by down sample 1/10 and 1/3, downSample location type line")
-#         train_cell = list(set(cell_time.loc[cell_time[donor_attr] != test_donor].index) & set(adata.obs.index))
-#         _logger.info(f"the train cell number is {len(train_cell)}")
-#         adata_train = adata[train_cell].copy()
-#
-#         train_dataframe = pd.DataFrame(data=adata_train.X, columns=adata_train.var.index, index=adata_train.obs.index)
-#         temp10 = downSample_matrix(np.array(train_dataframe.values), target_location="line", reduce_multiple=10)
-#         temp3 = downSample_matrix(np.array(train_dataframe.values), target_location="line", reduce_multiple=3)
-#         downSample10_train_df = pd.DataFrame(data=temp10, columns=train_dataframe.columns,
-#                                              index=train_dataframe.index + "_downSample10")
-#         downSample3_train_df = pd.DataFrame(data=temp3, columns=train_dataframe.columns,
-#                                             index=train_dataframe.index + "_downSample3")
-#         downSample10_train_anndata = anndata.AnnData(downSample10_train_df)
-#         downSample3_train_anndata = anndata.AnnData(downSample3_train_df)
-#
-#         adata = anndata.concat([adata.copy(), downSample10_train_anndata.copy()], axis=0)
-#         adata = anndata.concat([adata.copy(), downSample3_train_anndata.copy()], axis=0)
-#         _logger.info(f"After concat downSample 1/10 and 1/3 train cell, the adata with {adata.n_obs} cell, {adata.n_vars} gene.")
-#         train_cell_time = cell_time.loc[train_cell]
-#         downSample10_train_cell_time = train_cell_time.copy()
-#         downSample10_train_cell_time.index = downSample10_train_cell_time.index + "_downSample10"
-#         downSample3_train_cell_time = train_cell_time.copy()
-#         downSample3_train_cell_time.index = downSample3_train_cell_time.index + "_downSample3"
-#
-#         cell_time = pd.concat([cell_time, downSample10_train_cell_time])
-#         cell_time = pd.concat([cell_time, downSample3_train_cell_time])
-#         _logger.info(
-#             f"Also add the downSample cell info to cell time dataframe and shape to {cell_time.shape}, columns is {cell_time.columns}")
-#         if plot_boxPlot_bool:
-#             try:
-#                 plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
-#                                                                    special_path_str, test_donor,
-#                                                                    special_file_str="4DataAugmentationOnTrainByline")
-#                 plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
-#                                                                   special_path_str, test_donor,
-#                                                                   special_file_str="4DataAugmentationOnTrainByline")
-#             except:
-#                 print("some error while plot before boxplot.")
-#
-#     # 数据数目统计
-#     _shape = adata.shape
-#     _new_shape = (0, 0)
-#     while _new_shape != _shape:  # make sure drop samples and genes
-#         _shape = adata.shape
-#         sc.pp.filter_cells(adata, min_genes=min_gene_num)  # drop samples with less than 20 gene expression
-#         sc.pp.filter_genes(adata, min_cells=min_cell_num)  # drop genes which none expression in 3 samples
-#         _new_shape = adata.shape
-#     _logger.info("After drop gene threshold: {}, cell threshold: {}, remain adata shape: {}".format(min_cell_num,
-#                                                                                                     min_gene_num,
-#                                                                                                     adata.shape))
-#
-#     if plot_boxPlot_bool:
-#         try:
-#             plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
-#                                                                special_path_str, test_donor,
-#                                                                special_file_str=f"5filterGene{min_cell_num}Cell{min_gene_num}")
-#             plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
-#                                                               special_path_str, test_donor,
-#                                                               special_file_str=f"5filterGene{min_cell_num}Cell{min_gene_num}")
-#         except:
-#             print("some error while plot before boxplot.")
-#
-#     if keep_sub_type_with_cell_num is not None:
-#         drop_out_cell = []
-#         _logger.info(f"Random select {keep_sub_type_with_cell_num} cells in each sub celltype; "
-#                      f"if one sub type number less than the threshold, keep all.")
-#         _cell_time = cell_time.loc[adata.obs_names]
-#         from collections import Counter
-#         _num_dic = dict(Counter(_cell_time["major_cell_type"]))
-#         _logger.info("In this cell type (sub cell type, number of cells): {}".format(_num_dic))
-#         for _cell_type, _cell_num in _num_dic.items():
-#             if _cell_num > keep_sub_type_with_cell_num:
-#                 _cell_type_df = _cell_time.loc[_cell_time["major_cell_type"] == _cell_type]
-#                 _drop_cell = _cell_type_df.sample(n=len(_cell_type_df) - keep_sub_type_with_cell_num,
-#                                                   random_state=0).index
-#                 drop_out_cell += list(_drop_cell)
-#                 _logger.info("Drop out {} cells for {}, which has {} cells before".format(len(_drop_cell), _cell_type,
-#                                                                                           _cell_num))
-#         adata = adata[adata.obs_names.drop(drop_out_cell)].copy()
-#         _logger.info("After drop out {}, get expression dataframe with shape (cell, gene): {}.".format(drop_out_donor,
-#                                                                                                        adata.shape))
-#
-#     _logger.info("Drop cells with less than {} gene expression, drop genes which none expression in {} samples".format(min_gene_num, min_cell_num))
-#
-#     _logger.info("After filter, get cell number: {}, gene number: {}".format(adata.n_obs, adata.n_vars))
-#     gene_raw_total_count = pd.DataFrame(data=adata.X.sum(axis=0), index=adata.var_names, columns=["raw_total_count"])
-#
-#     # ---
-#     sc.pp.normalize_total(adata, target_sum=normalized_cellTotalCount)
-#     print(f"normalized sample to {normalized_cellTotalCount}")
-#     if data_raw_count_bool:
-#         sc.pp.log1p(adata)
-#         print("Input data is raw count, do the log1p().")
-#     else:
-#         print("Input data is log-ed, skip the log-ed.")
-#     _logger.info(f"Finish normalize per cell to {normalized_cellTotalCount}, "
-#                  f"so that every cell has the same total count after normalization.")
-#     if plot_boxPlot_bool:
-#         try:
-#             plot_boxPlot_nonExpGene_percentage_whilePreprocess(adata, cell_time, donor_attr,
-#                                                                special_path_str, test_donor,
-#                                                                special_file_str=f"6NormalizeTo1e6AndLog")
-#             plot_boxPlot_total_count_per_cell_whilePreprocess(adata, cell_time, donor_attr,
-#                                                               special_path_str, test_donor,
-#                                                               special_file_str=f"6NormalizeTo1e6AndLog")
-#         except:
-#             print("some error while plot before boxplot.")
-#     sc_expression_df = pd.DataFrame(data=adata.X, columns=adata.var.index, index=adata.obs.index)
-#     # 2023-08-05 15:12:28 for debug
-#     # sc_expression_df = sc_expression_df.sample(n=6000, random_state=0)
-#
-#     denseM = sc_expression_df.values
-#     # denseM = KNN_smoothing_start(denseM, type=KNN_smooth_type) # 2024-02-23 12:54:26 remove this useless KNN_smooth_type
-#     # _logger.info("Finish smooth by {} method.".format(KNN_smooth_type))
-#     from sklearn.preprocessing import scale
-#     denseM = scale(denseM.astype(float), axis=0, with_mean=True, with_std=True)
-#     _logger.info("Finish normalize per gene as Gaussian-dist (0, 1).")
-#
-#     sc_expression_df = pd.DataFrame(data=denseM, columns=sc_expression_df.columns, index=sc_expression_df.index)
-#
-#     cell_time = cell_time.loc[sc_expression_df.index]
-#     _logger.info("Get expression dataframe with shape (cell, gene): {}, and cell time info with shape: {}.".format(
-#         sc_expression_df.shape, cell_time.shape))
-#     try:
-#
-#         _save_path = "{}{}/".format(_logger.root.handlers[0].baseFilename.replace(".log", ""), special_path_str)
-#         if not os.path.exists(_save_path):
-#             os.makedirs(_save_path)
-#         cell_time.to_csv(f"{_save_path}/preprocessed_cell_info.csv")
-#         gene_raw_total_count.to_csv(f"{_save_path}/preprocessed_gene_info.csv")
-#         _logger.info(f"save preprocessed_cell_info.csv and preprocessed_gene_info.csv at {_save_path}")
-#     except:
-#         print("Not save preprocessed_cell_info.csv and preprocessed_gene_info.csv")
-#         pass
-#     return sc_expression_df, cell_time
+    if return_normalized_raw_count:
+        import scipy.sparse as sp
+        adata.X = sp.csr_matrix(adata.X)
+        adata.layers['processed'] = sc_expression_df.values
+        return sc_expression_df, cell_time, adata
+    else:
+        return sc_expression_df, cell_time
 
 
 def cosSim(x, y):
@@ -1439,12 +1119,15 @@ def trans_time(capture_time, time_standard_type, capture_time_other=None, label_
         else:
             min_val = np.min(unique_time)
             max_val = np.max(unique_time)
+        # full_range = np.arange(min_val, max_val + 50, 50)
 
+
+        # unique_time = sorted(list(set(unique_time.tolist() + full_range.tolist())))
         # 最小-最大归一化
         normalized_data = (unique_time - min_val) * (new_max - new_min) / (max_val - min_val) + new_min
         # normalized_data = (unique_time - min_val) / (max_val - min_val) * 2 - 1
 
-        # 构建字典，保留小数点后三位
+
         label_dic = {int(key): round(value, 3) for key, value in zip(unique_time, normalized_data)}
     elif time_standard_type == "organdic":  # 2023-11-02 10:50:09 add for Joy organ project
         # label_dic = {100: 1, 0: 0} # 2023-11-07 12:18:52 for "mesen" attr, don't use.
@@ -1497,8 +1180,6 @@ def identify_timeCorGene(sc_expression_df, cell_info, y_time_nor_tensor, donor_i
     """
     save_file_path = f"{_logger.root.handlers[0].baseFilename.replace('.log', '')}{special_path_str}/"
 
-    import multiprocessing
-    from multiprocessing import Queue
     trained_result = trained_total_dic["total"]
     if trained_total_dic["time_continues_bool"]:  # time is continues
         _logger.info("predicted time is continuous.")
@@ -1598,7 +1279,7 @@ def identify_timeCorGene(sc_expression_df, cell_info, y_time_nor_tensor, donor_i
 def pertub_one_gene(gene, sc_expression_df, y_time_nor_tensor, donor_index_tensor,
                     runner, experiment, trained_total_dic, trained_clf, gene_dic,
                     gene_raw_total_count, special_path_str, plot_geneTimeDetTime_bool=True):
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
     from scipy import stats
     # gene = gene_list[index]
     if gene not in sc_expression_df.columns:
@@ -1705,7 +1386,7 @@ def test_on_newDataset(sc_expression_train, data_golbal_path, result_save_path, 
     :param time_standard_type:
     :return:
     """
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
     _logger.info("Test on new dataset.")
 
     gene_list = sc_expression_train.columns
@@ -1773,7 +1454,7 @@ def test_on_newDonor(test_donor_name, sc_expression_test, runner, experiment, pr
     :param time_standard_type:
     :return:
     """
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
 
     x_sc_test = torch.tensor(sc_expression_test.values, dtype=torch.get_default_dtype()).t()
     _logger.info("Set x_sc_test data with shape (gene, cells): {}".format(x_sc_test.shape))
@@ -1835,9 +1516,9 @@ def one_fold_test(fold, donor_list, sc_expression_df, donor_dic, batch_dic,
     :param plot_latentSpaceUmap:
     :return:
     """
-    from ..model_master.experiment_temporalVAE import temporalVAEExperiment
-    from ..model_master.dataset import SupervisedVAEDataset
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
+    from TemporalVAE.model_master.experiment_temporalVAE import temporalVAEExperiment
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
     from pytorch_lightning import Trainer
     from pytorch_lightning.loggers import TensorBoardLogger
     from pytorch_lightning import seed_everything
@@ -2092,9 +1773,9 @@ def one_fold_test_adversarialTrain(fold, donor_list, sc_expression_df, donor_dic
     :param plot_latentSpaceUmap:
     :return:
     """
-    from ..model_master.experiment_adversarial import VAEXperiment_adversarial
-    from ..model_master.dataset import SupervisedVAEDataset
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
+    from TemporalVAE.model_master.experiment_adversarial import VAEXperiment_adversarial
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
     from pytorch_lightning import Trainer
     from pytorch_lightning.loggers import TensorBoardLogger
     from pytorch_lightning import seed_everything
@@ -2347,7 +2028,7 @@ def one_fold_test_adversarialTrain(fold, donor_list, sc_expression_df, donor_dic
 def onlyTrain_model(sc_expression_df, donor_dic,
                     special_path_str,
                     cell_time,
-                    time_standard_type, config, train_epoch_num, plot_latentSpaceUmap=True,
+                    time_standard_type, config, train_epoch_num, device=None, batch_dim=0, plot_latentSpaceUmap=True,
                     time_saved_asFloat=False,
                     batch_size=None, max_attempts=10000000, adversarial_bool=False, batch_dic=None,
                     donor_str="donor", time_str="time", checkpoint_file=None, min_max_val=None,
@@ -2364,15 +2045,15 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     :param cell_time:
     :param time_standard_type:
     :param config:
-    :param args:
+    :param train_epoch_num:
     :param device:
     :param batch_dim:
     :param plot_latentSpaceUmap:
     :return:
     """
-    from ..model_master.experiment_adversarial import VAEXperiment_adversarial
-    from ..model_master.experiment_temporalVAE import temporalVAEExperiment
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
+    from TemporalVAE.model_master.experiment_adversarial import VAEXperiment_adversarial
+    from TemporalVAE.model_master.experiment_temporalVAE import temporalVAEExperiment
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning import Trainer
     from pytorch_lightning.loggers import TensorBoardLogger
     from pytorch_lightning import seed_everything
@@ -2443,11 +2124,11 @@ def onlyTrain_model(sc_expression_df, donor_dic,
     if checkpoint_file is not None:  # 2024-03-17 20:15:39 add
         _logger.info(f"use checkpoint file: {checkpoint_file}")
         checkpoint = torch.load(checkpoint_file, map_location='cpu')
-        # 去掉每层名字前面的 "model."
+        # remove "model." before layer name
         state_dict = checkpoint['state_dict']
         new_state_dict = {}
         for key, value in state_dict.items():
-            # 去掉前缀 "model."
+            # remove "model."
             if key.startswith('model.'):
                 key = key[6:]
             new_state_dict[key] = value
@@ -2575,9 +2256,9 @@ def fineTuning_calRNAvelocity(sc_expression_df, config_file, checkpoint_file, ad
     import yaml
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from ..model_master.experiment_temporalVAE import temporalVAEExperiment
-    from ..model_master.experiment_adversarial import VAEXperiment_adversarial
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.experiment_temporalVAE import temporalVAEExperiment
+    from TemporalVAE.model_master.experiment_adversarial import VAEXperiment_adversarial
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
     # make data with gene express min
 
     with open(config_file, 'r') as file:
@@ -2692,7 +2373,7 @@ def fineTuning_calRNAvelocity(sc_expression_df, config_file, checkpoint_file, ad
 
 def predict_by_fineTuneModel(sc_expression_df_test, y_label, runner_fineTune, experiment_fineTune, cell_time_info_test, plt_attr,
                              save_result_path, special_file_name_str="", withCellType=False, withMoreFeature=False, withHvg_df=None):
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
     # input sc data change
     # x_sc_test = torch.tensor(sc_expression_df_test.values, dtype=torch.get_default_dtype()).t()
     # data_x_test = [[x_sc_test[:, i], 0, 0] for i in range(x_sc_test.shape[1])]
@@ -2745,8 +2426,8 @@ def fine_tuning_model(clf_train_result, sc_expression_df, y_label, MyVAEModel, c
     """
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
-    from ..model_master.experiment_fineTune import VAEXperiment_fineTune
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.experiment_fineTune import VAEXperiment_fineTune
     from pytorch_lightning.loggers import TensorBoardLogger
     # 2023-11-30 10:45:36 fine tune
 
@@ -2770,7 +2451,7 @@ def fine_tuning_model(clf_train_result, sc_expression_df, y_label, MyVAEModel, c
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from ..model_master.dataset import SupervisedVAEDataset_onlyTrain
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyTrain
     data_predict = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=len(data_x))
 
     # 创建一个 LearningRateMonitor 回调实例
@@ -2829,8 +2510,8 @@ def fine_tuning_model_addCellTypeLabel(clf_train_result, sc_expression_df, y_lab
     """
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
-    from ..model_master.experiment_fineTune import VAEXperiment_fineTune
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.experiment_fineTune import VAEXperiment_fineTune
     from pytorch_lightning.loggers import TensorBoardLogger
     # 2023-12-01 11:30:26 add cell type to model
 
@@ -2884,7 +2565,7 @@ def fine_tuning_model_addCellTypeLabel(clf_train_result, sc_expression_df, y_lab
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from ..model_master.dataset import SupervisedVAEDataset_onlyTrain
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyTrain
     data_predict = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=len(data_x))
 
     # 创建一个 LearningRateMonitor 回调实例
@@ -2943,8 +2624,8 @@ def fine_tuning_model_add_more_feature(clf_train_result, sc_expression_df, sc_ex
     """
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
-    from ..model_master.experiment_fineTune import VAEXperiment_fineTune
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.experiment_fineTune import VAEXperiment_fineTune
     from pytorch_lightning.loggers import TensorBoardLogger
     # 2023-12-01 11:30:26 add new features to model
     predict_donors_df = pd.DataFrame(index=sc_expression_df.index)
@@ -2999,7 +2680,7 @@ def fine_tuning_model_add_more_feature(clf_train_result, sc_expression_df, sc_ex
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from ..model_master.dataset import SupervisedVAEDataset_onlyTrain
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyTrain
     data_predict = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=len(data_x))
 
     # 创建一个 LearningRateMonitor 回调实例
@@ -3059,8 +2740,8 @@ def fine_tuning_model_u_s_focusEncoder(clf_train_result, sc_expression_df, MyVAE
     cell_time_info = cell_time_info.reindex(index=sc_expression_df.index)
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
-    from ..model_master.experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
     from pytorch_lightning.loggers import TensorBoardLogger
 
     # 2023-12-01 11:30:26 add new features to model
@@ -3076,7 +2757,6 @@ def fine_tuning_model_u_s_focusEncoder(clf_train_result, sc_expression_df, MyVAE
     # encoder_weight_0 = MyVAEModel.encoder._modules["0"]._modules["0"].weight  # encoder_weight_0 shape as (out_features, in_features)
     # encoder_bias_0 = MyVAEModel.encoder._modules["0"]._modules["0"].bias  # encoder_weight_0 shape as (out_features, in_features)
     # new_layer = nn.Linear(sc_expression_df.shape[1], sc_expression_df.shape[1], bias=True)  # add a new layer before encoder
-    from collections import OrderedDict
     # new_encoder_layers = OrderedDict()
     new_encoder_layers = MyVAEModel.encoder[1:]
     MyVAEModel.q_u_s_encoder = new_encoder_layers
@@ -3122,7 +2802,7 @@ def fine_tuning_model_u_s_focusEncoder(clf_train_result, sc_expression_df, MyVAE
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from ..model_master.dataset import SupervisedVAEDataset_onlyTrain
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyTrain
     from pytorch_lightning.callbacks import EarlyStopping
 
     data_train = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=batch_size)
@@ -3252,8 +2932,8 @@ def fine_tuning_model_u_s_focusEncoder_moreFeatures(clf_train_result, sc_express
     cell_time_info = cell_time_info.reindex(index=sc_expression_df.index)
     from pytorch_lightning import Trainer
     from pytorch_lightning import seed_everything
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict
-    from ..model_master.experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict
+    from TemporalVAE.model_master.experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
     from pytorch_lightning.loggers import TensorBoardLogger
     # 2023-12-01 11:30:26 add new features to model
     sc_expression_df_concat = pd.concat((sc_expression_df, sc_expression_df_add), axis=1)
@@ -3321,7 +3001,7 @@ def fine_tuning_model_u_s_focusEncoder_moreFeatures(clf_train_result, sc_express
     # For reproducibility
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-    from ..model_master.dataset import SupervisedVAEDataset_onlyTrain
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyTrain
     from pytorch_lightning.callbacks import EarlyStopping
 
     data_train = SupervisedVAEDataset_onlyTrain(train_data=data_x, train_batch_size=batch_size)
@@ -3443,15 +3123,12 @@ def RNA_velocity(clf_input, clf_decoder, config, unspliced_fine_tune_test_latent
     from pytorch_lightning import seed_everything
     seed_everything(config['exp_params']['manual_seed'], True)
     from pytorch_lightning import Trainer
-    from pytorch_lightning import seed_everything
-    from ..model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
-    from ..model_master.experiment_fineTune_u_s_focusEncoder import VAEXperiment_fineTune_u_s_focusEncoder
+    from TemporalVAE.model_master.dataset import SupervisedVAEDataset_onlyPredict, SupervisedVAEDataset_onlyTrain
     from pytorch_lightning.loggers import TensorBoardLogger
     from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
     from pytorch_lightning.callbacks import EarlyStopping
 
-    from imp import reload
-    from ..model_master.experiment_RNA_velocity import Experiment_RNA_velocity
+    from TemporalVAE.model_master.experiment_RNA_velocity import Experiment_RNA_velocity
 
     config['model_params']['in_channels'] = 101
 

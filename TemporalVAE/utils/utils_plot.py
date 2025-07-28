@@ -1,15 +1,13 @@
 # -*-coding:utf-8 -*-
 """
-@Project ：TemporalVAE
+@Project ：TemporalVAE 
 @File    ：utils_plot.py
-@IDE     ：PyCharm
+@IDE     ：PyCharm 
 @Author  ：awa121
-@Date    ：2023/7/27 16:37
+@Date    ：2023/7/27 16:37 
 """
 
 import logging
-
-from numba.tests.test_np_functions import rot90
 
 _logger = logging.getLogger(__name__)
 import pandas as pd
@@ -1485,6 +1483,8 @@ def draw_venn(lists_dict):
 def plt_umap_byScanpy(adata, attr_list, save_path, mode=None, special_file_name_str="",
                       figure_size=(15, 6), show_in_row=True, color_map=None, palette_dic=None, n_neighbors=10, n_pcs=40):
     import scanpy as sc
+    # import numba
+    # numba.core.caching.clear_cache()  # Clear Numba's disk cache
     # attr = attr + list({"physical_time", "physical_pseudotime_by_preTrained_mouseAtlas_model", "physical_pseudotime_by_finetune_model"} & set(adata.obs.columns))
     # attr = ["day", "physical_pseudotime_by_preTrained_mouseAtlas_model", "physical_pseudotime_by_finetune_model", "cell_type", "s_or_mrna", "sample"]
     # attr.sort()
@@ -1733,9 +1733,9 @@ def plot_tyser_mapping_to_datasets_attrTimeGT(adata_all, save_path, plot_attr,
     # 创建颜色字典，将每个类别映射到一个颜色
     # color_dic = {str(time): color for time, color in zip(unique_times, palette)}
     color_dic = {str(time): color for time, color in zip(unique_times, colors)}
-    if mask_dataset_label == "t":
+    if mask_dataset_label in ["t", "T"]:
         color_dic[query_timePoint] = (0.9, 0.9, 0.9, mask_color_alpha)
-    elif mask_dataset_label == "l & m & p & z & xiao":
+    elif mask_dataset_label in ["l & m & p & z & xiao", "L & M & P & Z & X & C","L & M & P & Z & Xiao & C"]:
         for _t in color_dic.keys():
             if _t != query_timePoint:
                 color_dic[_t] = (0.9, 0.9, 0.9, mask_color_alpha)
@@ -1759,8 +1759,214 @@ def plot_tyser_mapping_to_datasets_attrTimeGT(adata_all, save_path, plot_attr,
     plt.show()
     plt.close()
     print(f"figure save at {save_file_name}")
+#
+# def plot_query_mapping_to_referenceUmapSpace_attrTimeGT(adata_all, save_path, plot_attr,
+#                                               query_timePoint='16.5',
+#                                               legend_title="Cell stage",
+#                                               mask_dataset_label="t",
+#                                               reference_dataset_str='',
+#                                               special_file_str='',
+#                                               mask_color_alpha=0.7):
+#     import scanpy as sc
+#     adata_all.obs["time"] = adata_all.obs["time"].astype("float")
+#     time_values = adata_all.obs[plot_attr].unique()
+#     unique_times = sorted(set(time_values))
+#
+#     min_time = np.min(unique_times)
+#     max_time = np.max(unique_times)
+#     normalized_times = (unique_times - min_time) / (max_time - min_time)
+#     turbo_cmap = plt.get_cmap('turbo')
+#     colors = [turbo_cmap(t) for t in normalized_times]
+#     # palette = sns.color_palette('turbo', len(time_values))
+#     # 创建颜色字典，将每个类别映射到一个颜色
+#     # color_dic = {str(time): color for time, color in zip(unique_times, palette)}
+#     color_dic = {str(time): color for time, color in zip(unique_times, colors)}
+#     if '&' not in mask_dataset_label:
+#         color_dic[query_timePoint] = (0.9, 0.9, 0.9, mask_color_alpha)
+#     elif mask_dataset_label in ["l & m & p & z & xiao", "L & M & P & Z & X & C","L & M & P & Z & Xiao & C"]:
+#         for _t in color_dic.keys():
+#             if _t != query_timePoint:
+#                 color_dic[_t] = (0.9, 0.9, 0.9, mask_color_alpha)
+#
+#     adata_all.obs["time"] = adata_all.obs["time"].astype("str")
+#     sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
+#
+#     sc.pl.umap(adata_all, color=plot_attr, show=False,
+#                s=25, palette=color_dic)
+#     plt.gca().set_title('')
+#     for spine in plt.gca().spines.values():
+#         spine.set_edgecolor('#808b96')
+#         spine.set_linewidth(0.5)  #
+#     plt.xlabel(plt.gca().get_xlabel(), fontsize=11)
+#     plt.ylabel(plt.gca().get_ylabel(), fontsize=11)
+#     plt.legend(title=legend_title, fontsize=14, title_fontsize=14,
+#                loc='center left', bbox_to_anchor=(1, 0.5))
+#     plt.gca().set_position([0, 0, 1, 1])
+#     save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{plot_attr}{special_file_str}.png"
+#     plt.savefig(save_file_name, dpi=200, bbox_inches='tight')
+#     plt.show()
+#     plt.close()
+#     print(f"figure save at {save_file_name}")
+# def plot_query_mapping_to_referenceUmapSpace_attrTimeGT(adata_all, save_path, plot_attr,
+#                                                         legend_title="Cell stage",
+#                                                         mask_dataset_label="t",
+#                                                         reference_dataset_str='',
+#                                                         special_file_str='',
+#                                                         mask_color_alpha=0.7):
+#
+#     if isinstance(mask_dataset_label, str):
+#         mask_dataset_label_list=[mask_dataset_label]
+#     elif isinstance(mask_dataset_label, list):
+#         mask_dataset_label_list=[mask_dataset_label]
+#
+#     import scanpy as sc
+#     import numpy as np
+#     import matplotlib.pyplot as plt
+#     from matplotlib.colors import to_rgba
+#     adata_all.obs["time"] = adata_all.obs["time"].astype("float")
+#     time_values = adata_all.obs[plot_attr].unique()
+#     unique_times = sorted(set(time_values))
+#
+#     min_time = np.min(unique_times)
+#     max_time = np.max(unique_times)
+#     normalized_times = (unique_times - min_time) / (max_time - min_time)
+#     turbo_cmap = plt.get_cmap('turbo')
+#     colors = [turbo_cmap(t) for t in normalized_times]
+#
+#     # Create base color dictionary
+#     color_dic = {str(time): to_rgba(color) for time, color in zip(unique_times, colors)}
+#
+#     # Create a new column for coloring that combines time and mask status
+#     adata_all.obs['plot_color'] = adata_all.obs[plot_attr].astype(str)
+#
+#     # Identify cells to mask
+#     mask_cells = adata_all.obs['dataset_label'].isin(mask_dataset_label_list)
+#
+#     # Create a new color dictionary that includes masked entries
+#     masked_color = to_rgba((0.9, 0.9, 0.9, mask_color_alpha))
+#
+#     # For masked cells, append "_masked" to their time label
+#     adata_all.obs.loc[mask_cells, 'plot_color'] = adata_all.obs.loc[mask_cells, 'plot_color'] + '_masked'
+#
+#     # Extend the color dictionary with masked entries
+#     for time in unique_times:
+#         color_dic[str(time) + '_masked'] = masked_color
+#
+#     sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
+#
+#     # Plot using the new color column
+#     sc.pl.umap(adata_all, color='plot_color', show=False,
+#                s=25, palette=color_dic)
+#
+#     plt.gca().set_title('')
+#     for spine in plt.gca().spines.values():
+#         spine.set_edgecolor('#808b96')
+#         spine.set_linewidth(0.5)
+#
+#     # Customize legend to hide the "_masked" suffix
+#     handles, labels = plt.gca().get_legend_handles_labels()
+#     new_labels = [l.replace('_masked', '') for l in labels]
+#     plt.gca().legend(handles, new_labels,
+#                      title=legend_title,
+#                      fontsize=14,
+#                      title_fontsize=14,
+#                      loc='center left',
+#                      bbox_to_anchor=(1, 0.5))
+#
+#     plt.xlabel(plt.gca().get_xlabel(), fontsize=11)
+#     plt.ylabel(plt.gca().get_ylabel(), fontsize=11)
+#     plt.gca().set_position([0, 0, 1, 1])
+#
+#     save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{plot_attr}{special_file_str}.png"
+#     plt.savefig(save_file_name, dpi=200, bbox_inches='tight')
+#     plt.show()
+#     plt.close()
+#     print(f"figure save at {save_file_name}")
+def plot_query_mapping_to_referenceUmapSpace_attrTimeGT(adata_all, save_path, plot_attr,
+                                                        legend_title="Cell stage",
+                                                        mask_dataset_label="t",
+                                                        reference_dataset_str='',
+                                                        special_file_str='',
+                                                        mask_color_alpha=0.7):
+    if isinstance(mask_dataset_label, str):
+        mask_dataset_label_list = [mask_dataset_label]
+    elif isinstance(mask_dataset_label, list):
+        mask_dataset_label_list = mask_dataset_label  # Fixed this line to use the list directly
 
+    import scanpy as sc
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import to_rgba
 
+    adata_all.obs["time"] = adata_all.obs["time"].astype("float")
+    time_values = adata_all.obs[plot_attr].unique()
+    unique_times = sorted(set(time_values))
+
+    min_time = np.min(unique_times)
+    max_time = np.max(unique_times)
+    normalized_times = (unique_times - min_time) / (max_time - min_time)
+    turbo_cmap = plt.get_cmap('turbo')
+    colors = [turbo_cmap(t) for t in normalized_times]
+
+    # Create base color dictionary
+    color_dic = {str(time): to_rgba(color) for time, color in zip(unique_times, colors)}
+
+    # Create a new column for coloring that combines time and mask status
+    adata_all.obs['plot_color'] = adata_all.obs[plot_attr].astype(str)
+
+    # Identify cells to mask
+    mask_cells = adata_all.obs['dataset_label'].isin(mask_dataset_label_list)
+
+    # Create a new color dictionary that includes masked entries
+    masked_color = to_rgba((0.9, 0.9, 0.9, mask_color_alpha))
+
+    # For masked cells, append "_masked" to their time label
+    adata_all.obs.loc[mask_cells, 'plot_color'] = adata_all.obs.loc[mask_cells, 'plot_color'] + '_masked'
+
+    # Extend the color dictionary with masked entries
+    for time in unique_times:
+        color_dic[str(time) + '_masked'] = masked_color
+
+    sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
+
+    # Plot using the new color column
+    sc.pl.umap(adata_all, color='plot_color', show=False,
+               s=25, palette=color_dic)
+
+    plt.gca().set_title('')
+    for spine in plt.gca().spines.values():
+        spine.set_edgecolor('#808b96')
+        spine.set_linewidth(0.5)
+
+    # Customize legend to exclude masked entries
+    handles, labels = plt.gca().get_legend_handles_labels()
+
+    # Filter out masked entries from legend
+    filtered_handles = []
+    filtered_labels = []
+    for handle, label in zip(handles, labels):
+        if not label.endswith('_masked'):
+            filtered_handles.append(handle)
+            filtered_labels.append(label)
+
+    # Only create legend if there are items to show
+    if filtered_handles:
+        plt.gca().legend(filtered_handles, filtered_labels,
+                         title=legend_title,
+                         fontsize=14,
+                         title_fontsize=14,
+                         loc='center left',
+                         bbox_to_anchor=(1, 0.5))
+
+    plt.xlabel(plt.gca().get_xlabel(), fontsize=11)
+    plt.ylabel(plt.gca().get_ylabel(), fontsize=11)
+    plt.gca().set_position([0, 0, 1, 1])
+
+    save_file_name = f"{save_path}/tyser_mapping_to_{reference_dataset_str}_{plot_attr}{special_file_str}.png"
+    plt.savefig(save_file_name, dpi=200, bbox_inches='tight')
+    plt.show()
+    plt.close()
+    print(f"figure save at {save_file_name}")
 def plot_tyser_mapping_to_4dataset_predictedTime(adata_all, save_path, label_dic,
                                                  mask_dataset_label="t",
                                                  plot_attr='predicted_time',
@@ -1850,18 +2056,21 @@ def plot_tyser_mapping_to_datasets_attrCellType_maskTyser(adata_all, save_path, 
                                                           masked_str, color_palette="hsv",
                                                           legend_title="Cell type",
                                                           reference_dataset_str="",
-                                                          special_file_str='_maskT'):
+                                                          special_file_str='_maskT',
+                                                          query_donor=None,
+                                                          top_vis_cellType_num=15,
+                                                          special_cell_type_list=None):
     import scanpy as sc
     unique_categories = adata_all.obs[attr].unique()
     # too long change, add \n to the cell type name.
-    if 'Hemogenic Endothelial Progenitors_t' in unique_categories:
-        adata_all.obs[attr] = adata_all.obs[attr].replace('Hemogenic Endothelial Progenitors_t',
-                                                          'Hemogenic Endothelial\nProgenitors_t')
+    if 'Haemato-endothelial Progenitor' in unique_categories:
+        adata_all.obs[attr] = adata_all.obs[attr].replace('Haemato-endothelial Progenitor',
+                                                          'Haemato-endothelial\nProgenitor')
         unique_categories = adata_all.obs[attr].unique()
     category_counts = adata_all.obs[attr].value_counts()
-    if len(unique_categories) > 15:
+    if len(unique_categories) > top_vis_cellType_num:
         print(f"more than 15 cell type, so trans cell type with less cells to Other cell type in image.")
-        top_categories = category_counts.nlargest(15).index
+        top_categories = category_counts.nlargest(top_vis_cellType_num).index
         other_categories = category_counts.index.difference(top_categories)
         adata_all.obs[attr] = adata_all.obs[attr].replace(other_categories, "Other cell type")
     else:
@@ -1893,7 +2102,12 @@ def plot_tyser_mapping_to_datasets_attrCellType_maskTyser(adata_all, save_path, 
 
     handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color_dic[cat], markersize=8, label=cat)
                for cat in color_dic]
-    plt.legend(handles=handles, title=legend_title, fontsize=14, title_fontsize=14,
+    if len(adata_all.obs[attr].unique()) > 16:
+        print("legend use two col")
+        plt.legend(title="Cell type", fontsize=13, title_fontsize=14,
+                   loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
+    else:
+        plt.legend(handles=handles, title=legend_title, fontsize=13, title_fontsize=14,
                loc='center left', bbox_to_anchor=(1, 0.5))
     # plt.legend(title=legend_title, fontsize=13, title_fontsize=13,loc='center left', bbox_to_anchor=(1, 0.5))
     plt.gca().set_position([0, 0, 1, 1])
@@ -1903,6 +2117,27 @@ def plot_tyser_mapping_to_datasets_attrCellType_maskTyser(adata_all, save_path, 
     plt.show()
     plt.close()
     print(f"figure save at {save_file_name}")
+
+    if query_donor == "T":
+        adata_query = adata_all[adata_all.obs["dataset_label"] == "T"]
+
+        manual_clusters = plot_to_identify_cluster_of_Tyser(adata_query.copy())
+
+        # highlight cluster2 cell type distribution in Tyser.
+        adata_query.obs["manual_cluster"] = manual_clusters
+        cluster_celltype = pd.crosstab(adata_query.obs['manual_cluster'],
+                                       adata_query.obs['cell_type'],
+                                       normalize='index')
+        cluster_celltype.plot.bar(stacked=True, figsize=(10, 5))
+        plt.ylabel('Proportion')
+        plt.title('Cell Type Composition per Manual Cluster'),
+
+        plt.legend(title="Cell type", fontsize=14, title_fontsize=14,
+                   loc='center left', bbox_to_anchor=(1, 0.5))
+        plt.savefig(f'{save_path}/umap_cellTypeDistribution_queryOn{query_donor}.png', dpi=300, bbox_inches='tight')
+        plt.show()
+        plt.close()
+    # return color_dic
 
 
 def plot_tyser_mapping_to_datasets_attrDataset(adata_all, save_path, attr,
@@ -1914,8 +2149,7 @@ def plot_tyser_mapping_to_datasets_attrDataset(adata_all, save_path, attr,
     _color = color_dic.pop(masked_str)
     color_dic[masked_str] = _color
     sc.settings.set_figure_params(dpi=200, facecolor="white", figsize=(5, 5), fontsize=18)
-    sc.pl.umap(adata_all, color=attr, show=False, s=25,
-               palette=color_dic)
+    sc.pl.umap(adata_all, color=attr, show=False, s=25, palette=color_dic)
     plt.gca().set_title('')
     for spine in plt.gca().spines.values():
         spine.set_edgecolor('#808b96')  # 将边框颜色设置为红色
@@ -2095,7 +2329,7 @@ def plt_lineChart_stageGeneDic_inStages(top_gene_dic, perturb_data_denor,
 
 
 def plt_venn_fromDict(enr_top_gene_dic2, save_path, perturb_show_gene_num, species):
-    from matplotlib_venn import venn3, venn3_circles
+    from matplotlib_venn import venn3
     # 创建一个Venn图
     plt.figure(figsize=(6, 6))
     venn_diagram = venn3([set(enr_top_gene_dic2["early"]), set(enr_top_gene_dic2["middle"]), set(enr_top_gene_dic2["late"])],
@@ -2170,7 +2404,7 @@ def plt_allGene_dot_voteNum_meanDetT_Exp(cell_info, perturb_data_denor, pertrub_
     cell_df = cell_info.loc[perturb_data_denor.index]
 
     # abs_mean_df = pert_data.apply(lambda col: abs(np.array(col) - np.array(cell_df["predicted_time_denor"])).mean())
-    from utils_project import voteScore_genePerturbation
+    from TemporalVAE.utils.utils_project import voteScore_genePerturbation
     column_counts = voteScore_genePerturbation(cell_df, perturb_data_denor, top_gene_num, predictedTime_attr="predicted_time_denor")
 
     pertrub_gene_df[f"top{top_gene_num}VoteNum"] = pertrub_gene_df['gene_short_name'].map(column_counts).fillna(0).astype(int)
@@ -2252,3 +2486,47 @@ def plt_muiltViolin_forGenes_xRawCount(adata_df, intersection, cell_info,
     print(f"figure save as {save_file_name}")
     plt.show()
     plt.close()
+def plot_to_identify_cluster_of_Tyser(adata):
+    import matplotlib.pyplot as plt
+    # 1. plot location (x,y) of cells in umap to identify cell clusters.
+    umap_coords = adata.obsm['X_umap']
+    x, y = umap_coords[:, 0], umap_coords[:, 1]
+
+    plt.figure(figsize=(10, 8))
+    plt.scatter(x, y, s=5, alpha=0.5, c='gray', label='Unassigned')
+    plt.xlabel('UMAP1')
+    plt.ylabel('UMAP2')
+    plt.title('UMAP with Manual Cluster Boundaries')
+    plt.show()
+    plt.close()
+    # 2. manual set 3 cluster of cells
+    cluster_ranges = {
+        'Cluster 0': {'x_range': (-10, -5), 'y_range': (0, 10)},  # 左下
+        'Cluster 1': {'x_range': (0, 5), 'y_range': (5, 10)},  # 中部
+        'Cluster 2': {'x_range': (0, 5), 'y_range': (10, 15)}  # 右上
+    }
+    manual_clusters = np.full(len(adata), '-1', dtype=object)  # -1 表示未分配
+
+    for i, (xi, yi) in enumerate(zip(x, y)):
+        for cluster, ranges in cluster_ranges.items():
+            x_min, x_max = ranges['x_range']
+            y_min, y_max = ranges['y_range']
+            if x_min <= xi <= x_max and y_min <= yi <= y_max:
+                manual_clusters[i] = cluster
+                break
+    plt.figure(figsize=(10, 8))
+    colors = {'Cluster 0': 'red', 'Cluster 1': 'green', 'Cluster 2': 'blue', '-1': 'gray'}
+    plt.scatter(x, y, s=5, c=[colors[c] for c in manual_clusters], alpha=0.7)
+    plt.xlabel('UMAP1')
+    plt.ylabel('UMAP2')
+    plt.title('Cells Colored by Manual Cluster')
+
+    for cluster, ranges in cluster_ranges.items():
+        x_min, x_max = ranges['x_range']
+        y_min, y_max = ranges['y_range']
+        plt.plot([x_min, x_max, x_max, x_min, x_min], [y_min, y_min, y_max, y_max, y_min],
+                 'k--', linewidth=1, alpha=0.5)
+
+    plt.show()
+    plt.close()
+    return manual_clusters
