@@ -1,0 +1,32 @@
+model_params:
+  name: 'SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial_u_s_focusEncoder'
+  in_channels: 0
+  latent_dim: 50
+  label_num: 10
+
+
+data_params:
+  data_path: "Data/"
+  train_batch_size: 64
+  val_batch_size:  64
+  patch_size: 64
+  num_workers: 4
+
+
+exp_params:
+  LR: 0.005
+  weight_decay: 0.0
+  scheduler_gamma: 0.95
+  kld_weight: 0.00025 # orgainal 0.00025
+  manual_seed: 1265
+  clf_weight: 1 # 2023-09-13 13:45:52 Used for time loss weight
+  batch_weight: 0 # 2024-04-18 18:53:01 add
+  train_bn: False
+trainer_params:
+  gpus: [1]
+  max_epochs: 100
+
+logging_params:
+  save_dir: "logs/"
+  name: "SuperviseVanillaVAE_regressionClfDecoder_mouse_noAdversarial"
+  
