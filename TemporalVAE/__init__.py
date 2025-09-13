@@ -10,3 +10,4 @@ Description:
 
 from . import tools as tl
 from . import datasets, utils
+from .version import __version__

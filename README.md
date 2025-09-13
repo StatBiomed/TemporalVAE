@@ -11,12 +11,12 @@ folder/submodule.
 
 ## Installation
 
-Quick install can be achieved via pip (python >=3.8)
+Quick install can be achieved via pip (python >=3.8; 3.10 to 3.12 were tested)
 
 **Step 0**: create a conda environment and activate it:
 
 ```bash
-conda create -n tvae python=3.10.9
+conda create -n tvae python=3.12
 conda activate tvae
 
 # Optional: add jupyter lab kernal
@@ -26,11 +26,11 @@ python -m ipykernel install --user --name tvae --display-name "tvae"
 
 **Step 1**: install TemporalVAE from GitHub:
 ```bash
-# or developing version
-pip install -U git+https://github.com/StatBiomed/TemporalVAE-release
+# for published version
+pip install -U TemporalVAE
 
-# for published version (TO AVAILABLE SOON)
-# pip install -U TemporalVAE
+# or developing version
+pip install -U git+https://github.com/StatBiomed/TemporalVAE
 ```
 
 ## Quick Usage
@@ -77,4 +77,6 @@ query_umap = umap_model.transform(Z_query)
 
 ## Reference
 
-> Y. Liu et al. Atlas-assisted temporal mapping of time-series single-cell transcriptomes during embryogenesis. (to appear)
+> Liu Y., Cai F., Barile M., Chang Y., Cao D., and Huang Y. "TemporalVAE: 
+  atlas-assisted temporal mapping of time-series single-cell transcriptomes 
+  during embryogenesis." Nature Cell Biology, 2025 (in press).
